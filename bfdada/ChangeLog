@@ -1,3 +1,8 @@
+2003-05-21  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* configure.in: Check for bfd.h and dis-asm.h
+	* configure: Rebuild.
+
 2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
 
 	* examples/Makefile.in (GNATLINK): Add flags to search the libraries.
