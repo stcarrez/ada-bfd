@@ -1,3 +1,11 @@
+2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/bfdc.c (bfd_read_symbols): Don't allocate the symbol
+	table array, it's allocated by Ada code.
+	(ada_bfd_asymbol_value): New function.
+	(ada_bfd_asymbol_flags): New function.
+	(ada_bfd_get_symtab_upper_bound): New function.
+
 2003-02-07  Stephane Carrez  <stcarrez@nerim.fr>
 
 	* bfdada/Makefile.in (GNATFLAGS): Compile with -gnaty.

@@ -70,12 +70,10 @@ _bfd_get_section_flags (struct sec *sec)
 }
 
 void
-bfd_read_symbols (struct _bfd *abfd, int *cnt, void **ptr)
+bfd_read_symbols (struct _bfd *abfd, int *cnt, asymbol **sy)
 {
   long size;
-  asymbol **sy;
 
-  *ptr = 0;
   if (!bfd_get_file_flags (abfd) & HAS_SYMS)
     {
       *cnt = 0;
@@ -87,14 +85,7 @@ bfd_read_symbols (struct _bfd *abfd, int *cnt, void **ptr)
       *cnt = -1;
       return;
     }
-  sy = (asymbol **) malloc (size);
-  if (sy == 0)
-    {
-      *cnt = -1;
-      return;
-    }
   *cnt = bfd_canonicalize_symtab (abfd, sy);
-  *ptr = sy;
 }
 
 void
@@ -141,6 +132,25 @@ const char*
 ada_bfd_asymbol_name (asymbol* sym)
 {
    return bfd_asymbol_name (sym);
+}
+
+
+unsigned long long
+ada_bfd_asymbol_value (asymbol* sym)
+{
+   return bfd_asymbol_value (sym);
+}
+
+unsigned long
+ada_bfd_asymbol_flags (asymbol* sym)
+{
+   return sym->flags;
+}
+
+unsigned long
+ada_bfd_get_symtab_upper_bound (bfd* abfd)
+{
+   return bfd_get_symtab_upper_bound (abfd);
 }
 
 int
