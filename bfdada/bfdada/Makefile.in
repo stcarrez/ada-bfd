@@ -27,6 +27,7 @@ BUILD_SHARED=no
 GNATMAKE=@GNATMAKE@
 CHMOD=chmod
 CP=cp -f
+RANLIB=@RANLIB@
 
 .SUFFIXES:
 .SUFFIXES: .c .o .ads .adb .ali
@@ -107,8 +108,10 @@ $(ARCHIVENAME):: $(LIB_DIR)/$(MAKE_ADB).o ${wildcard ${LIB_DIR}/*.o} $(c_objects
 # library. We do not do this if .devel exists, so that gnatmake will still
 # rebuild the files (it does not check anything if the .ali files are read-only.
 install_ali::
-	test -f .devel || $(CP) $(LIB_DIR)/bfd*.ali .
-	test -f .devel || $(CHMOD) -w bfd*.ali
+	if [ test -d $(LIB_DIR) ]; then \
+	  $(CP) $(LIB_DIR)/bfd*.ali . ; \
+	  $(CHMOD) -w bfd*.ali ; \
+	fi
 
 $(LIB_DIR)/$(MAKE_ADB).o:: force
 	# The compile in source dir is brain damage but nice to have.

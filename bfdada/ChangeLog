@@ -1,5 +1,9 @@
 2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/Makefile.in (install_ali): Fix build in another directory.
+
+2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* NEWS: Update.
 
 2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
