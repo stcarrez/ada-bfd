@@ -1,5 +1,9 @@
 2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/bfd-internal.ads: Fix -gnaty warnings.
+
+2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/bfdc.c (bfd_read_symbols): Don't allocate the symbol
 	table array, it's allocated by Ada code.
 	(ada_bfd_asymbol_value): New function.
