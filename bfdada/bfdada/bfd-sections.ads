@@ -26,7 +26,6 @@
 --  observe its sections, its symbol table.
 --
 with System;
-with Interfaces;
 with Ada.Streams;
 package Bfd.Sections is
 

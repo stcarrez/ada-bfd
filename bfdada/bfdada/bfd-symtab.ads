@@ -24,7 +24,6 @@
 --  BFD library.
 --
 with System;
-with Interfaces;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Bfd.Sections;
 package Bfd.Symtab is
@@ -173,7 +172,7 @@ package Bfd.Symtab is
    procedure Find_Nearest_Line (File : in File_Type;
                                 Sec : in Bfd.Sections.Section;
                                 Symbols : in Symbol_Table;
-                                Addr : Vma_Type;
+                                Addr : in Vma_Type;
                                 Name : out Unbounded_String;
                                 Func : out Unbounded_String;
                                 Line : out Natural);
