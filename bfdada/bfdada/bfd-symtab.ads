@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  symtab -- BFD Symbol Table types and operations
---  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+--  <!-- Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
@@ -18,7 +18,7 @@
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
 --  the Free Software Foundation, 59 Temple Place - Suite 330,
---  Boston, MA 02111-1307, USA.
+--  Boston, MA 02111-1307, USA.  -->
 -----------------------------------------------------------------------
 --  This package gives access to the symbol table managed by the
 --  BFD library.

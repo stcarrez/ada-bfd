@@ -177,7 +177,6 @@ procedure BfdInfo is
    procedure List_Symbols (File : Bfd.File_Type) is
       Symbols : Symbol_Table;
       It      : Symbol_Iterator;
-      Count   : Natural;
    begin
       Open_Symbols (File, Symbols);
       It := Get_Iterator (Symbols);
