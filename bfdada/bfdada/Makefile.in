@@ -6,7 +6,23 @@ VPATH = @srcdir@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
 
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+incdir=$(includedir)/bfdada
+alidir=$(includedir)/bfdada
 @SET_MAKE@
+
+BUILD_SHARED=no
 
 GNATMAKE=@GNATMAKE@
 CHMOD=chmod
@@ -104,7 +120,7 @@ $(LIB_DIR)/$(MAKE_ADB).o:: force
 	fi
 
 install: all
-	@if [ "$(prefix)" != `pwd` ]; then \
+	if [ "$(prefix)" != `pwd` ]; then \
 	   echo Installing BfdAda in $(prefix); \
 	   $(MKDIR) $(bindir); \
 	   $(MKDIR) $(libdir); \
@@ -116,15 +132,15 @@ install: all
 	     $(RM) $(libdir)/$(LIBNAME); \
 	     $(LN) $(SONAME) $(libdir)/$(LIBNAME); \
 	   fi; \
-	   $(CP) bfd*.ads bfd*.adb $(incdir); \
+	   $(CP) $(srcdir)/bfd*.ads $(incdir); \
+	   $(CP) $(srcdir)/bfd*.adb $(incdir); \
 	   $(CP) $(LIB_DIR)/bfd*.ali $(alidir); \
 	   $(CHMOD) -w $(alidir)/*.ali; \
 	fi
 	@echo '------------------------------------------------------------------'
 	@echo '--  BfdAda has now been installed.                              --'
 	@echo '--  To be able to use the library, you may need to update your  --'
-	@echo '--  LD_LIBRARY_PATH or to run ldconfig. You may also need to    --'
-	@echo '--  update your PATH to include gtkada-config in it.            --'
+	@echo '--  LD_LIBRARY_PATH or to run ldconfig.                         --'
 	@echo '------------------------------------------------------------------'
 
 clean-generic:
