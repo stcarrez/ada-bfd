@@ -29,6 +29,8 @@ CHMOD=chmod
 CP=cp -f
 RANLIB=@RANLIB@
 
+MKDOC=$(top_srcdir)/doc/mkdoc.pl
+
 .SUFFIXES:
 .SUFFIXES: .c .o .ads .adb .ali
 
@@ -102,6 +104,13 @@ $(ARCHIVENAME):: $(MAKE_ADB).o ${wildcard *.o} $(c_objects)
 
 $(MAKE_ADB).o:: force
 	$(GNATMAKE) -I$(srcdir) -c $(MAKE_ADB) $(GNATFLAGS) $(FPIC)
+
+ADABROWSE=adabrowse
+ADABROWSE_FLAGS=-t -c $(top_srcdir)/doc/bfdada.cfg -f- -o ../doc/html/
+
+html::
+	test -d ../doc/html || mkdir -p ../doc/html
+	ls -1 $(srcdir)/*.ads | $(ADABROWSE) $(ADABROWSE_FLAGS)
 
 install: all
 	if [ "$(prefix)" != `pwd` ]; then \

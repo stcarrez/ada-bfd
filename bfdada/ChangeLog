@@ -1,3 +1,18 @@
+2004-03-21  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* examples/utils.ads: New file, from several functions from bfdinfo.
+	* examples/utils.adb: New file, likewise.
+	* examples/sections.adb: New file, split example from bfdinfo.
+	* examples/Makefile.in: Build new example.
+
+	* configure.in: Configure it.
+	* bfdada-config.in: New file.
+	* Makefile.am: Likewise and install it.
+	* Makefile.in: Rebuild.
+	* configure: Rebuild.
+	* bfdada/Makefile.in: Build the html documentation with adabrowse.
+	* bfdada/bfd.adb (Safe_Mode): Make constant.
+
 2004-03-20  Stephane Carrez  <stcarrez@nerim.fr>
 
 	* examples/bfdinfo.adb (List_Symbols): Remove unused variable.

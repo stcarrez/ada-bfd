@@ -960,8 +960,8 @@ ac_exeext=$EXEEXT
 
 
 # Current release settings
-BFDADA_MAJOR_VERSION=0
-BFDADA_MINOR_VERSION=1
+BFDADA_MAJOR_VERSION=1
+BFDADA_MINOR_VERSION=0
 BFDADA_MICRO_VERSION=0
 BFDADA_VERSION=$BFDADA_MAJOR_VERSION.$BFDADA_MINOR_VERSION.$BFDADA_MICRO_VERSION
 
@@ -1765,9 +1765,11 @@ ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
 trap 'rm -fr `echo "Makefile
+bfdada-config
 bfdada/Makefile
 bfdada/testsuite/Makefile
 examples/Makefile
+doc/Makefile
 " | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
@@ -1886,9 +1888,11 @@ EOF
 cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"Makefile
+bfdada-config
 bfdada/Makefile
 bfdada/testsuite/Makefile
 examples/Makefile
+doc/Makefile
 "}
 EOF
 cat >> $CONFIG_STATUS <<\EOF

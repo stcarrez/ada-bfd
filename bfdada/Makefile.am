@@ -1,6 +1,6 @@
 #-----------------------------------------------------------------------
 #--  Makefile.am -- Top level Makefile
-#--  Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
+#--  Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
 #--  Written by Stephane Carrez (stcarrez@nerim.fr)
 #--
 #--  This file is part of BfdAda.
@@ -21,6 +21,15 @@
 #--  Boston, MA 02111-1307, USA.
 #-----------------------------------------------------------------------
 
-SUBDIRS = bfdada examples
+SUBDIRS = bfdada examples doc
 
 EXTRA_DIST=aunit-1.01
+
+bin_SCRIPTS=bfdada-config
+
+html::	FRC
+	for i in $(SUBDIRS); do \
+	    $(MAKE) -C $$i html; \
+	done
+
+FRC:

@@ -32,7 +32,7 @@ package body Bfd is
 
    Current_Program_Name : String_Ptr := null;
 
-   Safe_Mode : Boolean := True;
+   Safe_Mode : constant Boolean := True;
 
    procedure Check_Bfd (File : in File_Type);
    pragma Inline_Always (Check_Bfd);

@@ -1,0 +1,85 @@
+#!/bin/sh
+# @configure_input@
+
+prefix=@EXEC_PREFIX@
+cflags="-I${prefix}/include/bfdada"
+libs="-L${prefix}/lib -lbfdada"
+static_libs="${prefix}/lib/libbfdada.a"
+full_libs=""
+
+MAJOR=@BFDADA_MAJOR_VERSION@
+MINOR=@BFDADA_MINOR_VERSION@
+
+usage()
+{
+   cat <<EOF
+Usage: bfdada-config [OPTIONS]
+Options:
+        No option:
+            Output all the flags (compiler and linker) required
+            to compiler your program
+        [--prefix]
+            Output the directory in which BFD/Ada is installed
+        [--version|-v]
+            Output the version of BFD/Ada
+        [--libs]
+            Output the linker flags to use for BFD/Ada
+        [--cflags]
+            Output the compiler flags to use for BFD/Ada
+        [--static]
+            Output all the flags (compiler and linker) required to
+            compile a static version of your program
+EOF
+}
+
+# Can have the following values:
+#   0 = none
+#   1 = cflags
+#   2 = libs
+#   3 = sax
+#   4 = full
+#   5 = static
+output_type=full
+while test $# -gt 0; do
+  case "$1" in
+  -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+  *) optarg= ;;
+  esac
+
+  case $1 in
+    --help|-h)
+      usage 1>&2
+      exit 1
+      ;;
+    --prefix)
+      echo $prefix
+      output_type=none
+      ;;
+    --version|-v)
+      echo BfdAda ${MAJOR}.${MINOR}
+      exit 0
+      ;;
+    --libs)
+      output_type=libs
+      ;;
+    --cflags)
+      output_type=cflags
+      ;;
+    --static)
+      output_type=static
+      ;;
+    *)
+      usage 1>&2
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+case $output_type in
+   cflags) echo $cflags ;;
+   libs)   echo $libs $full_libs;;
+   full)   echo $cflags -largs $libs $full_libs;;
+   static) echo $cflags -largs $static_libs;;
+esac
+
