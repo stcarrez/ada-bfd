@@ -1,0 +1,6 @@
+Stephane Carrez	<Stephane.Carrez@nerim.fr>
+	 Wrote BfdAda library, BfdAda tests
+
+Ed Falis (falis@gnat.com)
+	 Aunit 1.01
+	 (used only for BfdAda testsuite)

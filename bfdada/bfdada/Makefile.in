@@ -1,0 +1,169 @@
+SHELL=/bin/sh
+@SET_MAKE@
+
+GNATMAKE=@GNATMAKE@
+CHMOD=chmod
+CP=cp -f
+
+.SUFFIXES:
+.SUFFIXES: .c .o .ads .adb .ali
+
+.PHONY:
+.PHONY: clean-generic mostlyclean-generic \
+	clean distclean mostlyclean maintainer-clean
+
+MAKE_ADB = make_bfd
+
+CFLAGS = @CFLAGS@ -Wall -I.. $(FPIC)
+
+GNATMAKEBINDFLAGS =
+GNATMAKELDFLAGS =
+
+GETTEXT_INTL=@GETTEXT_INTL@
+HAVE_GETTEXT=@HAVE_GETTEXT@
+
+LIB_DIR=lib-obj
+
+CD = cd
+MKDIR = mkdir -p
+RMDIR = rmdir
+MV = mv
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+
+LIBNAME       = libbfdada$(SO_EXT)
+SONAME        = libbfdada-$(MAJOR).$(MINOR)$(SO_EXT).$(MICRO)
+ARCHIVENAME   = libbfdada.a
+
+c_objects = $(LIB_DIR)/bfdc.o
+
+## General and public targets
+
+all: dirs libs
+	$(MAKE) -C testsuite $@
+
+check:
+	$(MAKE) -C testsuite $@
+
+ifeq ($(BUILD_SHARED),yes)
+libs: $(LIBNAME) $(ARCHIVENAME) install_ali
+else
+libs: $(ARCHIVENAME) install_ali
+endif
+
+## Private targets
+
+dirs:: force
+	-$(MKDIR) $(LIB_DIR)
+
+$(LIBNAME):: $(LIB_DIR)/$(MAKE_ADB).o ${wildcard ${LIB_DIR}/*.o} $(c_objects)
+ifeq ($(BUILD_SHARED),yes)
+	$(CC) -shared $(FPIC) $(OS_SPECIFIC_LINK_OPTIONS) -o $(SONAME) \
+	  $(SO_OPTS)$(SONAME) $(LIB_DIR)/bfd*.o \
+	  $(c_objects)
+	$(RM) $(LIBNAME)
+	$(LN) $(SONAME) $(LIBNAME)
+	-@if [ ! -f .devel ]; then \
+	  strip $(LIBNAME); \
+	  $(CHMOD) +x $(LIBNAME); \
+	fi
+endif
+
+$(ARCHIVENAME):: $(LIB_DIR)/$(MAKE_ADB).o ${wildcard ${LIB_DIR}/*.o} $(c_objects)
+	$(AR) $(ARFLAGS) $(ARCHIVENAME) $(LIB_DIR)/bfd*.o $(c_objects)
+	if [ -f /usr/bin/$(RANLIB) -o -f /bin/$(RANLIB) ]; then \
+	  $(RANLIB) $(ARCHIVENAME); \
+	fi
+
+# This copies the .ali files from lib_obj/ to the current directory, and change
+# the permission of the files so that dgate, gate and testgtk use the dynamic
+# library. We do not do this if .devel exists, so that gnatmake will still
+# rebuild the files (it does not check anything if the .ali files are read-only.
+install_ali::
+	test -f .devel || $(CP) $(LIB_DIR)/bfd*.ali .
+	test -f .devel || $(CHMOD) -w bfd*.ali
+
+$(LIB_DIR)/$(MAKE_ADB).o:: force
+	@if [ -f .devel ]; then \
+	  $(CD) $(LIB_DIR); \
+	  $(GNATMAKE) -c ../$(MAKE_ADB) $(GNATFLAGS_DEVEL) $(FPIC); \
+	else \
+	  $(CD) $(LIB_DIR); \
+	  $(GNATMAKE) -c ../$(MAKE_ADB) $(GNATFLAGS) $(FPIC); \
+	fi
+
+install: all
+	@if [ "$(prefix)" != `pwd` ]; then \
+	   echo Installing BfdAda in $(prefix); \
+	   $(MKDIR) $(bindir); \
+	   $(MKDIR) $(libdir); \
+	   $(MKDIR) $(incdir); \
+	   $(MKDIR) $(alidir); \
+	   $(INSTALL_DATA) $(ARCHIVENAME) $(libdir); \
+	   if [ $(BUILD_SHARED) = yes ]; then \
+	     $(INSTALL_DATA) $(SONAME) $(libdir); \
+	     $(RM) $(libdir)/$(LIBNAME); \
+	     $(LN) $(SONAME) $(libdir)/$(LIBNAME); \
+	   fi; \
+	   $(CP) bfd*.ads bfd*.adb $(incdir); \
+	   $(CP) $(LIB_DIR)/bfd*.ali $(alidir); \
+	   $(CHMOD) -w $(alidir)/*.ali; \
+	fi
+	@echo '------------------------------------------------------------------'
+	@echo '--  BfdAda has now been installed.                              --'
+	@echo '--  To be able to use the library, you may need to update your  --'
+	@echo '--  LD_LIBRARY_PATH or to run ldconfig. You may also need to    --'
+	@echo '--  update your PATH to include gtkada-config in it.            --'
+	@echo '------------------------------------------------------------------'
+
+clean-generic:
+	-${RM} *.o *.ali *~ b_*.c b~*.ad? core
+	-$(RM) $(LIB_DIR)/*
+	-${RM} $(ARCHIVENAME) $(LIBNAME) $(SONAME)
+	-${RM} .\#*
+	-$(MAKE) -C testsuite clean
+
+mostlyclean-generic: clean-generic
+	-${RM} Makefile
+
+clean: clean-generic
+
+distclean: mostlyclean-generic
+	-$(RM) Makefile.common
+
+mostlyclean: mostlyclean-generic
+	-$(RM) Makefile.common
+
+maintainer-clean: mostlyclean-generic
+	-$(RM) Makefile.common
+
+## Building the C files: they all depend on the c file in the source directory
+## The dependencies on the .h files have to be given explicitly
+
+$(c_objects): $(LIB_DIR)/%.o : %.c
+	$(CD) $(LIB_DIR); $(CC) -c $(CFLAGS) ../$<
+
+force:
+
+dist:	distdir
+
+distdir = $(PACKAGE)-$(VERSION)
+top_distdir = $(distdir)
+
+DISTFILES=*.ad[bs] Makefile.in bfdc.c
+SUBDIRS=testsuite
+
+distdir:
+	cp -pr $(DISTFILES) $(distdir)/
+	for subdir in $(SUBDIRS); do \
+	  if test "$$subdir" = .; then :; else \
+	    test -d $(distdir)/$$subdir \
+	    || mkdir $(distdir)/$$subdir \
+	    || exit 1; \
+	    chmod 777 $(distdir)/$$subdir; \
+	    (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) top_distdir=../$(distdir) distdir=../$(distdir)/$$subdir distdir) \
+	      || exit 1; \
+	  fi; \
+	done
