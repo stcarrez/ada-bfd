@@ -1,5 +1,9 @@
 2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* NEWS: Update.
+
+2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/bfd-internal.ads: Fix -gnaty warnings.
 
 2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>

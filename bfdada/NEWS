@@ -1,2 +1,6 @@
+* BfdAda 1.0
+  - Fixed installation of library
+  - Added examples for BfdAda
+
 * BfdAda 0.9
   - Bfd Ada library with tests
