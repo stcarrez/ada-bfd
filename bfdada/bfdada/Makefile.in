@@ -48,8 +48,6 @@ GNATFLAGS_DEVEL=-g -gnaty
 GETTEXT_INTL=@GETTEXT_INTL@
 HAVE_GETTEXT=@HAVE_GETTEXT@
 
-LIB_DIR=lib-obj
-
 CD = cd
 MKDIR = mkdir -p
 RMDIR = rmdir
@@ -63,7 +61,7 @@ LIBNAME       = libbfdada$(SO_EXT)
 SONAME        = libbfdada-$(MAJOR).$(MINOR)$(SO_EXT).$(MICRO)
 ARCHIVENAME   = libbfdada.a
 
-c_objects = $(LIB_DIR)/bfdc.o
+c_objects = bfdc.o
 
 ## General and public targets
 
@@ -74,20 +72,19 @@ check:
 	$(MAKE) -C testsuite $@
 
 ifeq ($(BUILD_SHARED),yes)
-libs: $(LIBNAME) $(ARCHIVENAME) install_ali
+libs: $(LIBNAME) $(ARCHIVENAME)
 else
-libs: $(ARCHIVENAME) install_ali
+libs: $(ARCHIVENAME)
 endif
 
 ## Private targets
 
 dirs:: force
-	-$(MKDIR) $(LIB_DIR)
 
-$(LIBNAME):: $(LIB_DIR)/$(MAKE_ADB).o ${wildcard ${LIB_DIR}/*.o} $(c_objects)
+$(LIBNAME):: $(MAKE_ADB).o ${wildcard *.o} $(c_objects)
 ifeq ($(BUILD_SHARED),yes)
 	$(CC) -shared $(FPIC) $(OS_SPECIFIC_LINK_OPTIONS) -o $(SONAME) \
-	  $(SO_OPTS)$(SONAME) $(LIB_DIR)/bfd*.o \
+	  $(SO_OPTS)$(SONAME) bfd*.o \
 	  $(c_objects)
 	$(RM) $(LIBNAME)
 	$(LN) $(SONAME) $(LIBNAME)
@@ -97,30 +94,14 @@ ifeq ($(BUILD_SHARED),yes)
 	fi
 endif
 
-$(ARCHIVENAME):: $(LIB_DIR)/$(MAKE_ADB).o ${wildcard ${LIB_DIR}/*.o} $(c_objects)
-	$(AR) $(ARFLAGS) $(ARCHIVENAME) $(LIB_DIR)/bfd*.o $(c_objects)
+$(ARCHIVENAME):: $(MAKE_ADB).o ${wildcard *.o} $(c_objects)
+	$(AR) $(ARFLAGS) $(ARCHIVENAME) bfd*.o $(c_objects)
 	if [ -f /usr/bin/$(RANLIB) -o -f /bin/$(RANLIB) ]; then \
 	  $(RANLIB) $(ARCHIVENAME); \
 	fi
 
-# This copies the .ali files from lib_obj/ to the current directory, and change
-# the permission of the files so that dgate, gate and testgtk use the dynamic
-# library. We do not do this if .devel exists, so that gnatmake will still
-# rebuild the files (it does not check anything if the .ali files are read-only.
-install_ali::
-	if [ test -d $(LIB_DIR) ]; then \
-	  $(CP) $(LIB_DIR)/bfd*.ali . ; \
-	  $(CHMOD) -w bfd*.ali ; \
-	fi
-
-$(LIB_DIR)/$(MAKE_ADB).o:: force
-	# The compile in source dir is brain damage but nice to have.
-	@if [ $(srcdir) eq "." ]; then \
-	  $(CD) $(LIB_DIR); \
-	  $(GNATMAKE) -I.. -c $(MAKE_ADB) $(GNATFLAGS) $(FPIC); \
-	else \
-	  $(GNATMAKE) -I$(srcdir) -c $(MAKE_ADB) $(GNATFLAGS) $(FPIC); \
-	fi
+$(MAKE_ADB).o:: force
+	$(GNATMAKE) -I$(srcdir) -c $(MAKE_ADB) $(GNATFLAGS) $(FPIC); \
 
 install: all
 	if [ "$(prefix)" != `pwd` ]; then \
@@ -137,7 +118,7 @@ install: all
 	   fi; \
 	   $(CP) $(srcdir)/bfd*.ads $(incdir); \
 	   $(CP) $(srcdir)/bfd*.adb $(incdir); \
-	   $(CP) $(LIB_DIR)/bfd*.ali $(alidir); \
+	   $(CP) bfd*.ali $(alidir); \
 	   $(CHMOD) -w $(alidir)/*.ali; \
 	fi
 	@echo '------------------------------------------------------------------'
@@ -148,7 +129,6 @@ install: all
 
 clean-generic:
 	-${RM} *.o *.ali *~ b_*.c b~*.ad? core
-	-$(RM) $(LIB_DIR)/*
 	-${RM} $(ARCHIVENAME) $(LIBNAME) $(SONAME)
 	-${RM} .\#*
 	-$(MAKE) -C testsuite clean
@@ -170,8 +150,8 @@ maintainer-clean: mostlyclean-generic
 ## Building the C files: they all depend on the c file in the source directory
 ## The dependencies on the .h files have to be given explicitly
 
-$(c_objects): $(LIB_DIR)/%.o : %.c
-	$(CD) $(LIB_DIR); $(CC) -c $(CFLAGS) ../$<
+$(c_objects): %.o : %.c
+	$(CC) -c $(CFLAGS) $<
 
 force:
 
