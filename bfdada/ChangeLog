@@ -1,5 +1,11 @@
 2003-02-02  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/testsuite/Makefile.in: Add -I$(srcdir) so that
+	compiling in another directory is possible.
+	* bfdada/Makefile.in: Likewise and cleanup
+
+2003-02-02  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/bfd-sections.ads: Remove Interfaces dependency.
 	* bfdada/bfd-symtab.ads: Likewise.
 

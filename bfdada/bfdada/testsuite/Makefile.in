@@ -1,11 +1,18 @@
-SHELL=/bin/sh
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
 @SET_MAKE@
 
 AUNIT=@AUNITDIR@
-AUNITFLAGS=-I../../$(AUNIT)/aunit/framework \
-	-I../../$(AUNIT)/aunit/text_reporter
+AUNITFLAGS=-I$(srcdir)/../../$(AUNIT)/aunit/framework \
+	-I$(srcdir)/../../$(AUNIT)/aunit/text_reporter
 GNATMAKE=@GNATMAKE@
-GNATFLAGS=$(AUNITFLAGS) -I.. -g
+GNATFLAGS=$(AUNITFLAGS) -I$(srcdir) -g
 
 .SUFFIXES:
 .SUFFIXES: .c .o .ads .adb .ali
@@ -38,7 +45,7 @@ check:	$(TESTNAMES) force
 	./harness
 
 $(TESTNAMES):: force
-	$(GNATMAKE) $@ $(GNATFLAGS) $(GNATLINK)
+	$(GNATMAKE) $@ -I$(srcdir) -I$(srcdir)/.. $(GNATFLAGS) $(GNATLINK)
 
 install: all
 
