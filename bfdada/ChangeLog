@@ -1,5 +1,9 @@
 2004-02-27  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/bfd.ads: Fix initialization of File_Type.
+
+2004-02-27  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/Makefile.in: Update
 	* bfdada/bfd-sections.adb (Current): Fix indent.
 	* bfdada/bfd-sections.ads (Set_Section_Contents): Likewise.

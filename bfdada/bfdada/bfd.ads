@@ -146,7 +146,7 @@ private
    type Bfd_Ptr is new System.Address;
 
    type File_Type is record
-      Abfd : Ptr;
+      Abfd : Ptr := System.Null_Address;
    end record;
 
 end Bfd;
