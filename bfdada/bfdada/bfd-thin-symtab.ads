@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD -- Thin Ada layer for Bfd (common Bfd functions)
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD -- Thin Ada layer for Bfd (common Bfd functions)
+--  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -35,21 +35,27 @@ package Bfd.Thin.Symtab is
    function Is_Local (P : Ptr; Sym : in Symbol) return Boolean;
    pragma Import (C, Is_Local, "bfd_is_local_label");
 
+   function Get_Symbol_Value (Sym : in Symbol) return Symbol_Value;
+   pragma Import (C, Get_Symbol_Value, "ada_bfd_asymbol_value");
+
    procedure Read_Symbols (File : Ptr;
-			   Cnt : System.Address;
-			   S : System.Address);
+                           Cnt : System.Address;
+                           S : System.Address);
    pragma Import (C, Read_Symbols, "bfd_read_symbols");
 
    procedure Find_Nearest_Line (File : in Ptr;
-				Sec : in Section_Iterator;
-				Syms : in Ptr;
-				Addr : in Vma_Type;
-				Name : in Ptr;
-				Func : in Ptr;
-				Line : in Ptr);
+                                Sec : in Section_Iterator;
+                                Syms : in Ptr;
+                                Addr : in Vma_Type;
+                                Name : in Ptr;
+                                Func : in Ptr;
+                                Line : in Ptr);
    pragma Import (C, Find_Nearest_Line, "bfd_find_nearest_line_");
 
    --  function Is_Local (P : Ptr; Name : in String) return Boolean;
    --  pragma Import (C, Is_Local, "bfd_is_local_label_name");
+
+   function Get_Symtab_Upper_Bound (File : in Ptr) return Integer;
+   pragma Import (C, Get_Symtab_Upper_Bound, "ada_bfd_get_symtab_upper_bound");
 
 end Bfd.Thin.Symtab;

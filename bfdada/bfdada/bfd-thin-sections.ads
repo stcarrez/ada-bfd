@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD -- Thin Ada layer for Bfd (common Bfd functions)
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD -- Thin Ada layer for Bfd (common Bfd functions)
+--  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -35,7 +35,8 @@ package Bfd.Thin.Sections is
    function Get_Section_Size (Sect : in Section_Iterator) return Size_Type;
    pragma Import (C, Get_Section_Size, "_bfd_get_section_size");
 
-   function Get_Section_Flags (Sect : in Section_Iterator) return Section_Flags;
+   function Get_Section_Flags
+     (Sect : in Section_Iterator) return Section_Flags;
    pragma Import (C, Get_Section_Flags, "_bfd_get_section_flags");
 
    function Get_Section_Name (Sect : in Section_Iterator) return Ptr;

@@ -1,5 +1,19 @@
 2003-02-07  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/Makefile.in (GNATFLAGS): Compile with -gnaty.
+	* bfdada/bfd-internal.adb: Fix -gnaty warnings.
+	* bfdada/bfd-sections.adb: Likewise.
+	* bfdada/bfd-sections.ads: Likewise.
+	* bfdada/bfd-symtab.adb: Likewise.
+	* bfdada/bfd-symtab.ads: Likewise.
+	* bfdada/bfd-thin-sections.ads: Likewise.
+	* bfdada/bfd-thin-symtab.ads: Likewise.
+	* bfdada/bfd-thin.ads: Likewise.
+	* bfdada/bfd.adb: Likewise.
+	* bfdada/bfd.ads: Likewise.
+
+2003-02-07  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/bfd-symtab.adb (Is_Done): New function.
 	(Current, Get_Iterator): Likewise.
 	(Next): New procedure.

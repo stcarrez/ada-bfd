@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- symtab -- BFD Symbol Table types and operations
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  symtab -- BFD Symbol Table types and operations
+--  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -103,7 +103,8 @@ package body Bfd.Symtab is
    procedure Open_Symbols (File : in File_Type;
                            Symbols : out Symbol_Table) is
 
-      Cnt : aliased Integer := Bfd.Thin.Symtab.Get_Symtab_Upper_Bound (File.Abfd);
+      Cnt : aliased Integer
+        := Bfd.Thin.Symtab.Get_Symtab_Upper_Bound (File.Abfd);
       S : Symbol_Table;
 
       subtype Symbol_Array_Type is Symbol_Array (1 .. Positive (Cnt));
@@ -162,7 +163,6 @@ package body Bfd.Symtab is
 
    function Get_Symbol (Symbols : in Symbol_Table;
                         Pos : in Positive) return Symbol is
-      S : Symbol := Null_Address;
    begin
       return Symbols.Syms (Pos);
    end Get_Symbol;

@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD -- Binary File Descriptor Library (Ada Interface)
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  symtab -- BFD Symbol Table types and operations
+--  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -223,7 +223,7 @@ private
    --  The symbol iterator keeps track of the symbol table
    --  and uses an index within it to mark the current symbol.
 
-   Null_Address : constant Symbol := Symbol(System.Null_Address);
+   Null_Address : constant Symbol := Symbol (System.Null_Address);
 
    pragma Import (C, Is_Undefined_Class, "bfd_is_undefined_symclass");
    pragma Import (C, Get_Symclass, "bfd_decode_symclass");

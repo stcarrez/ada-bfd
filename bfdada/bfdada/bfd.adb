@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD -- Binary File Descriptor Library (Ada Interface)
--- Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD -- Binary File Descriptor Library (Ada Interface)
+--  Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -25,7 +25,6 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with Interfaces.C; use Interfaces.C;
 with System; use System;
 with Bfd.Internal; use Bfd.Internal;
 with Bfd.Thin;
@@ -104,14 +103,14 @@ package body Bfd is
       return To_Ada (Bfd.Thin.Get_Filename (File.Abfd));
    end Get_Filename;
 
-   function Check_Format (File: in File_Type;
+   function Check_Format (File : in File_Type;
                           Expect : in Format) return Boolean is
 
       N : Integer;
    begin
       case Expect is
          when UNKNOWN =>
-           N := 0;
+            N := 0;
 
          when OBJECT =>
             N := 1;
@@ -126,7 +125,7 @@ package body Bfd is
       return Bfd.Thin.Check_Format (File.Abfd, N);
    end Check_Format;
 
-   function Get_File_Flags (File: in File_Type) return Flags is
+   function Get_File_Flags (File : in File_Type) return Flags is
    begin
       return 0;
    end Get_File_Flags;

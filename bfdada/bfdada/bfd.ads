@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD -- Binary File Descriptor Library (Ada Interface)
--- Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD -- Binary File Descriptor Library (Ada Interface)
+--  Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -127,10 +127,10 @@ package Bfd is
 
    function Get_Filename (File : in File_Type) return String;
 
-   function Check_Format (File: in File_Type;
+   function Check_Format (File : in File_Type;
                           Expect : in Format) return Boolean;
 
-   function Get_File_Flags (File: in File_Type) return Flags;
+   function Get_File_Flags (File : in File_Type) return Flags;
 
    function Get_Start_Address (File : in File_Type) return Vma_Type;
    --  Get the start address.

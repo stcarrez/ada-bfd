@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD -- Binary File Descriptor Library (Ada Interface)
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD -- Binary File Descriptor Library (Ada Interface)
+--  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -25,7 +25,6 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with Interfaces.C; use Interfaces.C;
 with System; use System;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Streams; use Ada.Streams;
@@ -129,7 +128,7 @@ package body Bfd.Sections is
    --  Set the content of the section
    procedure Set_Section_Content (File : in File_Type;
                                   S : in out Section;
-                                  Item : in Ada.Streams.Stream_Element_Array) is
+                                  Item : in Stream_Element_Array) is
    begin
       null;
    end Set_Section_Content;

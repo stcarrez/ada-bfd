@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD -- Thin Ada layer for Bfd (common Bfd functions)
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD -- Thin Ada layer for Bfd (common Bfd functions)
+--  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
