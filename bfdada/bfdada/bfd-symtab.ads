@@ -156,11 +156,24 @@ package Bfd.Symtab is
    -- Symbol_Table     --
    ----------------------
    type Symbol_Table is private;
+   type Symbol_Iterator is private;
+
+   function Is_Done (It : Symbol_Iterator) return Boolean;
+   --  Return true if we are at end of the iterator.
+
+   procedure Next (It : in out Symbol_Iterator);
+   --  Move the iterator to the next element.
+
+   function Current (It : in Symbol_Iterator) return Symbol;
+   --  Return the current symbol pointed to by the iterator.
 
    procedure Open_Symbols (File : in File_Type;
                            Symbols : out Symbol_Table);
    --  Open and read all the symbols.
    --  The symbol table must be closed to avoid leaks.
+
+   function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator;
+   --  Return an iterator which allows scanning the symbol table.
 
    procedure Close_Symbols (Symbols : in out Symbol_Table);
    --  Close the symbol table and free any resource allocated for it.
@@ -180,7 +193,7 @@ package Bfd.Symtab is
    --  Equivalent to bfd_find_nearest_line ().
 
    function Get_Symbol (Symbols : in Symbol_Table;
-                        Pos : in Natural) return Symbol;
+                        Pos : in Positive) return Symbol;
 
    function Get_Symbol (Symbols : in Symbol_Table;
                         Name : in String) return Symbol;
@@ -190,12 +203,25 @@ package Bfd.Symtab is
 
 private
 
+   type Symbol is new System.Address;
+   type Symbol_Array is array (Positive range <>) of Symbol;
+   type Symbol_Array_Access is access all Symbol_Array;
+   --  To avoid memory copies the 'Symbol' is directly mapped to
+   --  the BFD asymbol structure.  The C definition is not imported
+   --  to simplify things.  The symbol table in BFD is an array
+   --  of asymbol pointers (asymbol**).
+
    type Symbol_Table is record
-      Sec  : Ptr;
+      Syms : Symbol_Array_Access;
       Size : Natural := 0;
    end record;
 
-   type Symbol is new System.Address;
+   type Symbol_Iterator is record
+      Symtab : Symbol_Table;
+      Pos    : Positive := 1;
+   end record;
+   --  The symbol iterator keeps track of the symbol table
+   --  and uses an index within it to mark the current symbol.
 
    Null_Address : constant Symbol := Symbol(System.Null_Address);
 
@@ -203,8 +229,8 @@ private
    pragma Import (C, Get_Symclass, "bfd_decode_symclass");
    --  C Functions provided by BFD library.
 
-   pragma Import (C, Get_Value, "ada_bfd_symbol_get_value");
-   pragma Import (C, Get_Flags, "ada_bfd_symbol_get_flags");
+   pragma Import (C, Get_Value, "ada_bfd_asymbol_value");
+   pragma Import (C, Get_Flags, "ada_bfd_asymbol_flags");
    --  C Functions provided by specific wrapper.
 
 end Bfd.Symtab;

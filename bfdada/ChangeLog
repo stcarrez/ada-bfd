@@ -1,5 +1,14 @@
 2003-02-07  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/bfd-symtab.ads (Is_Done): New function.
+	(Current, Get_Iterator): Likewise.
+	(Next): New procedure.
+	(Symbol_Iterator): New record.
+	(Get_Value, Get_Flags): Update import pragma.
+	(Get_Symbol): Use positive for index.
+
+2003-02-07  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* examples/bfdinfo.adb: New example (very crude readelf).
 	* examples/Makefile.in: New file.
 
