@@ -21,6 +21,6 @@
 #--  Boston, MA 02111-1307, USA.
 #-----------------------------------------------------------------------
 
-SUBDIRS = bfdada
+SUBDIRS = bfdada examples
 
 EXTRA_DIST=aunit-1.01

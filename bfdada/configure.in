@@ -58,4 +58,5 @@ AC_OUTPUT(
 Makefile
 bfdada/Makefile
 bfdada/testsuite/Makefile
+examples/Makefile
 )
