@@ -59,8 +59,8 @@ package Bfd is
    type Offset_Type is new Integer_64;
 
    OPEN_ERROR : exception;
-   USE_ERROR : exception;
-   NOT_FOUND : exception;
+   USE_ERROR  : exception;
+   NOT_FOUND  : exception;
 
    ----------------------
    -- General          --
@@ -104,7 +104,7 @@ package Bfd is
    procedure Set_Error_Program_Name (To : in String);
    --  Set the program name in the BFD library.
 
-   procedure Set_Error_Handler (To : in Error_Handler;
+   procedure Set_Error_Handler (To  : in Error_Handler;
                                 Old : out Error_Handler);
    --  Set a new error handler in BFD library.
 
@@ -115,8 +115,8 @@ package Bfd is
 
    type File_Type is private;
 
-   procedure Open (File : in out File_Type;
-                   Name : in String;
+   procedure Open (File   : in out File_Type;
+                   Name   : in String;
                    Target : in String := "");
    --  Open the file and obtain a bfd handler.
 
@@ -127,7 +127,7 @@ package Bfd is
 
    function Get_Filename (File : in File_Type) return String;
 
-   function Check_Format (File : in File_Type;
+   function Check_Format (File   : in File_Type;
                           Expect : in Format) return Boolean;
 
    function Get_File_Flags (File : in File_Type) return Flags;

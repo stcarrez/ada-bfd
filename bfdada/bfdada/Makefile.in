@@ -101,7 +101,7 @@ $(ARCHIVENAME):: $(MAKE_ADB).o ${wildcard *.o} $(c_objects)
 	fi
 
 $(MAKE_ADB).o:: force
-	$(GNATMAKE) -I$(srcdir) -c $(MAKE_ADB) $(GNATFLAGS) $(FPIC); \
+	$(GNATMAKE) -I$(srcdir) -c $(MAKE_ADB) $(GNATFLAGS) $(FPIC)
 
 install: all
 	if [ "$(prefix)" != `pwd` ]; then \

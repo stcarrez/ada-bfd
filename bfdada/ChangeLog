@@ -1,3 +1,12 @@
+2004-02-27  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/Makefile.in: Update
+	* bfdada/bfd-sections.adb (Current): Fix indent.
+	* bfdada/bfd-sections.ads (Set_Section_Contents): Likewise.
+	* bfdada/bfd.adb: Likewise.
+	* bfdada/bfd.ads: Likewise.
+	* examples/Makefile.in: Update.
+
 2003-05-21  Stephane Carrez  <stcarrez@nerim.fr>
 
 	* bfdada/bfdc.c (bfdada_memory_error_handler): New function.

@@ -279,10 +279,10 @@ package Bfd.Sections is
                                Size : in Size_Type);
    --  Set the size of the section.
 
-   procedure Set_Section_Contents (File : in File_Type;
-                                   S : in out Section;
+   procedure Set_Section_Contents (File   : in File_Type;
+                                   S      : in out Section;
                                    Offset : in Offset_Type;
-                                   Size : in Size_Type);
+                                   Size   : in Size_Type);
 
 
 private

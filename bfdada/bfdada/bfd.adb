@@ -32,37 +32,47 @@ package body Bfd is
 
    Current_Program_Name : String_Ptr := null;
 
+   --  -----------------------
    --  Return the current error code.
+   --  -----------------------
    function Get_Error return Error is
    begin
       return Bfd.Thin.Get_Error;
    end Get_Error;
 
+   --  -----------------------
    --  Set the current error code.
+   --  -----------------------
    procedure Set_Error (To : in Error) is
    begin
       Bfd.Thin.Set_Error (To);
    end Set_Error;
 
+   --  -----------------------
    --  Tell the BFD library what is the program name.
+   --  -----------------------
    procedure Set_Error_Program_Name (To : in String) is
       S : String_Ptr := new String (1 .. To'Length + 1);
    begin
-      S (1 .. To'Length) := To (To'Range);
-      S (To'Length + 1) := ASCII.NUL;
+      S (1 .. To'Length)   := To (To'Range);
+      S (To'Length + 1)    := ASCII.NUL;
       Current_Program_Name := S;
       Bfd.Thin.Set_Error_Program_Name (S.all'Address);
    end Set_Error_Program_Name;
 
+   --  -----------------------
    --  Set a new error handler in BFD library.
-   procedure Set_Error_Handler (To : in Error_Handler;
+   --  -----------------------
+   procedure Set_Error_Handler (To  : in Error_Handler;
                                 Old : out Error_Handler) is
    begin
       Old := Bfd.Thin.Set_Error_Handler (To);
    end Set_Error_Handler;
 
+   --  -----------------------
    --  Return an error message corresponding to the last error
    --  This is equivalent to the C bfd_errmsg.
+   --  -----------------------
    function Get_Error_Message (Code : Error) return String is
    begin
       return To_Ada (Bfd.Thin.Get_Error_Message (Code));
@@ -130,13 +140,17 @@ package body Bfd is
       return 0;
    end Get_File_Flags;
 
+   --  -----------------------
    --  Get the start address.
+   --  -----------------------
    function Get_Start_Address (File : in File_Type) return Vma_Type is
    begin
       return Bfd.Thin.Get_Start_Address (File.Abfd);
    end Get_Start_Address;
 
+   --  -----------------------
    --  Return number of symbols.
+   --  -----------------------
    function Get_Symbol_Count (File : in File_Type) return Natural is
    begin
       return Bfd.Thin.Get_Symbol_Count (File.Abfd);

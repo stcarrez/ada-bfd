@@ -43,7 +43,7 @@ GNATMAKEBINDFLAGS =
 GNATMAKELDFLAGS =
 GNATFLAGS=-g -gnaty
 GNATFLAGS_DEVEL=-g -gnaty
-GNATLINK=-L../bfdada -L/usr/local/lib -largs -lbfdada -largs -lbfd
+GNATLINK=-L../bfdada -largs -lbfdada -largs -lbfd
 
 GETTEXT_INTL=@GETTEXT_INTL@
 HAVE_GETTEXT=@HAVE_GETTEXT@
@@ -64,7 +64,7 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 all: bfdinfo
 
 bfdinfo:	force
-	$(GNATMAKE) -I$(top_srcdir)/bfdada -I$(srcdir) $@ $(GNATLINK)
+	$(GNATMAKE) $(GNATFLAGS) -I$(top_srcdir)/bfdada -I$(srcdir) $@ $(GNATLINK)
 
 install: all
 

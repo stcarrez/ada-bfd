@@ -54,10 +54,10 @@ package body Bfd.Sections is
    function Current (Iter : in Section_Iterator) return Section is
       S : Section;
    begin
-      S.Vma := Bfd.Thin.Sections.Get_Section_Vma (Iter);
-      S.Lma := Bfd.Thin.Sections.Get_Section_Lma (Iter);
-      S.Size := Bfd.Thin.Sections.Get_Section_Size (Iter);
-      S.Flags := Bfd.Thin.Sections.Get_Section_Flags (Iter);
+      S.Vma    := Bfd.Thin.Sections.Get_Section_Vma (Iter);
+      S.Lma    := Bfd.Thin.Sections.Get_Section_Lma (Iter);
+      S.Size   := Bfd.Thin.Sections.Get_Section_Size (Iter);
+      S.Flags  := Bfd.Thin.Sections.Get_Section_Flags (Iter);
       S.Opaque := Iter;
       return S;
    end Current;
