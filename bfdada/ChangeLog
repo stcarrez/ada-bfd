@@ -1,5 +1,10 @@
 2003-02-07  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* examples/bfdinfo.adb: New example (very crude readelf).
+	* examples/Makefile.in: New file.
+
+2003-02-07  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* Makefile.am (SUBDIRS): Add examples.
 	* Makefile.in: Generate.
 	* configure.in: Configure example Makefile.
