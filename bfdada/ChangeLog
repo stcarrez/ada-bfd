@@ -1,5 +1,13 @@
 2004-02-27  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/bfd.adb (Check_Bfd): New function.
+	(Get_Filename): Call it.
+	(Check_Format): And here.
+	(Get_Start_Address): Likewise.
+	(Get_Symbol_Count): Likewise.
+
+2004-02-27  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/bfd.ads: Fix initialization of File_Type.
 
 2004-02-27  Stephane Carrez  <stcarrez@nerim.fr>

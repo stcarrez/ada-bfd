@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
+--  Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
@@ -31,6 +31,22 @@ with Bfd.Thin;
 package body Bfd is
 
    Current_Program_Name : String_Ptr := null;
+
+   Safe_Mode : Boolean := True;
+
+   procedure Check_Bfd (File : in File_Type);
+   pragma Inline_Always (Check_Bfd);
+
+   --  -----------------------
+   --  Check if the BFD file is valid
+   --  Raise USE_ERROR if not
+   --  -----------------------
+   procedure Check_Bfd (File : in File_Type) is
+   begin
+      if Safe_Mode and File.Abfd = System.Null_Address then
+         raise USE_ERROR;
+      end if;
+   end Check_Bfd;
 
    --  -----------------------
    --  Return the current error code.
@@ -110,6 +126,7 @@ package body Bfd is
 
    function Get_Filename (File : in File_Type) return String is
    begin
+      Check_Bfd (File);
       return To_Ada (Bfd.Thin.Get_Filename (File.Abfd));
    end Get_Filename;
 
@@ -118,6 +135,7 @@ package body Bfd is
 
       N : Integer;
    begin
+      Check_Bfd (File);
       case Expect is
          when UNKNOWN =>
             N := 0;
@@ -145,6 +163,7 @@ package body Bfd is
    --  -----------------------
    function Get_Start_Address (File : in File_Type) return Vma_Type is
    begin
+      Check_Bfd (File);
       return Bfd.Thin.Get_Start_Address (File.Abfd);
    end Get_Start_Address;
 
@@ -153,6 +172,7 @@ package body Bfd is
    --  -----------------------
    function Get_Symbol_Count (File : in File_Type) return Natural is
    begin
+      Check_Bfd (File);
       return Bfd.Thin.Get_Symbol_Count (File.Abfd);
    end Get_Symbol_Count;
 
