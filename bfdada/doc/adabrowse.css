@@ -1,0 +1,39 @@
+TABLE.title {
+  background-color: #99CCFF
+}
+
+TABLE.footer {
+  background-color: #99CCFF
+}
+
+TD.type {
+  background-color: #CCEEFF
+}
+
+TD.odd {
+  background-color: #99CCFF
+}
+
+TD.even {
+  background-color: #CCEEFF
+}
+
+TD.code {
+  background-color: #EEEEEE
+}
+
+SPAN.comment {
+  color: red
+}
+
+SPAN.literal {
+  color: green
+}
+
+SPAN.definition {
+  color: purple
+}
+
+H3.subtitle {
+  background-color: #CCEEFF
+}

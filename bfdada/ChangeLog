@@ -1,5 +1,11 @@
 2004-03-21  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* doc/Makefile.in (all): New file to make the documentation.
+	* doc/adabrowse.css: New file, stylesheet from Adabrowse 4.0
+	* doc/bfdada.cfg: New file, configuration file for Adabrowse.
+
+2004-03-21  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* examples/utils.ads: New file, from several functions from bfdinfo.
 	* examples/utils.adb: New file, likewise.
 	* examples/sections.adb: New file, split example from bfdinfo.
