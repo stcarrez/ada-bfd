@@ -1,5 +1,9 @@
 2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* examples/Makefile.in (GNATLINK): Add flags to search the libraries.
+
+2003-02-08  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/Makefile.in: Remove the lib-obj hack that I copied from
 	GtkAda.
 
