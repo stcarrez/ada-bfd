@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------
--- BFD -- Binary File Descriptor Library (Ada Interface)
+-- symtab -- BFD Symbol Table types and operations
 -- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 -- Written by Stephane Carrez (stcarrez@nerim.fr)
 --
@@ -25,13 +25,15 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with Interfaces.C; use Interfaces.C;
 with System;
-
 with Bfd.Internal; use Bfd.Internal;
 with Bfd.Sections; use Bfd.Sections;
 with Bfd.Thin.Symtab;
 package body Bfd.Symtab is
+
+   ----------------------
+   --  Symbol function and procedures
+   ----------------------
 
    --  Return the symbol name.
    function Get_Name (Sym : in Symbol) return String is
@@ -61,19 +63,60 @@ package body Bfd.Symtab is
       return False;
    end Is_Local_Label_Name;
 
+   ----------------------
+   --  Symbol table iterator
+   ----------------------
+
+   --  Return true if we are at end of the iterator.
+   function Is_Done (It : Symbol_Iterator) return Boolean is
+   begin
+      return It.Pos >= It.Symtab.Size;
+   end Is_Done;
+
+   --  Move the iterator to the next element.
+   procedure Next (It : in out Symbol_Iterator) is
+   begin
+      It.Pos := It.Pos + 1;
+   end Next;
+
+   --  Return the current symbol pointed to by the iterator.
+   function Current (It : in Symbol_Iterator) return Symbol is
+   begin
+      return Get_Symbol (It.Symtab, It.Pos);
+   end Current;
+
+   --  Return an iterator which allows scanning the symbol table.
+   function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator is
+      It : Symbol_Iterator;
+   begin
+      It.Symtab := Symbols;
+      It.Pos := 1;
+      return It;
+   end Get_Iterator;
+
+   ----------------------
+   --  Symbol table operations
+   ----------------------
+
+   --  Open and read all the symbols.
+   --  The symbol table must be closed to avoid leaks.
    procedure Open_Symbols (File : in File_Type;
                            Symbols : out Symbol_Table) is
 
-      Cnt : aliased Integer;
-      P : aliased Ptr;
+      Cnt : aliased Integer := Bfd.Thin.Symtab.Get_Symtab_Upper_Bound (File.Abfd);
       S : Symbol_Table;
+
+      subtype Symbol_Array_Type is Symbol_Array (1 .. Positive (Cnt));
+
+      Syms : Symbol_Array_Access := new Symbol_Array_Type;
    begin
-      Bfd.Thin.Symtab.Read_Symbols (File.Abfd, Cnt'Address, P'Address);
+      Bfd.Thin.Symtab.Read_Symbols (File.Abfd, Cnt'Address,
+                                    Syms (1)'Address);
       if Cnt < 0 then
          raise OPEN_ERROR;
       end if;
       S.Size := Natural (Cnt);
-      S.Sec := P;
+      S.Syms := Syms;
       Symbols := S;
    end Open_Symbols;
 
@@ -104,7 +147,7 @@ package body Bfd.Symtab is
 
    begin
       Bfd.Thin.Symtab.Find_Nearest_Line (File.Abfd, Sec.Opaque,
-                                         System.Address (Symbols.Sec), Addr,
+                                         Symbols.Syms (1)'Address, Addr,
                                          File_Name'Address,
                                          Func_Name'Address,
                                          L'Address);
@@ -118,10 +161,10 @@ package body Bfd.Symtab is
    end Find_Nearest_Line;
 
    function Get_Symbol (Symbols : in Symbol_Table;
-                        Pos : in Natural) return Symbol is
+                        Pos : in Positive) return Symbol is
       S : Symbol := Null_Address;
    begin
-      return S;
+      return Symbols.Syms (Pos);
    end Get_Symbol;
 
    function Get_Symbol (Symbols : in Symbol_Table;
