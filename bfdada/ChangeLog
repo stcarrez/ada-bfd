@@ -1,5 +1,11 @@
 2003-05-21  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/bfd-disassemble.adb: New file, disassembler package.
+	* bfdada/bfd-disassemble.ads: New file, disassembler package.
+	* bfdada/make_bfd.adb: Build the disassembler.
+
+2003-05-21  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* configure.in: Check for bfd.h and dis-asm.h
 	* configure: Rebuild.
 
