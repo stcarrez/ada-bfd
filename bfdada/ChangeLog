@@ -1,0 +1,115 @@
+2003-02-02  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/bfd-sections.ads: Remove Interfaces dependency.
+	* bfdada/bfd-symtab.ads: Likewise.
+
+2003-01-31  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* INSTALL: New file.
+	* README: New file.
+
+2003-01-26  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/make_bfd.adb: New file to build the whole library with
+	gnatmake (following GtkAda).
+	* bfdada/Makefile.in: Use gnatmake to build (from GtkAda).
+
+2003-01-25  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* aclocal.m4: Import from GtkAda-2.0.0
+	* configure.in: Update.
+	* configure: Rebuild.
+	* NEWS: New file.
+	* AUTHORS: New file.
+
+2002-08-10  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/bfd-thin.ads: New file to define C functions to import.
+	* bfdada/bfd-thin-sections.ads: New file.
+	* bfdada/bfd-thin-symtab.ads: New file.
+	* bfdada/bfd.adb: Move imports to the Bfd.Thin package.
+	* bfdada/bfd-sections.adb: Likewise.
+	* bfdada/bfd-symtab.adb: Likewise.
+
+2002-05-28  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/testsuite/bfd-tests-sections.adb: New file.
+	* bfdada/testsuite/bfd-tests-sections.ads: New file.
+
+	* bfdada/testsuite/bfd_suite.adb: New file.
+	* bfdada/testsuite/harness.adb: New file.
+	* bfdada/testsuite/Makefile.in: Compile them.
+
+2002-05-27  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/testsuite/bfd-tests.ads: New file.
+	* bfdada/testsuite/bfd-tests.adb: New file.
+	* bfdada/testsuite/Makefile.in: Compile them.
+
+2002-05-27  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/testsuite: New directory for unit-tests.
+	* bfdada/testsuite/Makefile.in: New file.
+	* configure.in: Configure new Makefile.
+	* configure: Rebuild.
+
+2002-05-27  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/bfd-internal.adb: New file.
+	* bfdada/bfd-internal.ads: New file.
+	* bfdada/bfd.ads (To_Ada): Move above.
+	* bfdada/bfd.adb (To_Ada): Likewise.
+	* bfdada/Makefile.in: Update.
+
+2002-05-26  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/bfd.ads: Move sections/symbols operations from here.
+	* bfdada/bfd.adb: Likewise.
+	* bfdada/bfd-sections.adb: New file, to here.
+	* bfdada/bfd-sections.ads: New file, and here.
+	* bfdada/bfd-symtab.ads: New file.
+	* bfdada/bfd-symtab.adb: New file.
+	* bfdada/Makefile.in: Update.
+
+2002-05-26  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* bfdada/*: Change email address.
+
+2002-03-10  Stephane Carrez  <stcarrez@worldnet.fr>
+
+	* bfdada/bfd.adb (Set_Section_Contents): New function.
+	(Set_Section_Size): Likewise.
+	* bfdada/bfd.ads (Set_Section_Contents): Likewise.
+	(Set_Section_Size): Likewise.
+
+2001-07-22  Stephane Carrez  <stcarrez@worldnet.fr>
+
+	* bfdada/bfd.adb (Get_Section_Contents): New function.
+	(Find_Section): New function.
+	* bfdada/bfd.ads (Get_Section_Contents): Likewise.
+	(Find_Section): Likewise.
+	* bfdada/bfdc.c (_bfd_get_section_contents): New function.
+
+2001-07-21  Stephane Carrez  <stcarrez@worldnet.fr>
+
+	* bfdada/Makefile.in: Make library.
+	* bfdada/bfd.adb (Open): Use String for name.
+	* bfdada/bfd.ads (Open): Likewise.
+	* bfdada/bfd.ads (Get_Filename): New function.
+	* bfdada/bfd.adb (Get_Filename): Likewise.
+
+2001-07-08  Stephane Carrez  <stcarrez@worldnet.fr>
+
+	* bfdada/bfdc.c: New file, C support.
+	* bfdada/Makefile.in: Compile it.
+
+2001-07-08  Stephane Carrez  <stcarrez@worldnet.fr>
+
+	* bfdada/bfd.ads: New file, BFD root package.
+	* bfdada/bfd.adb: New file.
+	* bfdada/Makefile.in: New file.
+	* Makefile.am: New file.
+	* Makefile.in: Rebuild.
+	* configure.in: New file.
+	* configure: Create.
+
