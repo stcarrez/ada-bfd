@@ -20,6 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 #include <bfd.h>
 #include <stdlib.h>
+#include <dis-asm.h>
 
 void*
 _bfd_get_filename (struct _bfd *abfd)
@@ -172,4 +173,15 @@ unsigned long
 ada_bfd_get_symbol_count (bfd* abfd)
 {
    return bfd_get_symcount (abfd);
+}
+
+extern void ada_dis_memory_handler (int, unsigned long long,
+                                    struct disassemble_info*);
+
+void
+bfdada_memory_error_handler (int status, bfd_vma memaddr,
+                          struct disassemble_info* info)
+{
+  ada_dis_memory_handler (status, (unsigned long long) memaddr,
+                          info->application_data);
 }

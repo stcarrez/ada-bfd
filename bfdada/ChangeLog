@@ -1,5 +1,10 @@
 2003-05-21  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/bfdc.c (bfdada_memory_error_handler): New function.
+	* bfdada/bfd-thin-disassembler.ads: New file, disassembler.
+
+2003-05-21  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/bfd-disassemble.adb: New file, disassembler package.
 	* bfdada/bfd-disassemble.ads: New file, disassembler package.
 	* bfdada/make_bfd.adb: Build the disassembler.

@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD -- Fake file to build all packages
--- Copyright (C) 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD -- Fake file to build all packages
+--  Copyright (C) 2003 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -28,6 +28,7 @@ with Bfd.Thin.Symtab;
 with Bfd.Sections;
 with Bfd.Symtab;
 with Bfd.Internal;
+with Bfd.Disassemble;
 procedure Make is
 begin
    null;
