@@ -21,7 +21,7 @@ GNATFLAGS=$(AUNITFLAGS) -I$(srcdir) -g
 .PHONY: clean-generic mostlyclean-generic \
 	clean distclean mostlyclean maintainer-clean
 
-GNATLINK=-L.. -L/usr/local/lib -largs -lbfdada -largs -lbfd
+GNATLINK=-L.. -L/usr/local/lib -largs -lbfdada -largs -lbfd -lopcodes
 GNATMAKEBINDFLAGS =
 GNATMAKELDFLAGS =
 

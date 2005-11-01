@@ -1,17 +1,22 @@
 TABLE.title {
-  background-color: #99CCFF
+  background-color: #ccccff
 }
 
 TABLE.footer {
-  background-color: #99CCFF
+  background-color: #ccccff
+}
+
+A { 
+  color: #0000ee;
+  text-decoration: underline
 }
 
 TD.type {
-  background-color: #CCEEFF
+  background-color: #eeeeff
 }
 
 TD.odd {
-  background-color: #99CCFF
+  background-color: #ddddff
 }
 
 TD.even {
@@ -22,8 +27,17 @@ TD.code {
   background-color: #EEEEEE
 }
 
+DIV {
+  margin-left: 30; margin-top: 2; margin-bottom: 4;
+}
+
+PRE { 
+  margin-left: 10
+}
+
 SPAN.comment {
-  color: red
+  font-size: smaller;
+  color: black
 }
 
 SPAN.literal {
@@ -31,9 +45,9 @@ SPAN.literal {
 }
 
 SPAN.definition {
-  color: purple
+  color: #0000ee
 }
 
 H3.subtitle {
-  background-color: #CCEEFF
+  background-color: #ccccff
 }

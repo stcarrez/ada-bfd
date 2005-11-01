@@ -90,6 +90,8 @@ package Bfd is
    --  want to report an error message.  In the C version, the handler
    --  has a printf-like signature, thus giving freedom for the
    --  formatting.  Here, the message is formatted and passed in Message.
+   --
+   --  @param Message the message to report
 
    function Get_Error return Error;
    --  Return the current error code.
@@ -99,7 +101,10 @@ package Bfd is
 
    function Get_Error_Message (Code : in Error) return String;
    --  Return an error message corresponding to the last error
-   --  This is equivalent to the C bfd_errmsg.
+   --  This is equivalent to the C <tt>bfd_errmsg</tt>.
+   --
+   --  @param Code the error code
+   --  @return the error message corresponding to the error code
 
    procedure Set_Error_Program_Name (To : in String);
    --  Set the program name in the BFD library.
@@ -108,12 +113,14 @@ package Bfd is
                                 Old : out Error_Handler);
    --  Set a new error handler in BFD library.
 
+
    ----------------------
    -- BFD file         --
    ----------------------
    --  This part deal with opening and closing the main BFD file.
 
    type File_Type is private;
+   --  The file type representing the opened BFD file.
 
    procedure Open (File   : in out File_Type;
                    Name   : in String;
@@ -124,11 +131,17 @@ package Bfd is
    --  Close the file, releasing any resource allocated for it.
 
    function Is_Open (File : in File_Type) return Boolean;
+   --  Check if the file is open.
+   --
+   --  @return true if the file is open
 
    function Get_Filename (File : in File_Type) return String;
+   --  Get the filename that was used to open the file.
 
    function Check_Format (File   : in File_Type;
                           Expect : in Format) return Boolean;
+   --  Check if the file is of the specified format.
+   --  @return true if the file is open and of the specified format
 
    function Get_File_Flags (File : in File_Type) return Flags;
 

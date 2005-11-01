@@ -170,7 +170,7 @@ package Bfd.Symtab is
    procedure Open_Symbols (File : in File_Type;
                            Symbols : out Symbol_Table);
    --  Open and read all the symbols.
-   --  The symbol table must be closed to avoid leaks.
+   --  The symbol table must be closed to avoid memory leaks.
 
    function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator;
    --  Return an iterator which allows scanning the symbol table.

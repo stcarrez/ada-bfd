@@ -1,5 +1,5 @@
 dnl Autoconf configure script for BfdAda
-dnl Copyright 2001, 2002, 2003 Free Software Foundation, Inc.
+dnl Copyright 2001, 2002, 2003, 2005 Free Software Foundation, Inc.
 dnl
 dnl This file is part of BfdAda.
 dnl 
@@ -23,7 +23,7 @@ AC_INIT(bfdada/bfd.ads)
 
 AC_CANONICAL_SYSTEM
 dnl AM_MAINTAINER_MODE
-AM_INIT_AUTOMAKE(BfdAda,0.9)
+AM_INIT_AUTOMAKE(BfdAda,1.0)
 AC_EXEEXT
 
 # Current release settings

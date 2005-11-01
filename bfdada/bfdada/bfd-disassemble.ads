@@ -20,10 +20,8 @@
 --  the Free Software Foundation, 59 Temple Place - Suite 330,
 --  Boston, MA 02111-1307, USA.  -->
 -----------------------------------------------------------------------
---  The Bfd package exports the GNU Bfd library found in Binutils
---  and Gdb.  It is not intended to be as complete as the C library
---  but still provide enough methods to read any object or binary,
---  observe its sections, its symbol table.
+--  The <tt>Bfd.Disassemble</tt> package exports the dissassembler API
+--  of the GNU opcodes library found in Binutils.
 --
 with System;
 with Ada.Streams;

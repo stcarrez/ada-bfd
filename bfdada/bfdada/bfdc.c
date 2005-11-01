@@ -23,55 +23,55 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #include <dis-asm.h>
 
 void*
-_bfd_get_filename (struct _bfd *abfd)
+_bfd_get_filename (struct bfd *abfd)
 {
   return bfd_get_filename (abfd);
 }
 
 void*
-bfd_get_sections (struct _bfd *abfd)
+bfd_get_sections (struct bfd *abfd)
 {
   return abfd->sections;
 }
 
 void*
-bfd_next_section (struct sec *sec)
+bfd_next_section (struct bfd_section *sec)
 {
   return sec->next;
 }
 
 const void*
-_bfd_get_section_name (struct sec *sec)
+_bfd_get_section_name (struct bfd_section *sec)
 {
   return bfd_section_name (0, sec);
 }
 
 unsigned long long
-_bfd_get_section_vma (struct sec *sec)
+_bfd_get_section_vma (struct bfd_section *sec)
 {
   return (unsigned long long) bfd_section_vma (0, sec);
 }
 
 unsigned long long
-_bfd_get_section_lma (struct sec *sec)
+_bfd_get_section_lma (struct bfd_section *sec)
 {
   return (unsigned long long) bfd_section_lma (0, sec);
 }
 
 unsigned long long
-_bfd_get_section_size (struct sec *sec)
+_bfd_get_section_size (struct bfd_section *sec)
 {
-  return (unsigned long long) sec->_cooked_size;
+  return (unsigned long long) sec->size;
 }
 
 unsigned long
-_bfd_get_section_flags (struct sec *sec)
+_bfd_get_section_flags (struct bfd_section *sec)
 {
   return (unsigned long) sec->flags;
 }
 
 void
-bfd_read_symbols (struct _bfd *abfd, int *cnt, asymbol **sy)
+bfd_read_symbols (bfd *abfd, int *cnt, asymbol **sy)
 {
   long size;
 
@@ -90,8 +90,8 @@ bfd_read_symbols (struct _bfd *abfd, int *cnt, asymbol **sy)
 }
 
 void
-bfd_find_nearest_line_ (struct _bfd *abfd,
-                        struct sec *sec,
+bfd_find_nearest_line_ (bfd *abfd,
+                        struct bfd_section *sec,
                         asymbol **syms,
                         unsigned long long addr,
                         const char **name,
@@ -106,19 +106,19 @@ bfd_find_nearest_line_ (struct _bfd *abfd,
 }
 
 int
-ada_bfd_is_abs_section (struct sec* sec)
+ada_bfd_is_abs_section (struct bfd_section* sec)
 {
    return bfd_is_abs_section (sec);
 }
 
 int
-ada_bfd_is_com_section (struct sec* sec)
+ada_bfd_is_com_section (struct bfd_section* sec)
 {
    return bfd_is_com_section (sec);
 }
 
 int
-ada_bfd_is_und_section (struct sec* sec)
+ada_bfd_is_und_section (struct bfd_section* sec)
 {
    return bfd_is_und_section (sec);
 }
@@ -175,8 +175,7 @@ ada_bfd_get_symbol_count (bfd* abfd)
    return bfd_get_symcount (abfd);
 }
 
-extern void ada_dis_memory_handler (int, unsigned long long,
-                                    struct disassemble_info*);
+extern void ada_dis_memory_handler (int, unsigned long long, void*);
 
 void
 bfdada_memory_error_handler (int status, bfd_vma memaddr,
@@ -184,4 +183,15 @@ bfdada_memory_error_handler (int status, bfd_vma memaddr,
 {
   ada_dis_memory_handler (status, (unsigned long long) memaddr,
                           info->application_data);
+}
+
+void*
+ada_disassemble_init (void* data)
+{
+  struct disassemble_info* info
+    = (struct disassemble_info*) malloc (sizeof (struct disassemble_info));
+  
+  INIT_DISASSEMBLE_INFO (info, 0, 0);
+  info->application_data = data;
+  return info;
 }
