@@ -1,3 +1,10 @@
+2005-11-01  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* examples/utils.adb (Output): New procedure for disassembler.
+	* examples/utils.ads (Output): Declare it.
+	* examples/Makefile.in (GNATLINK): Need -lopcodes
+	* bfdada/testsuite/Makefile.in: Likewise.
+
 2004-03-21  Stephane Carrez  <stcarrez@nerim.fr>
 
 	* doc/Makefile.in (all): New file to make the documentation.

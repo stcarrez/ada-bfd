@@ -21,11 +21,16 @@
 --  Boston, MA 02111-1307, USA.
 -----------------------------------------------------------------------
 with Bfd;
-
+with Bfd.Disassemble; use Bfd.Disassemble;
 package Utils is
 
    procedure Print (Item : in String; Max_Len : in Integer);
 
    function HexImage (Addr : in Bfd.Vma_Type) return String;
+
+   type Small_Disassembler is new Memory_Disassembler with null record;
+
+   procedure Output (Dis  : in out Small_Disassembler;
+                     Item : in String);
 
 end Utils;

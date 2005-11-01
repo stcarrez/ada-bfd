@@ -54,7 +54,7 @@ procedure Sections is
       Put ("Usage: ");
       Put (Command_Name);
       Put_Line (" [-h] file ...");
-      Put_Line ("Lists and sections contained in a binary file");
+      Put_Line ("Lists the sections contained in a binary file");
       Put_Line ("where:");
       Put_Line ("   -h           Verbose");
       New_Line;

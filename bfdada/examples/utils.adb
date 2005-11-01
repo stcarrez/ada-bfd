@@ -79,4 +79,10 @@ package body Utils is
       return S (Pos .. S'Last);
    end HexImage;
 
+   procedure Output (Dis : in out Small_Disassembler;
+                     Item : in String) is
+   begin
+      Put_Line (Item);
+   end Output;
+
 end Utils;
