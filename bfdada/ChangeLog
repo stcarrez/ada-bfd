@@ -1,3 +1,7 @@
+2006-05-08  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* examples/bfdinfo.adb (HexImage, Print): Remove, use Utils package.
+
 2005-11-01  Stephane Carrez  <stcarrez@nerim.fr>
 
 	* examples/utils.adb (Output): New procedure for disassembler.

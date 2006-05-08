@@ -25,6 +25,7 @@ with Bfd.Disassemble; use Bfd.Disassemble;
 package Utils is
 
    procedure Print (Item : in String; Max_Len : in Integer);
+   --  Print
 
    function HexImage (Addr : in Bfd.Vma_Type) return String;
 

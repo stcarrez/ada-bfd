@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- bfdinfo -- Example for Bfd Ada library
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  bfdinfo -- Example for Bfd Ada library
+--  Copyright (C) 2002, 2003, 2005 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
 --
@@ -33,12 +33,13 @@ with Bfd; use Bfd;
 with Bfd.Sections; use Bfd.Sections;
 with Bfd.Symtab; use Bfd.Symtab;
 with Ada.Text_IO; use Ada.Text_IO;
+with Utils; use Utils;
 
 procedure BfdInfo is
 
 
    Release   : constant String := "bfdinfo v1.0";
-   Copyright : constant String := "Copyright 2002, 2003, Stephane Carrez";
+   Copyright : constant String := "Copyright 2002, 2003, 2005 Stephane Carrez";
 
    Opt_H : Boolean := False;
    Opt_V : Boolean := False;
@@ -46,8 +47,6 @@ procedure BfdInfo is
    RC : Ada.Command_Line.Exit_Status := 0;
 
    procedure Usage;
-   procedure Print (Item : in String; Max_Len : in Integer);
-   function HexImage (Addr : in Bfd.Vma_Type) return String;
    procedure List_Section (File : Bfd.File_Type);
    procedure List_Symbols (File : Bfd.File_Type);
    procedure Parse_Arguments;
@@ -56,65 +55,16 @@ procedure BfdInfo is
    --  Usage
    --------------------------------------------------
    procedure Usage is
-      use Ada.Text_IO;
       use Ada.Command_Line;
    begin
       Put_Line (Release);
       New_Line;
       Put ("Usage: ");
       Put (Command_Name);
-      Put_Line (" [-v] dir1 dir2");
-      Put_Line ("where:");
-      Put_Line ("   -v           Verbose");
+      Put_Line (" [-v] file ...");
       New_Line;
       RC := 2;
    end Usage;
-
-   --------------------------------------------------
-   --  Usage
-   --------------------------------------------------
-   procedure Print (Item : in String; Max_Len : in Integer) is
-   begin
-      if Max_Len > 0 then
-         if Item'Length > Max_Len then
-            Put (Item (Item'First .. Item'First + Max_Len));
-         else
-            Put (Item);
-            for I in Item'Length .. Max_Len loop
-               Put (' ');
-            end loop;
-         end if;
-      else
-         if Item'Length > -Max_Len then
-            Put (Item (Item'Last + Max_Len .. Item'Last));
-         else
-            for I in Item'Length .. -Max_Len loop
-               Put (' ');
-            end loop;
-            Put (Item);
-         end if;
-      end if;
-   end Print;
-
-   --------------------------------------------------
-   --  Convert an address to a string in hexadecimal form
-   --------------------------------------------------
-   function HexImage (Addr : in Bfd.Vma_Type) return String is
-      Map : constant String := "0123456789ABCDEF";
-      S   : String (1 .. 40);
-      Val : Bfd.Vma_Type := Addr;
-      C   : Natural;
-      Pos : Positive := S'Last;
-   begin
-      loop
-         C := Natural (Val mod 16);
-         Val := Val / 16;
-         S (Pos) := Map (C + 1);
-         exit when Val = 0;
-         Pos := Pos - 1;
-      end loop;
-      return S (Pos .. S'Last);
-   end HexImage;
 
    --------------------------------------------------
    --  List the sections of the BFD file
@@ -189,9 +139,9 @@ procedure BfdInfo is
          begin
             if (Flags and BSF_OBJECT) /= 0 then
                C := 'O';
-               put ("          ");
+               Put ("          ");
             elsif Is_Undefined_Section (Sec) then
-               put ("          ");
+               Put ("          ");
             else
                Print (HexImage (Get_Value (Sym)), 9);
                if (Flags and BSF_GLOBAL) /= 0 then
@@ -242,9 +192,11 @@ procedure BfdInfo is
          when Invalid_Switch =>
             RC := 1;
             Put_Line (Standard_Error, "Invalid option: -" & Full_Switch);
+            Usage;
          when Invalid_Parameter =>
             RC := 1;
             Put_Line (Standard_Error, "Missing argument: -" & Full_Switch);
+            Usage;
       end;
 
       ------------------------------
