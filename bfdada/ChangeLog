@@ -1,5 +1,27 @@
 2006-05-09  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* bfdada/bfd-symtab.ads (Symbol_Array, Symbol_Array_Access,
+	Symbol_Table): Make public.
+	* bfdada/bfd-disassembler.ads: New disassembler implementation.
+	* bfdada/bfd-disassembler.adb: New disassembler implementation.
+	* bfdada/bfd-disassemble.ads: Remove.
+	* bfdada/bfd-disassemble.adb: Remove.
+	* bfdada/bfdc.c (_bfd_get_section_size): Use bfd_get_section_size().
+	(ada_bfd_asymbol_section): Return type is a struct bfd_section.
+	(ada_dis_memory_handler): Fix prototype.
+	(ada_dis_symbol_at_address): Declare.
+	(ada_dis_read_memory_handler): Declare.
+	(SFILE): Declare (stolen and adjusted from objdump.c)
+	(ada_disassembler_output, ada_disassembler_output_address): Declare.
+	(dis_printf): New to override printf and send to the Output procedure
+	(bfd_ada_disassembler_init): Rename and update; do more initialization.
+	(bfd_ada_disassembler_get_data): New to get the Ada application data.
+	(bfd_ada_disassembler_disassemble): New to disassemble.
+	(bfd_ada_disassembler_set_symbol_table): New to set the symbols.
+	(bfd_ada_disassembler_set_buffer): New to set the memory buffer.
+
+2006-05-09  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* aunit-1.0.1/*, bfdada/*: Update FSF address.
 
 2006-05-08  Stephane Carrez  <stcarrez@nerim.fr>

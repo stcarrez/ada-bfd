@@ -99,7 +99,7 @@ ifeq ($(BUILD_SHARED),yes)
 endif
 
 $(ARCHIVENAME):: $(MAKE_ADB).o ${wildcard *.o} $(c_objects)
-	$(AR) $(ARFLAGS) $(ARCHIVENAME) bfd*.o $(c_objects)
+	$(AR) $(ARFLAGS) $(ARCHIVENAME) bfd.o bfd-*.o $(c_objects)
 	if [ -f /usr/bin/$(RANLIB) -o -f /bin/$(RANLIB) ]; then \
 	  $(RANLIB) $(ARCHIVENAME); \
 	fi

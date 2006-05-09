@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Thin Ada layer for Bfd disassembler (common Bfd functions)
---  <!-- Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
+--  <!-- Copyright (C) 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
@@ -17,45 +17,29 @@
 --
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
---  the Free Software Foundation, 59 Temple Place - Suite 330,
---  Boston, MA 02111-1307, USA.  -->
+--  the Free Software Foundation, 51 Franklin Street - Fifth Floor,
+--  Boston, MA 02110-1301, USA.  -->
 -----------------------------------------------------------------------
 --  This package defines the C import to access to the BFD C library.
 --
-with Bfd.Sections; use Bfd.Sections;
-with Bfd.Symtab; use Bfd.Symtab;
+with Bfd.Sections;               use Bfd.Sections;
+with Bfd.Symtab;                 use Bfd.Symtab;
+with Interfaces.C.Strings;       use Interfaces.C;
+with Bfd.Symtab;                 use Bfd.Symtab;
 package Bfd.Thin.Disassembler is
 
-   function Get_Symbol_Name (Sym : in Symbol) return Ptr;
-   pragma Import (C, Get_Symbol_Name, "ada_bfd_asymbol_name");
+   function Disassembler_Init (Data : in Ptr; Bfd : Ptr;
+                               Options: in Strings.chars_ptr) return Ptr;
+   pragma Import (C, Disassembler_Init, "bfd_ada_disassembler_init");
 
-   function Get_Symbol_Section (Sym : in Symbol) return Section_Iterator;
-   pragma Import (C, Get_Symbol_Section, "ada_bfd_asymbol_section");
+   function Disassemble (Bfd : in Ptr; Data : in Ptr; Addr : in Vma_Type)
+                         return Integer;
+   pragma Import (C, Disassemble, "bfd_ada_disassembler_disassemble");
 
-   function Is_Local (P : Ptr; Sym : in Symbol) return Boolean;
-   pragma Import (C, Is_Local, "bfd_is_local_label");
+   procedure Set_Buffer (D : Ptr; Buf : Ptr; Len : Integer; Addr : Vma_Type);
+   pragma Import (C, Set_Buffer, "bfd_ada_disassembler_set_buffer");
 
-   function Get_Symbol_Value (Sym : in Symbol) return Symbol_Value;
-   pragma Import (C, Get_Symbol_Value, "ada_bfd_asymbol_value");
-
-   procedure Read_Symbols (File : Ptr;
-                           Cnt : System.Address;
-                           S : System.Address);
-   pragma Import (C, Read_Symbols, "bfd_read_symbols");
-
-   procedure Find_Nearest_Line (File : in Ptr;
-                                Sec : in Section_Iterator;
-                                Syms : in Ptr;
-                                Addr : in Vma_Type;
-                                Name : in Ptr;
-                                Func : in Ptr;
-                                Line : in Ptr);
-   pragma Import (C, Find_Nearest_Line, "bfd_find_nearest_line_");
-
-   --  function Is_Local (P : Ptr; Name : in String) return Boolean;
-   --  pragma Import (C, Is_Local, "bfd_is_local_label_name");
-
-   function Get_Symtab_Upper_Bound (File : in Ptr) return Integer;
-   pragma Import (C, Get_Symtab_Upper_Bound, "ada_bfd_get_symtab_upper_bound");
+   procedure Set_Symbol_Table (D: Ptr; Sym : Symbol_Array_Access; Count : Integer);
+   pragma Import (C, Set_Symbol_Table, "bfd_ada_disassembler_set_symbol_table");
 
 end Bfd.Thin.Disassembler;

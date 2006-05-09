@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  symtab -- BFD Symbol Table types and operations
---  <!-- Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
+--  <!-- Copyright (C) 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
@@ -17,8 +17,8 @@
 --
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
---  the Free Software Foundation, 59 Temple Place - Suite 330,
---  Boston, MA 02111-1307, USA.  -->
+--  the Free Software Foundation, 51 Franklin Street - Fifth Floor,
+--  Boston, MA 02110-1301, USA.  -->
 -----------------------------------------------------------------------
 --  This package gives access to the symbol table managed by the
 --  BFD library.
@@ -155,7 +155,14 @@ package Bfd.Symtab is
    ----------------------
    -- Symbol_Table     --
    ----------------------
-   type Symbol_Table is private;
+   type Symbol_Array is array (Positive range <>) of Symbol;
+   type Symbol_Array_Access is access all Symbol_Array;
+
+   type Symbol_Table is record
+      Syms : Symbol_Array_Access;
+      Size : Natural := 0;
+   end record;
+
    type Symbol_Iterator is private;
 
    function Is_Done (It : Symbol_Iterator) return Boolean;
@@ -200,21 +207,13 @@ package Bfd.Symtab is
 
    function Get_Size (Symbols : in Symbol_Table) return Natural;
 
-
 private
 
    type Symbol is new System.Address;
-   type Symbol_Array is array (Positive range <>) of Symbol;
-   type Symbol_Array_Access is access all Symbol_Array;
    --  To avoid memory copies the 'Symbol' is directly mapped to
    --  the BFD asymbol structure.  The C definition is not imported
    --  to simplify things.  The symbol table in BFD is an array
    --  of asymbol pointers (asymbol**).
-
-   type Symbol_Table is record
-      Syms : Symbol_Array_Access;
-      Size : Natural := 0;
-   end record;
 
    type Symbol_Iterator is record
       Symtab : Symbol_Table;
