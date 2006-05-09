@@ -1,3 +1,7 @@
+2006-05-09  Stephane Carrez  <stcarrez@nerim.fr>
+
+	* aunit-1.0.1/*, bfdada/*: Update FSF address.
+
 2006-05-08  Stephane Carrez  <stcarrez@nerim.fr>
 
 	* examples/bfdinfo.adb (HexImage, Print): Remove, use Utils package.
