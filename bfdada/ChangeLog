@@ -1,5 +1,13 @@
 2006-05-09  Stephane Carrez  <stcarrez@nerim.fr>
 
+	* examples/disassemble.adb: New file, disassembler example.
+	* examples/Makefile.in: Build the example.
+	* examples/*: Update FSF address.
+	* examples/utils.adb (Output): Use Put instead of Put_Line.
+	* examples/utils.ads (Output): Fix to use the new disassembler.
+
+2006-05-09  Stephane Carrez  <stcarrez@nerim.fr>
+
 	* bfdada/bfd-symtab.ads (Symbol_Array, Symbol_Array_Access,
 	Symbol_Table): Make public.
 	* bfdada/bfd-disassembler.ads: New disassembler implementation.

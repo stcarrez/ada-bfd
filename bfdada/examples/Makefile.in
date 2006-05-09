@@ -61,12 +61,15 @@ INSTALL_SCRIPT = @INSTALL_SCRIPT@
 
 ## General and public targets
 
-all: bfdinfo sections
+all: bfdinfo sections disassemble
 
 bfdinfo:	force
 	$(GNATMAKE) $(GNATFLAGS) -I$(top_srcdir)/bfdada -I$(srcdir) $@ $(GNATLINK)
 
 sections:	force
+	$(GNATMAKE) $(GNATFLAGS) -I$(top_srcdir)/bfdada -I$(srcdir) $@ $(GNATLINK)
+
+disassemble:	force
 	$(GNATMAKE) $(GNATFLAGS) -I$(top_srcdir)/bfdada -I$(srcdir) $@ $(GNATLINK)
 
 install: all

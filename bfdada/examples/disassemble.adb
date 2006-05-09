@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
---  sections -- Simple Example to list ELF sections
---  Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
+--  disassemble -- Simple Disassembler
+--  Copyright (C) 2006 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
@@ -17,22 +17,23 @@
 --
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
---  the Free Software Foundation,51 Franklin Street - Fifth Floor,
---  Boston, MA 02110-1301, USA.
+--  the Free Software Foundation, 51 Franklin Street - Fifth Floor,
+--  Boston, MA 02110-1301, USA.  -->
 -----------------------------------------------------------------------
 with Ada.Command_Line;    use Ada.Command_Line;
 with Ada.IO_Exceptions;
+with Ada.Streams;         use Ada.Streams;
 with GNAT.Command_Line;
 
-with Interfaces; use Interfaces;
-with Bfd; use Bfd;
-with Bfd.Sections; use Bfd.Sections;
-with Bfd.Symtab; use Bfd.Symtab;
-with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces;      use Interfaces;
+with Bfd;             use Bfd;
+with Bfd.Sections;    use Bfd.Sections;
+with Bfd.Symtab;      use Bfd.Symtab;
+with Bfd.Disassembler; use Bfd.Disassembler;
+with Ada.Text_IO;     use Ada.Text_IO;
 
 with Utils; use Utils;
-procedure Sections is
-
+procedure Disassemble is
 
    Opt_H : Boolean := False;
    Opt_V : Boolean := False;
@@ -40,7 +41,7 @@ procedure Sections is
    RC : Ada.Command_Line.Exit_Status := 0;
 
    procedure Usage;
-   procedure List_Section (File : Bfd.File_Type);
+   procedure Disassemble_Section (File : Bfd.File_Type);
    procedure Parse_Arguments;
 
    --------------------------------------------------
@@ -64,63 +65,24 @@ procedure Sections is
    --------------------------------------------------
    --  List the sections of the BFD file
    --------------------------------------------------
-   procedure List_Section (File : Bfd.File_Type) is
-      Iter : Section_Iterator := Get_Sections (File);
+   procedure Disassemble_Section (File : Bfd.File_Type) is
+      Text_Section : Section := Find_Section (File, ".text");
+      Addr         : Vma_Type := Text_Section.Vma;
+      Size         : Stream_Element_Offset
+        := Stream_Element_Offset (Text_Section.Size);
+      Section      : Ada.Streams.Stream_Element_Array (1 .. Size);
+      Last         : Ada.Streams.Stream_Element_Offset;
+      Info         : Small_Disassembler;
    begin
-      Print ("Name", 30);
-      Print ("Size", -10);
-      Print ("VMA", -17);
-      Print ("LMA", -17);
-      Print ("Flags", -10);
-      New_Line;
-      Print ("====", 30);
-      Print ("====", -10);
-      Print ("===", -17);
-      Print ("===", -17);
-      Print ("=====", -10);
-      New_Line;
-      while not Is_Done (Iter) loop
-         declare
-            S : Section := Current (Iter);
-            P : String (1 .. 6) := (others => ' ');
-            Pos : Positive := 1;
-         begin
-            Print (Get_Name (S), 30);
-            Print (Size_Type'Image (S.Size), -10);
-            Print (HexImage (S.Vma), -17);
-            Print (HexImage (S.Lma), -17);
-
-            if (S.Flags and SEC_ALLOC) /= 0 then
-               P (Pos) := 'A';
-               Pos := Pos + 1;
-            end if;
-
-            if (S.Flags and SEC_LOAD) /= 0 then
-               P (Pos) := 'L';
-               Pos := Pos + 1;
-            end if;
-
-            if (S.Flags and SEC_READONLY) /= 0 then
-               P (Pos) := 'R';
-               Pos := Pos + 1;
-            end if;
-
-            if (S.Flags and SEC_DATA) /= 0 then
-               P (Pos) := 'W';
-               Pos := Pos + 1;
-            end if;
-
-            if (S.Flags and SEC_CODE) /= 0 then
-               P (Pos) := 'X';
-               Pos := Pos + 1;
-            end if;
-
-            Print (P, -10);
-            New_Line;
-         end;
-         Next (Iter);
+      Get_Section_Contents (File, Text_Section, 0, Section, Last);
+      Bfd.Disassembler.Initialize (Info, File, "", Text_Section.Vma, Section);
+      loop
+         Bfd.Disassembler.Disassemble (Memory_Disassembler_Info_Type'Class (Info),
+                                       Addr, Addr);
+         New_Line;
+         exit when Addr >= Text_Section.Vma + Vma_Type (Size);
       end loop;
-   end List_Section;
+   end Disassemble_Section;
 
    --------------------------------------------------
    --  Parse_Arguments
@@ -177,7 +139,7 @@ procedure Sections is
 
             Open (File, Arg, "");
             if Check_Format (File, OBJECT) then
-               List_Section (File);
+               Disassemble_Section (File);
             end if;
             Close (File);
 
@@ -198,4 +160,4 @@ begin
       return;
    end if;
 
-end Sections;
+end Disassemble;

@@ -17,11 +17,11 @@
 --
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
---  the Free Software Foundation, 59 Temple Place - Suite 330,
---  Boston, MA 02111-1307, USA.
+--  the Free Software Foundation,51 Franklin Street - Fifth Floor,
+--  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with Bfd;
-with Bfd.Disassemble; use Bfd.Disassemble;
+with Bfd.Disassembler; use Bfd.Disassembler;
 package Utils is
 
    procedure Print (Item : in String; Max_Len : in Integer);
@@ -29,9 +29,10 @@ package Utils is
 
    function HexImage (Addr : in Bfd.Vma_Type) return String;
 
-   type Small_Disassembler is new Memory_Disassembler with null record;
+   type Small_Disassembler is new Memory_Disassembler_Info_Type
+     with null record;
 
-   procedure Output (Dis  : in out Small_Disassembler;
+   procedure Output (Info : in out Small_Disassembler;
                      Item : in String);
 
 end Utils;
