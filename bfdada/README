@@ -4,5 +4,5 @@
 
 
 The BfdAda is a library which provides Ada API for GNU Binutils BFD
-library.  It works on any version of GNU Binutils (starting at 2.11).
+library.  It works on any version of GNU Binutils (starting at 2.15).
 
