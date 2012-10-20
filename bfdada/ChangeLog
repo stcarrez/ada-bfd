@@ -1,5 +1,10 @@
 2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
 
+	* src: Rename from bfdada.
+	* regtests: Moved bfdada/testsuite to regtests.
+
+2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
+
 	* bfdada/bfd-internal.adb: Fix style and compilation warnings.
 	* bfdada/bfd-sections.adb: Likewise.
 	
