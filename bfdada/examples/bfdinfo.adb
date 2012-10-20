@@ -20,26 +20,21 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Command_Line;    use Ada.Command_Line;
-with Ada.Characters.Handling;
-with Ada.Characters.Latin_1;
-with Ada.IO_Exceptions;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO;
+with Ada.Command_Line;
 with GNAT.Command_Line;
 
-with Interfaces; use Interfaces;
-with Bfd; use Bfd;
-with Bfd.Sections; use Bfd.Sections;
-with Bfd.Symtab; use Bfd.Symtab;
-with Ada.Text_IO; use Ada.Text_IO;
-with Utils; use Utils;
+with Bfd;
+with Bfd.Sections;
+with Bfd.Symtab;
+with Utils;
 
 procedure BfdInfo is
 
+   use Ada.Text_IO;
 
    Release   : constant String := "bfdinfo v1.0";
-   Copyright : constant String := "Copyright 2002, 2003, 2005 Stephane Carrez";
+   Copyright : constant String := "Copyright 2002, 2003, 2005, 2012 Stephane Carrez";
 
    Opt_H : Boolean := False;
    Opt_V : Boolean := False;
@@ -70,54 +65,56 @@ procedure BfdInfo is
    --  List the sections of the BFD file
    --------------------------------------------------
    procedure List_Section (File : Bfd.File_Type) is
-      Iter : Section_Iterator := Get_Sections (File);
+      use type Bfd.Sections.Section_Flags;
+
+      Iter : Bfd.Sections.Section_Iterator := Bfd.Sections.Get_Sections (File);
    begin
-      Print ("Name", 30);
-      Print ("Size", -10);
-      Print ("VMA", -17);
-      Print ("LMA", -17);
-      Print ("Flags", -10);
+      Utils.Print ("Name", 30);
+      Utils.Print ("Size", -10);
+      Utils.Print ("VMA", -17);
+      Utils.Print ("LMA", -17);
+      Utils.Print ("Flags", -10);
       New_Line;
-      while not Is_Done (Iter) loop
+      while not Bfd.Sections.Is_Done (Iter) loop
          declare
-            S : Section := Current (Iter);
-            P : String (1 .. 6) := (others => ' ');
+            S   : constant Bfd.Sections.Section := Bfd.Sections.Current (Iter);
+            P   : String (1 .. 6) := (others => ' ');
             Pos : Positive := 1;
          begin
-            Print (Get_Name (S), 30);
-            Print (Size_Type'Image (S.Size), -10);
-            Print (HexImage (S.Vma), -17);
-            Print (HexImage (S.Lma), -17);
+            Utils.Print (Bfd.Sections.Get_Name (S), 30);
+            Utils.Print (Bfd.Size_Type'Image (S.Size), -10);
+            Utils.Print (Utils.HexImage (S.Vma), -17);
+            Utils.Print (Utils.HexImage (S.Lma), -17);
 
-            if (S.Flags and SEC_ALLOC) /= 0 then
+            if (S.Flags and Bfd.Sections.SEC_ALLOC) /= 0 then
                P (Pos) := 'A';
                Pos := Pos + 1;
             end if;
 
-            if (S.Flags and SEC_LOAD) /= 0 then
+            if (S.Flags and Bfd.Sections.SEC_LOAD) /= 0 then
                P (Pos) := 'L';
                Pos := Pos + 1;
             end if;
 
-            if (S.Flags and SEC_READONLY) /= 0 then
+            if (S.Flags and Bfd.Sections.SEC_READONLY) /= 0 then
                P (Pos) := 'R';
                Pos := Pos + 1;
             end if;
 
-            if (S.Flags and SEC_DATA) /= 0 then
+            if (S.Flags and Bfd.Sections.SEC_DATA) /= 0 then
                P (Pos) := 'W';
                Pos := Pos + 1;
             end if;
 
-            if (S.Flags and SEC_CODE) /= 0 then
+            if (S.Flags and Bfd.Sections.SEC_CODE) /= 0 then
                P (Pos) := 'X';
                Pos := Pos + 1;
             end if;
 
-            Print (P, -10);
+            Utils.Print (P, -10);
             New_Line;
          end;
-         Next (Iter);
+         Bfd.Sections.Next (Iter);
       end loop;
    end List_Section;
 
@@ -125,44 +122,45 @@ procedure BfdInfo is
    --  List the symbols of the BFD file
    --------------------------------------------------
    procedure List_Symbols (File : Bfd.File_Type) is
-      Symbols : Symbol_Table;
-      It      : Symbol_Iterator;
+      use type Bfd.Symtab.Symbol_Flags;
+
+      Symbols : Bfd.Symtab.Symbol_Table;
+      It      : Bfd.Symtab.Symbol_Iterator;
    begin
-      Open_Symbols (File, Symbols);
-      It := Get_Iterator (Symbols);
-      while not Is_Done (It) loop
+      Bfd.Symtab.Open_Symbols (File, Symbols);
+      It := Bfd.Symtab.Get_Iterator (Symbols);
+      while not Bfd.Symtab.Is_Done (It) loop
          declare
-            Sym   : Symbol       := Current (It);
-            Sec   : Section      := Get_Section (Sym);
-            Flags : Symbol_Flags := Get_Flags (Sym);
-            C     : Character    := Get_Symclass (Sym);
+            Sym   : constant Bfd.Symtab.Symbol       := Bfd.Symtab.Current (It);
+            Sec   : constant Bfd.Sections.Section    := Bfd.Symtab.Get_Section (Sym);
+            Flags : constant Bfd.Symtab.Symbol_Flags := Bfd.Symtab.Get_Flags (Sym);
+            C     : Character    := Bfd.Symtab.Get_Symclass (Sym);
          begin
-            if (Flags and BSF_OBJECT) /= 0 then
+            if (Flags and Bfd.Symtab.BSF_OBJECT) /= 0 then
                C := 'O';
                Put ("          ");
-            elsif Is_Undefined_Section (Sec) then
+            elsif Bfd.Sections.Is_Undefined_Section (Sec) then
                Put ("          ");
             else
-               Print (HexImage (Get_Value (Sym)), 9);
-               if (Flags and BSF_GLOBAL) /= 0 then
+               Utils.Print (Utils.HexImage (Bfd.Symtab.Get_Value (Sym)), 9);
+               if (Flags and Bfd.Symtab.BSF_GLOBAL) /= 0 then
                   if C >= 'a' then
                      C := Character'Val (Character'Pos (C) + 32);
                   end if;
                end if;
             end if;
             Put (" " & C & " ");
-            Put_Line (Get_Name (Sym));
+            Put_Line (Bfd.Symtab.Get_Name (Sym));
          end;
-         Next (It);
+         Bfd.Symtab.Next (It);
       end loop;
-      Close_Symbols (Symbols);
+      Bfd.Symtab.Close_Symbols (Symbols);
    end List_Symbols;
 
    --------------------------------------------------
    --  Parse_Arguments
    --------------------------------------------------
    procedure Parse_Arguments is
-      use Ada.Text_IO;
       use Ada.Command_Line;
       use GNAT.Command_Line;
 
@@ -211,32 +209,33 @@ procedure BfdInfo is
       --  sections and symbol table.
       loop
          declare
-            Arg  : String := Get_Argument;
+            Arg  : constant String := Get_Argument;
             File : Bfd.File_Type;
          begin
             exit when Arg = "";
 
-            Open (File, Arg, "");
-            if Check_Format (File, OBJECT) then
+            Bfd.Open (File, Arg, "");
+            if Bfd.Check_Format (File, Bfd.OBJECT) then
                List_Section (File);
                List_Symbols (File);
             end if;
-            Close (File);
+            Bfd.Close (File);
 
          exception
-            when OPEN_ERROR =>
+            when Bfd.OPEN_ERROR =>
                Put_Line (Standard_Error, "Cannot open file " & Arg);
-               Put_Line (Standard_Error, Get_Error_Message (Get_Error));
+               Put_Line (Standard_Error, Bfd.Get_Error_Message (Bfd.Get_Error));
          end;
       end loop;
    end Parse_Arguments;
 
+   use type Ada.Command_Line.Exit_Status;
 begin
-   Set_Error_Program_Name (To => "bfdinfo");
+   Bfd.Set_Error_Program_Name (To => "bfdinfo");
 
    Parse_Arguments;
    if RC /= 0 then
-      Set_Exit_Status (RC);
+      Ada.Command_Line.Set_Exit_Status (RC);
       return;
    end if;
 
