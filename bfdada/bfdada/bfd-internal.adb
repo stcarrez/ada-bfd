@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -25,12 +25,11 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with System; use System;
 
 package body Bfd.Internal is
 
    function To_Ada (P : in Pointer) return String is
-      N : Natural := Strlen (P);
+      N : constant Natural := Strlen (P);
    begin
       if N > 1000 then
          raise Constraint_Error;
@@ -44,7 +43,7 @@ package body Bfd.Internal is
    end To_Ada;
 
    procedure To_Ada (P : in Pointer; S : out String) is
-      N : Natural := Strlen (P);
+      N : constant Natural := Strlen (P);
    begin
       if N > S'Length then
          Memcpy (S'Address, P, S'Length);

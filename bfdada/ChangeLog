@@ -1,5 +1,10 @@
 2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
 
+	* bfdada/bfd-internal.adb: Fix style and compilation warnings.
+	* bfdada/bfd-sections.adb: Likewise.
+	
+2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
+
 	* bfdada/bfd-disassembler.ads: Fix syle and compilation warnings.
 	* bfdada/bfd-thin-disassembler.ads: Likewise.
 	* bfdada/bfd-thin-symtab.ads:  Likewise.
