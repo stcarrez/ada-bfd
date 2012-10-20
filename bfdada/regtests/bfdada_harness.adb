@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD Tests -- Test Harness for Bfd tests
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD Tests -- Test Harness for Bfd tests
+--  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -22,10 +22,8 @@
 -----------------------------------------------------------------------
 with AUnit.Test_Runner;
 with Bfd_Suite;
-procedure Harness is
+procedure Bfdada_Harness is
    procedure Run is new AUnit.Test_Runner (Bfd_Suite);
 begin
    Run (Timed => True);
-end Harness;
-
-
+end Bfdada_Harness;

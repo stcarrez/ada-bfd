@@ -26,6 +26,8 @@ with Bfd.Symtab;
 with Interfaces.C.Strings;
 package Bfd.Thin.Disassembler is
 
+   pragma Linker_Options ("-lopcodes");
+
    function Disassembler_Init (Data    : in Ptr;
                                Bfd     : in Ptr;
                                Options : in Interfaces.C.Strings.chars_ptr) return Ptr;

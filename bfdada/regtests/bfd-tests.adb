@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD Tests -- Tests for Binary File Descriptor Library (Ada Interface)
--- Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD Tests -- Tests for Binary File Descriptor Library (Ada Interface)
+--  Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -21,14 +21,12 @@
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with AUnit.Test_Cases.Registration;
-use AUnit.Test_Cases.Registration;
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with AUnit.Assertions; use AUnit.Assertions;
-with AUnit.Tests; use AUnit.Tests;
-with AUnit.Lists;
-with Ada.Text_IO; use Ada.Text_IO;
+with AUnit.Assertions;
+with Ada.Text_IO;
 package body Bfd.Tests is
+
+   use Ada.Strings.Unbounded;
 
    type Test_Ptr is access Test_Case;
 
@@ -37,7 +35,7 @@ package body Bfd.Tests is
 
    function Create_Test (Test_Name : in String;
                          File_Name : in String) return Test_Ref is
-      T : Test_Ptr := new Test_Case;
+      T : constant Test_Ptr := new Test_Case;
    begin
       T.File_Name := To_Unbounded_String (File_Name);
       T.Test_Name := To_Unbounded_String (Test_Name);
@@ -54,8 +52,8 @@ package body Bfd.Tests is
       Open (T.File, Get_Test_File (T));
    exception
       when OPEN_ERROR =>
-         Put_Line ("Test file '" & Get_Test_File (T) & "' cannot be opened");
-         Put_Line ("Several tests may fail");
+         Ada.Text_IO.Put_Line ("Test file '" & Get_Test_File (T) & "' cannot be opened");
+         Ada.Text_IO.Put_Line ("Several tests may fail");
    end Set_Up;
 
    procedure Tear_Down (T : in out Test_Case) is
@@ -66,33 +64,33 @@ package body Bfd.Tests is
    end Tear_Down;
 
 
-   -- Test Routines:
+   --  Test Routines:
 
    procedure Test_Open (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      Test : Test_Case := Test_Case (T);
+      Test : constant Test_Case := Test_Case (T);
       Bfd  : File_Type;
    begin
       --  Check that OPEN_ERROR exception is raised.
       begin
          Open (Bfd, "bfd.ads");
-         Assert (False, "Bfd.Open didn't raise OPEN_ERROR exception");
+         AUnit.Assertions.Assert (False, "Bfd.Open didn't raise OPEN_ERROR exception");
       exception
          when OPEN_ERROR =>
-            Assert (Is_Open (Bfd) = False,
-                    "Bfd.Is_Open returns true after OPEN_ERROR exception");
+            AUnit.Assertions.Assert (Is_Open (Bfd) = False,
+                                     "Bfd.Is_Open returns true after OPEN_ERROR exception");
       end;
 
       --  Check that we can open a file.
       begin
          Open (Bfd, Get_Test_File (Test));
-         Assert (Is_Open (Bfd), "Bfd.Is_Open returns false for opened file");
+         AUnit.Assertions.Assert (Is_Open (Bfd), "Bfd.Is_Open returns false for opened file");
          Close (Bfd);
-         Assert (Is_Open (Bfd) = False,
-                 "Bfd.Is_Open returns true after Bfd.Close");
+         AUnit.Assertions.Assert (Is_Open (Bfd) = False,
+                                  "Bfd.Is_Open returns true after Bfd.Close");
       exception
          when OPEN_ERROR =>
-            Assert (False, "Bfd.Open raised an exception when opening "
-                    & Get_Test_File (Test));
+            AUnit.Assertions.Assert (False, "Bfd.Open raised an exception when opening "
+                                     & Get_Test_File (Test));
       end;
    end Test_Open;
 
@@ -101,24 +99,25 @@ package body Bfd.Tests is
    begin
       --  Check that Get_Filename returns our test file.
       declare
-         Name : String := Get_Filename (Test.File);
+         Name : constant String := Get_Filename (Test.File);
       begin
-         Assert (Name = Get_Test_File (Test),
-                 "Bfd.Get_Filename returned an invalid filename");
+         AUnit.Assertions.Assert (Name = Get_Test_File (Test),
+                                  "Bfd.Get_Filename returned an invalid filename");
       end;
 
-      Assert (Check_Format (Test.File, OBJECT),
-              "Bfd.Check_Format returned false");
+      AUnit.Assertions.Assert (Check_Format (Test.File, OBJECT),
+                               "Bfd.Check_Format returned false");
 
       --  Can't check in a portable way, assume some reasonable value.
-      Assert (Get_Symbol_Count (Test.File) > 0
-              and Get_Symbol_Count (Test.File) < 1000,
-              "Bfd.Get_Symbol_Count returned 0");
+      AUnit.Assertions.Assert (Get_Symbol_Count (Test.File) > 0
+                               and Get_Symbol_Count (Test.File) < 1000,
+                               "Bfd.Get_Symbol_Count returned 0");
 
    end Test_Basic;
 
    --  Register test routines to call:
    procedure Register_Tests (T : in out Test_Case) is
+      use AUnit.Test_Cases.Registration;
    begin
       --  Repeat for each test routine.
       Register_Routine (T, Test_Open'Access,
@@ -133,7 +132,8 @@ package body Bfd.Tests is
       return new String'(To_String (T.Test_Name));
    end Name;
 
-   procedure Add_Tests (Suite : Access_Test_Suite) is
+   procedure Add_Tests (Suite : in AUnit.Test_Suites.Access_Test_Suite) is
+      use AUnit.Test_Suites;
    begin
       Add_Test (Suite, Create_Test ("Bfd.Basic on object", "bfd-tests.o"));
       Add_Test (Suite, Create_Test ("Bfd.Basic on exec", "harness"));

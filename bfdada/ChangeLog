@@ -1,5 +1,32 @@
 2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
 
+	* regtests/bfd-tests-sections.adb: Removed.
+	* regtests/bfd-tests-sections.ads: Removed.
+	* regtests/harness.adb: Removed.
+	* src/make_bfd.adb: Removed.
+	* bfdada.gpr: New file.
+	* config.gpr: New file.
+	* regtests/bfd-sections-tests.adb: New file.
+	* regtests/bfd-sections-tests.ads: New file.
+	* regtests/bfdada_harness.adb: New file.
+	* src/bfd-disassembler.c: New file.
+	* tests.gpr: New file.
+	* regtests/bfd-tests.adb: 
+	* regtests/bfd-tests.ads: 
+	* regtests/bfd_suite.adb: 
+	* src/bfd-disassembler.ads: 
+	* src/bfd-thin-disassembler.ads: 
+	* src/bfd.ads: Fix style and compilation warnings.
+	* src/bfdc.c (bfdada_memory_error_handler): Move to bfd-disassembler-c.c.
+	(dis_printf): Likewise.
+	(bfd_ada_disassembler_init): Likewise.
+	(bfd_ada_disassembler_get_data): Likewise.
+	(bfd_ada_disassembler_disassemble): Likewise.
+	(bfd_ada_disassembler_set_symbol_table): Likewise.
+	(bfd_ada_disassembler_set_buffer): Likewise.
+
+2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
+
 	* src: Rename from bfdada.
 	* regtests: Moved bfdada/testsuite to regtests.
 

@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD Tests -- Tests for BFD section Ada API
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD Tests -- Tests for BFD section Ada API
+--  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -21,9 +21,9 @@
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with AUnit.Test_Suites;
-with Bfd; use Bfd;
-with Bfd.Tests; use Bfd.Tests;
-package Bfd.Tests.Sections is
+with Bfd;
+with Bfd.Tests;
+package Bfd.Sections.Tests is
 
    type Test_Case is new Bfd.Tests.Test_Case with record
       A : Natural;
@@ -36,4 +36,4 @@ package Bfd.Tests.Sections is
 
    procedure Add_Tests (Suite : AUnit.Test_Suites.Access_Test_Suite);
 
-end Bfd.Tests.Sections;
+end Bfd.Sections.Tests;

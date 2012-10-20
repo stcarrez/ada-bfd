@@ -31,6 +31,8 @@ package Bfd is
 
    pragma Linker_Options ("-lbfd");
    pragma Linker_Options ("-liberty");
+   pragma Linker_Options ("-ldl");
+   pragma Linker_Options ("-lz");
 
    type Format is (UNKNOWN, --  unknown file format
                    OBJECT,  --  linker/assembler/compiler object file
@@ -40,9 +42,9 @@ package Bfd is
 
    type Flags is new Integer;
 
-   subtype Unsigned_64 is Interfaces.Unsigned_64;
+   type Unsigned_64 is new Interfaces.Unsigned_64;
 
-   subtype Integer_64 is Interfaces.Integer_64;
+   type Integer_64 is new Interfaces.Integer_64;
 
    subtype Vma_Type is Unsigned_64;
    --  The bfd_vma used to represent an address.

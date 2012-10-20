@@ -28,8 +28,6 @@ with Ada.Streams;
 with Bfd.Symtab; use Bfd.Symtab;
 package Bfd.Disassembler is
 
-   pragma Linker_Options ("-lopcodes");
-
    type Insn_Type is (NONINSN,          --  Not a valid instruction
                       NONBRANCH,        --  Not a branch instruction
                       BRANCH,           --  Unconditional branch

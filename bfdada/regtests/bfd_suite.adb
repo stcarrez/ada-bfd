@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD Tests -- Testsuite function creation
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD Tests -- Testsuite function creation
+--  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -20,17 +20,15 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with AUnit.Test_Suites; use AUnit.Test_Suites;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with AUnit.Test_Suites;
 
--- Unit tests for AUnit:
 with Bfd.Tests;
-with Bfd.Tests.Sections;
-function Bfd_Suite return Access_Test_Suite is
-   Result : Access_Test_Suite := new Test_Suite;
+with Bfd.Sections.Tests;
+function Bfd_Suite return AUnit.Test_Suites.Access_Test_Suite is
+   Result : constant AUnit.Test_Suites.Access_Test_Suite := new AUnit.Test_Suites.Test_Suite;
 begin
    Bfd.Tests.Add_Tests (Result);
-   Bfd.Tests.Sections.Add_Tests (Result);
+   Bfd.Sections.Tests.Add_Tests (Result);
    return Result;
 end Bfd_Suite;
 

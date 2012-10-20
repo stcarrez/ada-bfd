@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD Tests -- Tests for Binary File Descriptor Library (Ada Interface)
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD Tests -- Tests for Binary File Descriptor Library (Ada Interface)
+--  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -20,23 +20,21 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with AUnit.Tests; use AUnit.Tests;
-with AUnit.Test_Cases; use AUnit.Test_Cases;
-with AUnit.Test_Suites; use AUnit.Test_Suites;
+with Ada.Strings.Unbounded;
+with AUnit.Tests;
+with AUnit.Test_Cases;
+with AUnit.Test_Suites;
 
-with Bfd; use Bfd;
+with Bfd;
 package Bfd.Tests is
 
-   pragma Linker_Options ("-lbfdada");
-
    type Test_Case is new AUnit.Test_Cases.Test_Case with record
-      Test_Name : Unbounded_String;
-      File_Name : Unbounded_String;
+      Test_Name : Ada.Strings.Unbounded.Unbounded_String;
+      File_Name : Ada.Strings.Unbounded.Unbounded_String;
       File      : File_Type;
    end record;
 
-   type Test_Ref is access all Test'Class;
+   type Test_Ref is access all AUnit.Tests.Test'Class;
 
    --  Override:
 
@@ -44,9 +42,9 @@ package Bfd.Tests is
    procedure Register_Tests (T : in out Test_Case);
 
    --  Provide name identifying the test case:
-   function Name (T : Test_Case) return String_Access;
+   function Name (T : Test_Case) return Ada.Strings.Unbounded.String_Access;
 
-   -- Setup before each routine:
+   --  Setup before each routine:
    procedure Set_Up (T : in out Test_Case);
 
    --  Cleanup performed after each routine:
@@ -54,6 +52,6 @@ package Bfd.Tests is
 
    function Get_Test_File (T : in Test_Case) return String;
 
-   procedure Add_Tests (Suite : Access_Test_Suite);
+   procedure Add_Tests (Suite : in AUnit.Test_Suites.Access_Test_Suite);
 
 end Bfd.Tests;

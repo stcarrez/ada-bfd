@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
--- BFD Tests -- Tests for BFD section Ada API
--- Copyright (C) 2002, 2003 Free Software Foundation, Inc.
--- Written by Stephane Carrez (stcarrez@nerim.fr)
+--  BFD Tests -- Tests for BFD section Ada API
+--  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -20,17 +20,19 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 with Ada.Streams;
 
 with AUnit.Options;
-with AUnit.Test_Cases.Registration; use AUnit.Test_Cases.Registration;
-with AUnit.Assertions; use AUnit.Assertions;
-with AUnit.Tests; use AUnit.Tests;
+with AUnit.Test_Cases.Registration;
+with AUnit.Assertions;
+with AUnit.Tests;
 with AUnit.Lists;
-with Bfd.Sections; use Bfd.Sections;
-package body Bfd.Tests.Sections is
+with Bfd.Sections;
+package body Bfd.Sections.Tests is
+
+   use Ada.Strings.Unbounded;
 
    type Test_Ptr is access Test_Case;
 
@@ -57,29 +59,29 @@ package body Bfd.Tests.Sections is
 
       Has_Code : Boolean := False;
    begin
-      Assert (Check_Format (Test.File, OBJECT),
-              "Bfd.Check_Format returned false");
+      AUnit.Assertions.Assert (Check_Format (Test.File, OBJECT),
+                               "Bfd.Check_Format returned false");
 
       S := Get_Sections (Test.File);
-      Assert (Is_Done (S) = False,
-              "Bfd.Create_Iterator returned null section iterator");
+      AUnit.Assertions.Assert (Is_Done (S) = False,
+                               "Bfd.Create_Iterator returned null section iterator");
 
       while not Is_Done (S) loop
          declare
             Sec : Section := Current (S);
          begin
-            Assert (Get_Name (Sec)'Length > 0,
-                    "Bfd.Sections.Get_Name returned empty name");
+            AUnit.Assertions.Assert (Get_Name (Sec)'Length > 0,
+                                     "Bfd.Sections.Get_Name returned empty name");
 
             if (Sec.Flags and SEC_CODE) /= 0 then
-               Assert ((Sec.Flags and SEC_LOAD) /= 0,
-                       "SEC_CODE is set but SEC_LOAD is not");
+               AUnit.Assertions.Assert ((Sec.Flags and SEC_LOAD) /= 0,
+                                        "SEC_CODE is set but SEC_LOAD is not");
                Has_Code := True;
             end if;
          end;
          Next (S);
       end loop;
-      Assert (Has_Code, "No SEC_CODE section found");
+      AUnit.Assertions.Assert (Has_Code, "No SEC_CODE section found");
    end Test_Sections;
 
 
@@ -90,15 +92,15 @@ package body Bfd.Tests.Sections is
       Test : Test_Case := Test_Case (T);
       Sec  : Section;
    begin
-      Assert (Check_Format (Test.File, OBJECT),
-              "Bfd.Check_Format returned false");
+      AUnit.Assertions.Assert (Check_Format (Test.File, OBJECT),
+                               "Bfd.Check_Format returned false");
 
       --  Check that Find_Section raises an exception when the section
       --  is not known.
       begin
-          Sec := Find_Section (Test.File, "toto section");
+         Sec := Find_Section (Test.File, "toto section");
 
-          Assert (False, "Bfd.Find_Section didn't raise an exception");
+         AUnit.Assertions.Assert (False, "Bfd.Find_Section didn't raise an exception");
       exception
          when Bfd.NOT_FOUND =>
             null;
@@ -109,13 +111,13 @@ package body Bfd.Tests.Sections is
          It : Section_Iterator := Get_Sections (Test.File);
          S  : Section;
       begin
-         Assert (Is_Done (It) = False,
-                 "Bfd.Create_Iterator returned a null section");
+         AUnit.Assertions.Assert (Is_Done (It) = False,
+                                  "Bfd.Create_Iterator returned a null section");
 
          while not Is_Done (It) loop
             S := Current (It);
             Sec := Find_Section (Test.File, Get_Name (S));
-            Assert (Sec = S, "Bfd.Find_Section returned a different section");
+            AUnit.Assertions.Assert (Sec = S, "Bfd.Find_Section returned a different section");
             Next (It);
          end loop;
       end;
@@ -131,12 +133,12 @@ package body Bfd.Tests.Sections is
       It   : Section_Iterator;
       Read_Something : Boolean := False;
    begin
-      Assert (Check_Format (Test.File, OBJECT),
-              "Bfd.Check_Format returned false");
+      AUnit.Assertions.Assert (Check_Format (Test.File, OBJECT),
+                               "Bfd.Check_Format returned false");
 
       It := Get_Sections (Test.File);
-      Assert (Is_Done (It) = False,
-              "Bfd.Create_Iterator returned a null section");
+      AUnit.Assertions.Assert (Is_Done (It) = False,
+                               "Bfd.Create_Iterator returned a null section");
 
       --  Scan each section and load its content in memory.
       while not Is_Done (It) loop
@@ -152,13 +154,13 @@ package body Bfd.Tests.Sections is
             begin
                --  Get section content in buffer.
                Get_Section_Contents (Test.File, Sec, 0, Buf, Last);
-               Assert (Last = Cnt,
-                       "Cannot get content of section " & Get_Name (Sec));
+               AUnit.Assertions.Assert (Last = Cnt,
+                                        "Cannot get content of section " & Get_Name (Sec));
 
                if AUnit.Options.Verbose then
-                  Put_Line ("Read content of " & Get_Name (Sec)
-                            & " " & Stream_Element_Offset'Image (Last)
-                            & " bytes read");
+                  Ada.Text_IO.Put_Line ("Read content of " & Get_Name (Sec)
+                                        & " " & Stream_Element_Offset'Image (Last)
+                                        & " bytes read");
                end if;
 
                --  Crude test to check we got something in.
@@ -168,8 +170,8 @@ package body Bfd.Tests.Sections is
                      exit;
                   end if;
                end loop;
-               Assert (Seems_Filled,
-                       "Section " & Get_Name (Sec) & " contains all 0");
+               AUnit.Assertions.Assert (Seems_Filled,
+                                        "Section " & Get_Name (Sec) & " contains all 0");
                Read_Something := True;
             end;
          end if;
@@ -177,7 +179,7 @@ package body Bfd.Tests.Sections is
       end loop;
 
       --  Be sure we loaded some section.
-      Assert (Read_Something, "No section was loaded");
+      AUnit.Assertions.Assert (Read_Something, "No section was loaded");
    end Test_Get_Section_Contents;
 
 
@@ -185,6 +187,7 @@ package body Bfd.Tests.Sections is
    --  Register test routines to call:
    --  --------------------
    procedure Register_Tests (T : in out Test_Case) is
+      use AUnit.Test_Cases.Registration;
    begin
       --  Repeat for each test routine.
       Register_Routine (T, Test_Sections'Access,
@@ -200,10 +203,11 @@ package body Bfd.Tests.Sections is
    --  --------------------
    --  Add the tests in the testsuite
    --  --------------------
-   procedure Add_Tests (Suite : Access_Test_Suite) is
+   procedure Add_Tests (Suite : in AUnit.Test_Suites.Access_Test_Suite) is
+      use AUnit.Test_Suites;
    begin
       Add_Test (Suite, Create_Test ("Bfd.Sections on object", "bfd-tests.o"));
       Add_Test (Suite, Create_Test ("Bfd.Sections on exec", "harness"));
    end Add_Tests;
 
-end Bfd.Tests.Sections;
+end Bfd.Sections.Tests;
