@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  BFD -- Thin Ada layer for Bfd disassembler (common Bfd functions)
---  <!-- Copyright (C) 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  <!-- Copyright (C) 2002, 2003, 2004, 2006, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -22,24 +22,27 @@
 -----------------------------------------------------------------------
 --  This package defines the C import to access to the BFD C library.
 --
-with Bfd.Sections;               use Bfd.Sections;
-with Bfd.Symtab;                 use Bfd.Symtab;
-with Interfaces.C.Strings;       use Interfaces.C;
-with Bfd.Symtab;                 use Bfd.Symtab;
+with Bfd.Symtab;
+with Interfaces.C.Strings;
 package Bfd.Thin.Disassembler is
 
-   function Disassembler_Init (Data : in Ptr; Bfd : Ptr;
-                               Options: in Strings.chars_ptr) return Ptr;
+   function Disassembler_Init (Data    : in Ptr;
+                               Bfd     : in Ptr;
+                               Options : in Interfaces.C.Strings.chars_ptr) return Ptr;
    pragma Import (C, Disassembler_Init, "bfd_ada_disassembler_init");
 
-   function Disassemble (Bfd : in Ptr; Data : in Ptr; Addr : in Vma_Type)
+   function Disassemble (Bfd  : in Ptr;
+                         Data : in Ptr;
+                         Addr : in Vma_Type)
                          return Integer;
    pragma Import (C, Disassemble, "bfd_ada_disassembler_disassemble");
 
    procedure Set_Buffer (D : Ptr; Buf : Ptr; Len : Integer; Addr : Vma_Type);
    pragma Import (C, Set_Buffer, "bfd_ada_disassembler_set_buffer");
 
-   procedure Set_Symbol_Table (D: Ptr; Sym : Symbol_Array_Access; Count : Integer);
+   procedure Set_Symbol_Table (D     : in Ptr;
+                               Sym   : in Bfd.Symtab.Symbol_Array_Access;
+                               Count : in Integer);
    pragma Import (C, Set_Symbol_Table, "bfd_ada_disassembler_set_symbol_table");
 
 end Bfd.Thin.Disassembler;

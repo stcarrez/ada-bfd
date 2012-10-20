@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  <!-- Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2001, 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -18,7 +18,7 @@
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
---  Boston, MA 02110-1301, USA.  -->
+--  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with System;
 with Interfaces;
@@ -40,9 +40,9 @@ package Bfd is
 
    type Flags is new Integer;
 
-   type Unsigned_64 is new Interfaces.Unsigned_64;
+   subtype Unsigned_64 is Interfaces.Unsigned_64;
 
-   type Integer_64 is new Interfaces.Integer_64;
+   subtype Integer_64 is Interfaces.Integer_64;
 
    subtype Vma_Type is Unsigned_64;
    --  The bfd_vma used to represent an address.
@@ -92,6 +92,7 @@ package Bfd is
    --  formatting.  Here, the message is formatted and passed in Message.
    --
    --  @param Message the message to report
+   pragma Convention (C, Error_Handler);
 
    function Get_Error return Error;
    --  Return the current error code.

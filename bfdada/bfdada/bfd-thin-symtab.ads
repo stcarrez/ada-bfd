@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  BFD -- Thin Ada layer for Bfd (common Bfd functions)
---  <!-- Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  <!-- Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -22,20 +22,21 @@
 -----------------------------------------------------------------------
 --  This package defines the C import to access to the BFD C library.
 --
-with Bfd.Sections; use Bfd.Sections;
-with Bfd.Symtab; use Bfd.Symtab;
+with Interfaces.C;
+with Bfd.Sections;
+with Bfd.Symtab;
 package Bfd.Thin.Symtab is
 
-   function Get_Symbol_Name (Sym : in Symbol) return Ptr;
+   function Get_Symbol_Name (Sym : in Bfd.Symtab.Symbol) return Ptr;
    pragma Import (C, Get_Symbol_Name, "ada_bfd_asymbol_name");
 
-   function Get_Symbol_Section (Sym : in Symbol) return Section_Iterator;
+   function Get_Symbol_Section (Sym : in Bfd.Symtab.Symbol) return Bfd.Sections.Section_Iterator;
    pragma Import (C, Get_Symbol_Section, "ada_bfd_asymbol_section");
 
-   function Is_Local (P : Ptr; Sym : in Symbol) return Boolean;
+   function Is_Local (P : Ptr; Sym : in Bfd.Symtab.Symbol) return Interfaces.C.int;
    pragma Import (C, Is_Local, "bfd_is_local_label");
 
-   function Get_Symbol_Value (Sym : in Symbol) return Symbol_Value;
+   function Get_Symbol_Value (Sym : in Bfd.Symtab.Symbol) return Symbol_Value;
    pragma Import (C, Get_Symbol_Value, "ada_bfd_asymbol_value");
 
    procedure Read_Symbols (File : Ptr;
@@ -44,7 +45,7 @@ package Bfd.Thin.Symtab is
    pragma Import (C, Read_Symbols, "bfd_read_symbols");
 
    procedure Find_Nearest_Line (File : in Ptr;
-                                Sec : in Section_Iterator;
+                                Sec : in Bfd.Sections.Section_Iterator;
                                 Syms : in Ptr;
                                 Addr : in Vma_Type;
                                 Name : in Ptr;

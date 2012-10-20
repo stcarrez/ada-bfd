@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  BFD -- Thin Ada layer for Bfd (common Bfd functions)
---  <!-- Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  <!-- Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -22,7 +22,8 @@
 -----------------------------------------------------------------------
 --  This package defines the C import to access to the BFD C library.
 --
-with Bfd; use Bfd;
+with Interfaces.C;
+with Bfd;
 package Bfd.Thin is
 
    function Get_Error_Type return Integer;
@@ -52,7 +53,7 @@ package Bfd.Thin is
    procedure Close (File : in Ptr);
    pragma Import (C, Close, "bfd_close");
 
-   function Check_Format (File : Ptr; What : Integer) return Boolean;
+   function Check_Format (File : Ptr; What : Integer) return Interfaces.C.int;
    pragma Import (C, Check_Format, "bfd_check_format");
 
    function Get_Start_Address (Bfd : Ptr) return Vma_Type;

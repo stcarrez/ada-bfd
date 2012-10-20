@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2001, 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -25,12 +25,14 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with System; use System;
-with Bfd.Internal; use Bfd.Internal;
+with Interfaces.C;
+with Bfd.Internal;
 with Bfd.Thin;
 package body Bfd is
 
-   Current_Program_Name : String_Ptr := null;
+   use type System.Address;
+
+   Current_Program_Name : Bfd.Internal.String_Ptr := null;
 
    Safe_Mode : constant Boolean := True;
 
@@ -68,7 +70,7 @@ package body Bfd is
    --  Tell the BFD library what is the program name.
    --  -----------------------
    procedure Set_Error_Program_Name (To : in String) is
-      S : String_Ptr := new String (1 .. To'Length + 1);
+      S : constant Bfd.Internal.String_Ptr := new String (1 .. To'Length + 1);
    begin
       S (1 .. To'Length)   := To (To'Range);
       S (To'Length + 1)    := ASCII.NUL;
@@ -91,7 +93,7 @@ package body Bfd is
    --  -----------------------
    function Get_Error_Message (Code : Error) return String is
    begin
-      return To_Ada (Bfd.Thin.Get_Error_Message (Code));
+      return Bfd.Internal.To_Ada (Bfd.Thin.Get_Error_Message (Code));
    end Get_Error_Message;
 
    procedure Open (File : in out File_Type;
@@ -100,12 +102,12 @@ package body Bfd is
 
    begin
       if Target = "" then
-         File.Abfd := Bfd.Thin.Openr (Name & ASCII.NUL, Null_Address);
+         File.Abfd := Bfd.Thin.Openr (Name & ASCII.NUL, System.Null_Address);
       else
-         File.Abfd := Bfd.Thin.Openr (Name & ASCII.NUL, Null_Address);
+         File.Abfd := Bfd.Thin.Openr (Name & ASCII.NUL, System.Null_Address);
       end if;
 
-      if File.Abfd = Null_Address then
+      if File.Abfd = System.Null_Address then
          raise OPEN_ERROR;
       end if;
    end Open;
@@ -127,11 +129,12 @@ package body Bfd is
    function Get_Filename (File : in File_Type) return String is
    begin
       Check_Bfd (File);
-      return To_Ada (Bfd.Thin.Get_Filename (File.Abfd));
+      return Bfd.Internal.To_Ada (Bfd.Thin.Get_Filename (File.Abfd));
    end Get_Filename;
 
    function Check_Format (File : in File_Type;
                           Expect : in Format) return Boolean is
+      use type Interfaces.C.int;
 
       N : Integer;
    begin
@@ -150,10 +153,11 @@ package body Bfd is
             N := 0;
       end case;
 
-      return Bfd.Thin.Check_Format (File.Abfd, N);
+      return Bfd.Thin.Check_Format (File.Abfd, N) /= 0;
    end Check_Format;
 
    function Get_File_Flags (File : in File_Type) return Flags is
+      pragma Unreferenced (File);
    begin
       return 0;
    end Get_File_Flags;

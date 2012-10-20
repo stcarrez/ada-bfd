@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  Disassembler -- Disassembler
---  <!-- Copyright (C) 2003, 2004, 2006 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  <!-- Copyright (C) 2003, 2004, 2006, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -43,8 +43,9 @@ package Bfd.Disassembler is
       Insn        : Insn_Type;  --  Type of instruction
       Target      : Vma_Type;   --  Target address of branch/dref if known
       Target2     : Vma_Type;   --  Second target address for dref2
-      Delay_Insns : Natural;    --  How many sequential insn's will run
-                                --  before a branch takes effect.
+
+      --  How many sequential insn's will run before a branch takes effect.
+      Delay_Insns : Natural;
       Data_Size   : Natural;    --  Size of data reference in insn (in bytes)
    end record;
 

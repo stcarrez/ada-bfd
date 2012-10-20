@@ -1,12 +1,22 @@
 2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
 
+	* bfdada/bfd-disassembler.ads: Fix syle and compilation warnings.
+	* bfdada/bfd-thin-disassembler.ads: Likewise.
+	* bfdada/bfd-thin-symtab.ads:  Likewise.
+	* bfdada/bfd-thin.ads:  Likewise.
+	* bfdada/bfd.adb:  Likewise.
 	* bfdada/bfd-disassembler.adb (Symbol_At_Address): Use Interfaces.C.int for return type.
-	* bfdada/bfd-symtab.adb: Fix various compilation warnings.
-	* bfdada/bfd-symtab.ads: Fix some style.
-	* bfdada/bfd.ads: Fix coding style.
-	* doc/bfdada.cfg: Fix configuration.
-	* INSTALL: Document the installation step.
 	
+	* bfdada/bfd-symtab.adb: Fix various compilation warnings.
+	
+	* bfdada/bfd-symtab.ads: Fix some style.
+	
+	* bfdada/bfd.ads: Fix coding style.
+	
+	* doc/bfdada.cfg: Fix configuration.
+	
+	* INSTALL: Document the installation step.
+
 2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
 
 	* AUTHORS: Change email address.

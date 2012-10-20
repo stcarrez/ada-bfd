@@ -28,10 +28,12 @@
 
 with Bfd.Internal;
 with Bfd.Thin.Symtab;
+with Interfaces.C;
 package body Bfd.Symtab is
 
    use Bfd.Internal;
    use Bfd.Sections;
+   use type Interfaces.C.int;
 
    ----------------------
    --  Symbol function and procedures
@@ -53,7 +55,7 @@ package body Bfd.Symtab is
    function Is_Local_Label (File : in File_Type;
                             Sym  : in Symbol) return Boolean is
    begin
-      return Bfd.Thin.Symtab.Is_Local (File.Abfd, Sym);
+      return Bfd.Thin.Symtab.Is_Local (File.Abfd, Sym) /= 0;
    end Is_Local_Label;
 
    --  Returns true if the label is local.

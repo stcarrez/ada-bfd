@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  Disassembler -- Disassembler
---  Copyright (C) 2003, 2006 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2003, 2006, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -25,12 +25,10 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with System;
 with Ada.Streams; use Ada.Streams;
 with Interfaces.C;            use Interfaces.C;
 use  Interfaces;
 with Interfaces.C.Strings;    use Interfaces.C.Strings;
-with Interfaces.C.Pointers;
 with Bfd.Thin.Disassembler;
 package body Bfd.Disassembler is
 
@@ -77,7 +75,7 @@ package body Bfd.Disassembler is
 
    procedure Disassembler_Output_Address (Addr : in Vma_Type;
                                           Data : in Ptr) is
-      Info : Disassembler_Ref := Get_Disassembler_Data (Data);
+      Info : constant Disassembler_Ref := Get_Disassembler_Data (Data);
    begin
       Output (Info.all, Addr);
    end Disassembler_Output_Address;
@@ -88,7 +86,9 @@ package body Bfd.Disassembler is
    procedure Memory_Handler (Status : in Integer;
                              Addr   : in Vma_Type;
                              Data   : in Ptr) is
-      Info : Disassembler_Ref := Get_Disassembler_Data (Data);
+      pragma Unreferenced (Status);
+
+      Info : constant Disassembler_Ref := Get_Disassembler_Data (Data);
    begin
       Memory_Error (Info.all, Addr);
    end Memory_Handler;
@@ -97,10 +97,14 @@ package body Bfd.Disassembler is
    --  Symbol check callback
    ----------------------
    function Symbol_At_Address (Addr : in Vma_Type;
-                               Data : in Ptr) return Boolean is
-      Info : Disassembler_Ref := Get_Disassembler_Data (Data);
+                               Data : in Ptr) return Interfaces.C.int is
+      Info : constant Disassembler_Ref := Get_Disassembler_Data (Data);
    begin
-      return Symbol_At (Info.all, Addr);
+      if Symbol_At (Info.all, Addr) then
+         return 1;
+      else
+         return 0;
+      end if;
    end Symbol_At_Address;
 
    ----------------------
@@ -118,7 +122,7 @@ package body Bfd.Disassembler is
       for Buf'Address use Buffer_Addr;
 
       Last : Stream_Element_Offset;
-      Info : Disassembler_Ref := Get_Disassembler_Data (Data);
+      Info : constant Disassembler_Ref := Get_Disassembler_Data (Data);
    begin
       Read (Info.all, Addr, Buf, Last);
       if Last = Buf'Last then
@@ -165,10 +169,11 @@ package body Bfd.Disassembler is
 
    --  Returns true if there is a symbol at the given address.
    --  The default always returns true.
-   function Symbol_At (Info  : in Disassembler_Info_Type;
-                       Addr : in Vma_Type) return Interfaces.C.int is
+   function Symbol_At (Info : in Disassembler_Info_Type;
+                       Addr : in Vma_Type) return Boolean is
+      pragma Unreferenced (Info, Addr);
    begin
-      return 1;
+      return True;
    end Symbol_At;
 
    --  Initialize the disassembler according to the BFD file.
@@ -197,7 +202,7 @@ package body Bfd.Disassembler is
                           Next_Addr : out Vma_Type) is
       use Bfd.Thin.Disassembler;
 
-      Size : Integer := Disassemble (Info.File.Abfd, Info.Dis_Info, Addr);
+      Size : constant Integer := Disassemble (Info.File.Abfd, Info.Dis_Info, Addr);
    begin
       Next_Addr := Addr + Vma_Type (Size);
    end Disassemble;
