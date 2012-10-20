@@ -60,7 +60,7 @@ package body Bfd.Disassembler is
    pragma Export (C, Memory_Handler, "ada_dis_memory_handler");
 
    function Symbol_At_Address (Addr : in Vma_Type;
-                               Data : in Ptr) return Boolean;
+                               Data : in Ptr) return Interfaces.C.int;
    pragma Export (C, Symbol_At_Address, "ada_dis_symbol_at_address");
 
    function Read_Memory_Handler (Addr        : in Vma_Type;
@@ -166,9 +166,9 @@ package body Bfd.Disassembler is
    --  Returns true if there is a symbol at the given address.
    --  The default always returns true.
    function Symbol_At (Info  : in Disassembler_Info_Type;
-                       Addr : in Vma_Type) return Boolean is
+                       Addr : in Vma_Type) return Interfaces.C.int is
    begin
-      return True;
+      return 1;
    end Symbol_At;
 
    --  Initialize the disassembler according to the BFD file.

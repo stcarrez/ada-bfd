@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  symtab -- BFD Symbol Table types and operations
---  Copyright (C) 2002, 2003 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -25,11 +25,13 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with System;
-with Bfd.Internal; use Bfd.Internal;
-with Bfd.Sections; use Bfd.Sections;
+
+with Bfd.Internal;
 with Bfd.Thin.Symtab;
 package body Bfd.Symtab is
+
+   use Bfd.Internal;
+   use Bfd.Sections;
 
    ----------------------
    --  Symbol function and procedures
@@ -57,7 +59,6 @@ package body Bfd.Symtab is
    --  Returns true if the label is local.
    function Is_Local_Label_Name (File : in File_Type;
                                  Name : in String) return Boolean is
-
    begin
       --  return Is_Local (File.Abfd, Name & ASCII.NUL);
       return False;
@@ -169,7 +170,9 @@ package body Bfd.Symtab is
 
    function Get_Symbol (Symbols : in Symbol_Table;
                         Name : in String) return Symbol is
-      S : Symbol := Null_Address;
+      pragma Unreferenced (Symbols, Name);
+
+      S : constant Symbol := Null_Address;
    begin
       return S;
    end Get_Symbol;

@@ -20,13 +20,13 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.  -->
 -----------------------------------------------------------------------
+with System;
+with Interfaces;
+
 --  The Bfd package exports the GNU Bfd library found in Binutils
 --  and Gdb.  It is not intended to be as complete as the C library
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
---
-with System;
-with Interfaces;
 package Bfd is
 
    pragma Linker_Options ("-lbfd");

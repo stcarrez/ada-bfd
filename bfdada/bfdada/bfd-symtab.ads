@@ -24,9 +24,11 @@
 --  BFD library.
 --
 with System;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;
 with Bfd.Sections;
 package Bfd.Symtab is
+
+   use Ada.Strings.Unbounded;
 
    ----------------------
    -- Symbol_Flags     --

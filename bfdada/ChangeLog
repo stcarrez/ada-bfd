@@ -1,5 +1,14 @@
 2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
 
+	* bfdada/bfd-disassembler.adb (Symbol_At_Address): Use Interfaces.C.int for return type.
+	* bfdada/bfd-symtab.adb: Fix various compilation warnings.
+	* bfdada/bfd-symtab.ads: Fix some style.
+	* bfdada/bfd.ads: Fix coding style.
+	* doc/bfdada.cfg: Fix configuration.
+	* INSTALL: Document the installation step.
+	
+2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
+
 	* AUTHORS: Change email address.
 
 2006-05-09  Stephane Carrez  <stcarrez@nerim.fr>
