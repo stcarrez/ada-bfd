@@ -1,3 +1,7 @@
+2012-10-20  Stephane Carrez  <Stephane.Carrez@gmail.com>
+
+	* AUTHORS: Change email address.
+
 2006-05-09  Stephane Carrez  <stcarrez@nerim.fr>
 
 	* examples/disassemble.adb: New file, disassembler example.
