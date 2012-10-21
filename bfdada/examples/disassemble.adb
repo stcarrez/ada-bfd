@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  disassemble -- Simple Disassembler
---  Copyright (C) 2006 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2006, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -20,20 +20,22 @@
 --  the Free Software Foundation, 51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.  -->
 -----------------------------------------------------------------------
-with Ada.Command_Line;    use Ada.Command_Line;
+with Ada.Command_Line;
 with Ada.IO_Exceptions;
-with Ada.Streams;         use Ada.Streams;
+with Ada.Streams;
 with GNAT.Command_Line;
 
-with Interfaces;      use Interfaces;
-with Bfd;             use Bfd;
-with Bfd.Sections;    use Bfd.Sections;
-with Bfd.Symtab;      use Bfd.Symtab;
-with Bfd.Disassembler; use Bfd.Disassembler;
-with Ada.Text_IO;     use Ada.Text_IO;
+with Interfaces;
+with Bfd;
+with Bfd.Sections;
+with Bfd.Symtab;
+with Bfd.Disassembler;
+with Ada.Text_IO;
 
-with Utils; use Utils;
+with Utils;
 procedure Disassemble is
+
+   use Ada.Text_IO;
 
    Opt_H : Boolean := False;
    Opt_V : Boolean := False;
@@ -66,21 +68,23 @@ procedure Disassemble is
    --  List the sections of the BFD file
    --------------------------------------------------
    procedure Disassemble_Section (File : Bfd.File_Type) is
-      Text_Section : Section := Find_Section (File, ".text");
-      Addr         : Vma_Type := Text_Section.Vma;
-      Size         : Stream_Element_Offset
-        := Stream_Element_Offset (Text_Section.Size);
+      use type Bfd.Vma_Type;
+
+      Text_Section : Bfd.Sections.Section := Bfd.Sections.Find_Section (File, ".text");
+      Addr         : Bfd.Vma_Type := Text_Section.Vma;
+      Size         : Ada.Streams.Stream_Element_Offset
+        := Ada.Streams.Stream_Element_Offset (Text_Section.Size);
       Section      : Ada.Streams.Stream_Element_Array (1 .. Size);
       Last         : Ada.Streams.Stream_Element_Offset;
-      Info         : Small_Disassembler;
+      Info         : Utils.Small_Disassembler;
    begin
-      Get_Section_Contents (File, Text_Section, 0, Section, Last);
+      Bfd.Sections.Get_Section_Contents (File, Text_Section, 0, Section, Last);
       Bfd.Disassembler.Initialize (Info, File, "", Text_Section.Vma, Section);
       loop
-         Bfd.Disassembler.Disassemble (Memory_Disassembler_Info_Type'Class (Info),
+         Bfd.Disassembler.Disassemble (Bfd.Disassembler.Memory_Disassembler_Info_Type'Class (Info),
                                        Addr, Addr);
          New_Line;
-         exit when Addr >= Text_Section.Vma + Vma_Type (Size);
+         exit when Addr >= Text_Section.Vma + Bfd.Vma_Type (Size);
       end loop;
    end Disassemble_Section;
 
@@ -88,7 +92,6 @@ procedure Disassemble is
    --  Parse_Arguments
    --------------------------------------------------
    procedure Parse_Arguments is
-      use Ada.Text_IO;
       use Ada.Command_Line;
       use GNAT.Command_Line;
 
@@ -137,26 +140,27 @@ procedure Disassemble is
          begin
             exit when Arg = "";
 
-            Open (File, Arg, "");
-            if Check_Format (File, OBJECT) then
+            Bfd.Open (File, Arg, "");
+            if Bfd.Check_Format (File, Bfd.OBJECT) then
                Disassemble_Section (File);
             end if;
-            Close (File);
+            Bfd.Close (File);
 
          exception
-            when OPEN_ERROR =>
+            when Bfd.OPEN_ERROR =>
                Put_Line (Standard_Error, "Cannot open file '" & Arg
-                         & "': " & Get_Error_Message (Get_Error));
+                         & "': " & Bfd.Get_Error_Message (Bfd.Get_Error));
          end;
       end loop;
    end Parse_Arguments;
 
+   use type Ada.Command_Line.Exit_Status;
 begin
-   Set_Error_Program_Name (To => "sections");
+   Bfd.Set_Error_Program_Name (To => "disassemble");
 
    Parse_Arguments;
    if RC /= 0 then
-      Set_Exit_Status (RC);
+      Ada.Command_Line.Set_Exit_Status (RC);
       return;
    end if;
 
