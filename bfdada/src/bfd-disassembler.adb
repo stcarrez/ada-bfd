@@ -177,14 +177,14 @@ package body Bfd.Disassembler is
    end Symbol_At;
 
    --  Initialize the disassembler according to the BFD file.
-   procedure Initialize (Info      : in out Disassembler_Info_Type'Class;
+   procedure Initialize (Info     : in out Disassembler_Info_Type'Class;
                          For_File : in File_Type;
                          Options  : in String) is
       use Bfd.Thin.Disassembler;
    begin
-      Info.Dis_Info := Disassembler_Init (Info'Address, For_File.Abfd,
+      Info.Abfd := For_File.Abfd;
+      Info.Dis_Info := Disassembler_Init (Info'Address, Info.Abfd,
                                           New_String (Options));
-      Info.File := For_File;
    end Initialize;
 
    --  Set the symbol table associated with the disassembler.
@@ -202,7 +202,7 @@ package body Bfd.Disassembler is
                           Next_Addr : out Vma_Type) is
       use Bfd.Thin.Disassembler;
 
-      Size : constant Integer := Disassemble (Info.File.Abfd, Info.Dis_Info, Addr);
+      Size : constant Integer := Disassemble (Info.Abfd, Info.Dis_Info, Addr);
    begin
       Next_Addr := Addr + Vma_Type (Size);
    end Disassemble;

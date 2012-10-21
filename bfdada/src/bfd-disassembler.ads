@@ -141,7 +141,7 @@ private
 
    type Disassembler_Info_Type is abstract tagged record
       Dis_Info : D;
-      File : File_Type;
+      Abfd     : Ptr := System.Null_Address;
    end record;
 
    type Memory_Disassembler_Info_Type is abstract new Disassembler_Info_Type
