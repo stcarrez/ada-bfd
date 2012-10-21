@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  <!-- Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  <!-- Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -232,13 +232,20 @@ package Bfd.Sections is
    --  Get an iterator to scan the BFD sections.
 
    function Is_Done (Iter : in Section_Iterator) return Boolean;
+   pragma Obsolescent (Entity => Is_Done);
    --  Return true if the iterator reached the last section.
+
+   function Has_Element (Iter : in Section_Iterator) return Boolean;
+   --  Return true if the iterator contains an element.
 
    procedure Next (Iter : in out Section_Iterator);
    --  Move to the next section.
 
-   function Current (Iter : in Section_Iterator) return Section;
+   function Element (Iter : in Section_Iterator) return Section;
    --  Return the current section pointed to by the iterator.
+
+   function Current (Iter : in Section_Iterator) return Section renames Element;
+   pragma Obsolescent (Entity => Current);
 
    function Get_Name (S : in Section) return String;
    --  Return the name of the section.
@@ -255,15 +262,15 @@ package Bfd.Sections is
 
    procedure Get_Section_Contents
      (File : in File_Type;
-      S : in Section;
-      Pos : in Ada.Streams.Stream_Element_Offset := 0;
+      S    : in Section;
+      Pos  : in Ada.Streams.Stream_Element_Offset := 0;
       Item : out Ada.Streams.Stream_Element_Array;
       Last : out Ada.Streams.Stream_Element_Offset);
    --  Get the content of the section starting at the given position.
    --  The result is truncated if the buffer is not large enough
 
    procedure Set_Section_Content (File : in File_Type;
-                                  S : in out Section;
+                                  S    : in out Section;
                                   Item : in Ada.Streams.Stream_Element_Array);
    --  Set the content of the section
 
@@ -273,7 +280,7 @@ package Bfd.Sections is
    --  Raises NOT_FOUND if the section does not exist.
 
    procedure Set_Section_Size (File : in File_Type;
-                               S : in out Section;
+                               S    : in out Section;
                                Size : in Size_Type);
    --  Set the size of the section.
 

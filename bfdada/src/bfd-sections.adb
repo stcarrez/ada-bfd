@@ -52,7 +52,13 @@ package body Bfd.Sections is
       return System.Address (Iter) = System.Null_Address;
    end Is_Done;
 
-   function Current (Iter : in Section_Iterator) return Section is
+   function Has_Element (Iter : in Section_Iterator) return Boolean is
+      use type System.Address;
+   begin
+      return System.Address (Iter) /= System.Null_Address;
+   end Has_Element;
+
+   function Element (Iter : in Section_Iterator) return Section is
       S : Section;
    begin
       S.Vma    := Bfd.Thin.Sections.Get_Section_Vma (Iter);
@@ -61,7 +67,7 @@ package body Bfd.Sections is
       S.Flags  := Bfd.Thin.Sections.Get_Section_Flags (Iter);
       S.Opaque := Iter;
       return S;
-   end Current;
+   end Element;
 
    function Get_Name (S : in Section) return String is
    begin
