@@ -5,4 +5,12 @@
 
 The BfdAda is a library which provides Ada API for GNU Binutils BFD
 library.  It works on any version of GNU Binutils (starting at 2.15).
+The recommended version for GNU Binutils is at least the 2.22.
+
+The BfdAda library allows to:
+
+  - list and scan the ELF sections of an executable or object file,
+  - get the content of the ELF sections,
+  - get access to the symbol table,
+  - use the BFD opcodes disassembler
 
