@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  print -- Print Utilities for examples
---  Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -20,18 +20,11 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Command_Line;    use Ada.Command_Line;
-with Ada.Characters.Handling;
-with Ada.Characters.Latin_1;
-with Ada.IO_Exceptions;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
-with Interfaces; use Interfaces;
-with Ada.Text_IO; use Ada.Text_IO;
-with Bfd; use Bfd;
+with Ada.Text_IO;
 
 package body Utils is
+
+   use Ada.Text_IO;
 
    --------------------------------------------------
    --  Usage
@@ -63,6 +56,8 @@ package body Utils is
    --  Convert an address to a string in hexadecimal form
    --------------------------------------------------
    function HexImage (Addr : in Bfd.Vma_Type) return String is
+      use type Bfd.Vma_Type;
+
       Map : constant String := "0123456789ABCDEF";
       S   : String (1 .. 40);
       Val : Bfd.Vma_Type := Addr;
@@ -81,6 +76,7 @@ package body Utils is
 
    procedure Output (Info : in out Small_Disassembler;
                      Item : in String) is
+      pragma Unreferenced (Info);
    begin
       Put (Item);
    end Output;

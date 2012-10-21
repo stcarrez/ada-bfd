@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  print -- Print Utilities for examples
---  Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -21,7 +21,7 @@
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with Bfd;
-with Bfd.Disassembler; use Bfd.Disassembler;
+with Bfd.Disassembler;
 package Utils is
 
    procedure Print (Item : in String; Max_Len : in Integer);
@@ -29,7 +29,7 @@ package Utils is
 
    function HexImage (Addr : in Bfd.Vma_Type) return String;
 
-   type Small_Disassembler is new Memory_Disassembler_Info_Type
+   type Small_Disassembler is new Bfd.Disassembler.Memory_Disassembler_Info_Type
      with null record;
 
    procedure Output (Info : in out Small_Disassembler;
