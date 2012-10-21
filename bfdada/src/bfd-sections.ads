@@ -58,19 +58,19 @@ package Bfd.Sections is
    --  one in communicating between the assembler and BFD, but this
    --  isn't a good long-term solution.
 
-   SEC_READONLY : constant Section_Flags := 16#010#;
+   SEC_READONLY : constant Section_Flags := 16#08#;
    --  A signal to the OS that the section contains read only data.
 
-   SEC_CODE : constant Section_Flags := 16#020#;
+   SEC_CODE : constant Section_Flags := 16#010#;
    --  The section contains code only.
 
-   SEC_DATA : constant Section_Flags := 16#040#;
+   SEC_DATA : constant Section_Flags := 16#020#;
    --  The section contains data only.
 
-   SEC_ROM : constant Section_Flags := 16#080#;
+   SEC_ROM : constant Section_Flags := 16#040#;
    --  The section will reside in ROM.
 
-   SEC_CONSTRUCTOR : constant Section_Flags := 16#100#;
+   SEC_CONSTRUCTOR : constant Section_Flags := 16#080#;
    --  The section contains constructor information. This section
    --  type is used by the linker to create lists of constructors and
    --  destructors used by <<g++>>. When a back end sees a symbol
@@ -88,12 +88,12 @@ package Bfd.Sections is
    --  The section is a constructor, and should be placed at the
    --  end of the text, data, or bss section(?).
 
-   SEC_HAS_CONTENTS : constant Section_Flags := 16#200#;
+   SEC_HAS_CONTENTS : constant Section_Flags := 16#100#;
    --  The section has contents - a data section could be
    --  <<SEC_ALLOC>> | <<SEC_HAS_CONTENTS>>; a debug section could be
    --  <<SEC_HAS_CONTENTS>>
 
-   SEC_NEVER_LOAD : constant Section_Flags := 16#400#;
+   SEC_NEVER_LOAD : constant Section_Flags := 16#200#;
    --  An instruction to the linker to not output the section
    --  even if it has information which would normally be written.
 
