@@ -98,6 +98,11 @@ test:	build
 	$(GNATMAKE) -p -Ptests
 	bin/bfdada_harness
 
+check:	test
+
+samples:
+	$(GNATMAKE) -p -Psamples
+
 # Files to package in source distribution
 DISTFILES=AUTHORS README ChangeLog COPYING config.guess configure config.sub \
 configure.in Makefile.in install-sh \
