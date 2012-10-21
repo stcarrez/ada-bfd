@@ -23,6 +23,7 @@
 --  This package defines the C import to access to the BFD C library.
 --
 with Interfaces.C;
+with Interfaces.C.Strings;
 with Bfd;
 package Bfd.Thin is
 
@@ -44,7 +45,7 @@ package Bfd.Thin is
    procedure Set_Error_Program_Name (P : in Ptr);
    pragma Import (C, Set_Error_Program_Name, "bfd_set_error_program_name");
 
-   function Openr (Name : in String; Target : in Ptr) return Ptr;
+   function Openr (Name : in Interfaces.C.Strings.chars_ptr; Target : in Ptr) return Ptr;
    pragma Import (C, Openr, "bfd_openr");
 
    function Set_Error_Handler (To : in Error_Handler) return Error_Handler;
