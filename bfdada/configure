@@ -2688,8 +2688,6 @@ BFDADA_MINOR_VERSION=0
 BFDADA_MICRO_VERSION=0
 BFDADA_VERSION=$BFDADA_MAJOR_VERSION.$BFDADA_MINOR_VERSION.$BFDADA_MICRO_VERSION
 
-AM_ADD_OS_SPECIFIC_FLAGS
-
 # checking for local tools
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
@@ -3672,8 +3670,6 @@ else
 fi
 
 
-AM_PATH_GNAT
-AM_PATH_PERL
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether ${MAKE-make} sets \$(MAKE)" >&5
 $as_echo_n "checking whether ${MAKE-make} sets \$(MAKE)... " >&6; }
 set x ${MAKE-make}
@@ -4264,7 +4260,7 @@ fi
 AUNITDIR=aunit-1.01
 
 
-ac_config_files="$ac_config_files Makefile bfdada-config doc/Makefile"
+ac_config_files="$ac_config_files Makefile bfdada.gpr doc/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5013,7 +5009,7 @@ do
   case $ac_config_target in
     "depfiles") CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
-    "bfdada-config") CONFIG_FILES="$CONFIG_FILES bfdada-config" ;;
+    "bfdada.gpr") CONFIG_FILES="$CONFIG_FILES bfdada.gpr" ;;
     "doc/Makefile") CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;

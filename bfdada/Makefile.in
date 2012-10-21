@@ -103,7 +103,7 @@ DISTFILES=AUTHORS README ChangeLog COPYING config.guess configure config.sub \
 configure.in Makefile.in install-sh \
 bfdada.gpr.in tests.gpr samples.gpr config.gpr \
 src samples regtests \
-bin obj lib doc distrib
+bin obj lib doc distrib aunit-1.01
 
 dist:
 	-rm -rf $(distdir)
@@ -123,8 +123,8 @@ dist:
 	  fi; \
 	done
 	-rm -f $(distdir)/bin/*
-	-rm -f $(distdir)/obj/*
-	-rm -f $(distdir)/lib/*
+	-rm -rf $(distdir)/obj/*
+	-rm -rf $(distdir)/lib/*
 	tar --exclude=.svn --exclude="*~" --exclude="*.o" --exclude="*.ali" \
 	    --exclude="*.log" --exclude="*.a" \
 	    -cvzf $(DIST_FILE) $(distdir)
@@ -139,16 +139,16 @@ install_lib:
 	$(MKDIR) -p ${includedir}/bfdada
 	$(MKDIR) -p ${projectdir}/
 	${MKDIR} -p ${alidir}/bfdada/$(LIBRARY_TYPE)
-	${CP} -p src/*.ad[bs] ${includedir}/el
+	${CP} -p src/*.ad[bs] ${includedir}/bfdada
 	sed -e "s,INSTALL,${prefix},g" -e "s,LIBRARY_TYPE,$(LIBRARY_TYPE),g" < distrib/bfdada.gpr > ${projectdir}/bfdada.gpr
-	${CP} -p lib/$(LIBRARY_TYPE)/*.ali ${alidir}/el/$(LIBRARY_TYPE)/
+	${CP} -p lib/$(LIBRARY_TYPE)/*.ali ${alidir}/bfdada/$(LIBRARY_TYPE)/
 ifeq ($(LIBRARY_TYPE),static)
-	${CP} lib/$(LIBRARY_TYPE)/libadael.a ${libdir}/
+	${CP} lib/$(LIBRARY_TYPE)/libada-bfd.a ${libdir}/
 else
-	${CP} -p lib/$(LIBRARY_TYPE)/libadael.$(LIBVER) ${libdir}/
+	${CP} -p lib/$(LIBRARY_TYPE)/libada-bfd.$(LIBVER) ${libdir}/
 	cd ${libdir} && \
-	   rm -f libadael.$(LIBEXT) && \
-	   ${LN} libadael.$(LIBVER) libadael.$(LIBEXT)
+	   rm -f libada-bfd.$(LIBEXT) && \
+	   ${LN} libada-bfd.$(LIBVER) libada-bfd.$(LIBEXT)
 endif
 
 uninstall:
