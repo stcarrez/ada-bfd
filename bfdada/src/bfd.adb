@@ -101,10 +101,15 @@ package body Bfd is
                    Target : in String := "") is
 
    begin
+      if File.Abfd /= System.Null_Address then
+         Close (File);
+      end if;
+
+      File.Name := Interfaces.C.Strings.New_String (Name);
       if Target = "" then
-         File.Abfd := Bfd.Thin.Openr (Name & ASCII.NUL, System.Null_Address);
+         File.Abfd := Bfd.Thin.Openr (File.Name, System.Null_Address);
       else
-         File.Abfd := Bfd.Thin.Openr (Name & ASCII.NUL, System.Null_Address);
+         File.Abfd := Bfd.Thin.Openr (File.Name, System.Null_Address);
       end if;
 
       if File.Abfd = System.Null_Address then
@@ -113,11 +118,14 @@ package body Bfd is
    end Open;
 
    procedure Close (File : in out File_Type) is
-
+      use type Interfaces.C.Strings.chars_ptr;
    begin
       if File.Abfd /= System.Null_Address then
          Bfd.Thin.Close (File.Abfd);
          File.Abfd := System.Null_Address;
+      end if;
+      if File.Name /= Interfaces.C.Strings.Null_Ptr then
+         Interfaces.C.Strings.Free (File.Name);
       end if;
    end Close;
 
@@ -179,5 +187,11 @@ package body Bfd is
       Check_Bfd (File);
       return Bfd.Thin.Get_Symbol_Count (File.Abfd);
    end Get_Symbol_Count;
+
+   overriding
+   procedure Finalize (File : in out File_Type) is
+   begin
+      Close (File);
+   end Finalize;
 
 end Bfd;

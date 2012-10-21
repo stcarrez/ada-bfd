@@ -22,6 +22,8 @@
 -----------------------------------------------------------------------
 with System;
 with Interfaces;
+with Interfaces.C.Strings;
+with Ada.Finalization;
 
 --  The Bfd package exports the GNU Bfd library found in Binutils
 --  and Gdb.  It is not intended to be as complete as the C library
@@ -122,7 +124,7 @@ package Bfd is
    ----------------------
    --  This part deal with opening and closing the main BFD file.
 
-   type File_Type is private;
+   type File_Type is limited private;
    --  The file type representing the opened BFD file.
 
    procedure Open (File   : in out File_Type;
@@ -161,8 +163,12 @@ private
 
    type Bfd_Ptr is new System.Address;
 
-   type File_Type is record
+   type File_Type is new Ada.Finalization.Limited_Controlled with record
       Abfd : Ptr := System.Null_Address;
+      Name : Interfaces.C.Strings.chars_ptr;
    end record;
+
+   overriding
+   procedure Finalize (File : in out File_Type);
 
 end Bfd;
