@@ -5,7 +5,7 @@ To compile BfdAda you'll need:
 
  - an Ada compiler (GNAT or gcc 4.6).
 
- - the binutils 2.22 installed for developpment
+ - the binutils 2.22 installed for development
    (you need the bfd.h include; see binutils-dev package on Debian or Ubuntu)
 
 
@@ -19,4 +19,13 @@ Run the GNU configure command and build the library:
 You can install the library by using:
 
   make install
+
+
+Compiling the BfdAda samples
+============================
+
+Several samples are provided to show how to use the BfdAda library.
+To build them, use:
+
+  make samples
 

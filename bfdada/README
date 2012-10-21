@@ -12,5 +12,5 @@ The BfdAda library allows to:
   - list and scan the ELF sections of an executable or object file,
   - get the content of the ELF sections,
   - get access to the symbol table,
-  - use the BFD opcodes disassembler
+  - use the BFD disassembler
 
