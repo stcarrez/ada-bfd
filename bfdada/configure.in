@@ -57,5 +57,6 @@ AC_SUBST(AUNITDIR)
 AC_OUTPUT(
 Makefile
 bfdada.gpr
+distrib/bfdada.gpr
 doc/Makefile
 )
