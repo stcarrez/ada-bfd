@@ -24,6 +24,8 @@ MKDIR=mkdir
 CP=cp
 LN=ln -s
 
+NAME=bfdada
+
 ifeq (${OS},Windows_NT)
 LIBEXT=dll
 LIBVER=dll
@@ -107,7 +109,7 @@ force:
 
 # Files to package in source distribution
 DISTFILES=AUTHORS README INSTALL NEWS ChangeLog COPYING config.guess configure config.sub \
-configure.in Makefile.in install-sh \
+configure.in Makefile.in install-sh missing \
 bfdada.gpr.in tests.gpr samples.gpr config.gpr \
 src samples regtests \
 bin obj lib doc distrib aunit-1.01
@@ -143,12 +145,12 @@ install_shared:
 	$(MAKE) LIBRARY_TYPE=relocatable install_lib
 
 install_lib:
-	$(MKDIR) -p ${includedir}/bfdada
+	$(MKDIR) -p ${includedir}/$(NAME)
 	$(MKDIR) -p ${projectdir}/
-	${MKDIR} -p ${alidir}/bfdada/$(LIBRARY_TYPE)
-	${CP} -p src/*.ad[bs] ${includedir}/bfdada
+	${MKDIR} -p ${alidir}/$(NAME)/$(LIBRARY_TYPE)
+	${CP} -p src/*.ad[bs] ${includedir}/$(NAME)
 	sed -e "s,INSTALL,${prefix},g" -e "s,LIBRARY_TYPE,$(LIBRARY_TYPE),g" < distrib/bfdada.gpr > ${projectdir}/bfdada.gpr
-	${CP} -p lib/$(LIBRARY_TYPE)/*.ali ${alidir}/bfdada/$(LIBRARY_TYPE)/
+	${CP} -p lib/$(LIBRARY_TYPE)/*.ali ${alidir}/$(NAME)/$(LIBRARY_TYPE)/
 ifeq ($(LIBRARY_TYPE),static)
 	${CP} lib/$(LIBRARY_TYPE)/libada-bfd.a ${libdir}/
 else
@@ -159,7 +161,7 @@ else
 endif
 
 uninstall:
-	rm -rf ${includedir}/bfdada
+	rm -rf ${includedir}/$(NAME)
 	rm -f ${libdir}/libada-bfd.a
 	rm -f ${libdir}/libada-bfd.$(LIBEXT)
 	rm -f ${projectdir}/bfdada.gpr
