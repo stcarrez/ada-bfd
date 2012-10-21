@@ -100,8 +100,10 @@ test:	build
 
 check:	test
 
-samples:
+samples:	force
 	$(GNATMAKE) -p -Psamples
+
+force:
 
 # Files to package in source distribution
 DISTFILES=AUTHORS README ChangeLog COPYING config.guess configure config.sub \
