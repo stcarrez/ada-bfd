@@ -31,7 +31,7 @@ package Bfd.Tests is
    type Test_Case is new AUnit.Test_Cases.Test_Case with record
       Test_Name : Ada.Strings.Unbounded.Unbounded_String;
       File_Name : Ada.Strings.Unbounded.Unbounded_String;
-      File      : File_Type;
+      File      : access File_Type;
    end record;
 
    type Test_Ref is access all AUnit.Tests.Test'Class;

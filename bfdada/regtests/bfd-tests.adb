@@ -24,11 +24,15 @@ with AUnit.Test_Cases.Registration;
 
 with AUnit.Assertions;
 with Ada.Text_IO;
+with Bfd.Symtab;
 package body Bfd.Tests is
 
    use Ada.Strings.Unbounded;
 
    type Test_Ptr is access Test_Case;
+
+   procedure Test_Open (T : in out AUnit.Test_Cases.Test_Case'Class);
+   procedure Test_Basic (T : in out AUnit.Test_Cases.Test_Case'Class);
 
    function Create_Test (Test_Name : in String;
                          File_Name : in String) return Test_Ref;
@@ -39,6 +43,7 @@ package body Bfd.Tests is
    begin
       T.File_Name := To_Unbounded_String (File_Name);
       T.Test_Name := To_Unbounded_String (Test_Name);
+      T.File := new File_Type;
       return T.all'Access;
    end Create_Test;
 
@@ -49,7 +54,8 @@ package body Bfd.Tests is
 
    procedure Set_Up (T : in out Test_Case) is
    begin
-      Open (T.File, Get_Test_File (T));
+      T.File := new File_Type;
+      Open (T.File.all, Get_Test_File (T));
    exception
       when OPEN_ERROR =>
          Ada.Text_IO.Put_Line ("Test file '" & Get_Test_File (T) & "' cannot be opened");
@@ -58,8 +64,8 @@ package body Bfd.Tests is
 
    procedure Tear_Down (T : in out Test_Case) is
    begin
-      if Is_Open (T.File) then
-         Close (T.File);
+      if Is_Open (T.File.all) then
+         Close (T.File.all);
       end if;
    end Tear_Down;
 
@@ -72,7 +78,7 @@ package body Bfd.Tests is
    begin
       --  Check that OPEN_ERROR exception is raised.
       begin
-         Open (Bfd, "bfd.ads");
+         Open (Bfd, "src/bfd.adsx");
          AUnit.Assertions.Assert (False, "Bfd.Open didn't raise OPEN_ERROR exception");
       exception
          when OPEN_ERROR =>
@@ -95,22 +101,27 @@ package body Bfd.Tests is
    end Test_Open;
 
    procedure Test_Basic (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      Test : Test_Case := Test_Case (T);
+      Test : constant Test_Case := Test_Case (T);
+      Symbols : Bfd.Symtab.Symbol_Table;
    begin
       --  Check that Get_Filename returns our test file.
       declare
-         Name : constant String := Get_Filename (Test.File);
+         Name : constant String := Get_Filename (Test.File.all);
       begin
          AUnit.Assertions.Assert (Name = Get_Test_File (Test),
                                   "Bfd.Get_Filename returned an invalid filename");
       end;
 
-      AUnit.Assertions.Assert (Check_Format (Test.File, OBJECT),
+      AUnit.Assertions.Assert (Check_Format (Test.File.all, OBJECT),
                                "Bfd.Check_Format returned false");
 
+      --  We must load the symbol table first.
+      Bfd.Symtab.Open_Symbols (Test.File.all, Symbols);
+      Ada.Text_IO.Put_Line ("Count: " & Natural'Image (Get_Symbol_Count (Test.File.all)));
+
       --  Can't check in a portable way, assume some reasonable value.
-      AUnit.Assertions.Assert (Get_Symbol_Count (Test.File) > 0
-                               and Get_Symbol_Count (Test.File) < 1000,
+      AUnit.Assertions.Assert (Get_Symbol_Count (Test.File.all) > 0
+                               and Get_Symbol_Count (Test.File.all) < 10000,
                                "Bfd.Get_Symbol_Count returned 0");
 
    end Test_Basic;
@@ -135,8 +146,8 @@ package body Bfd.Tests is
    procedure Add_Tests (Suite : in AUnit.Test_Suites.Access_Test_Suite) is
       use AUnit.Test_Suites;
    begin
-      Add_Test (Suite, Create_Test ("Bfd.Basic on object", "bfd-tests.o"));
-      Add_Test (Suite, Create_Test ("Bfd.Basic on exec", "harness"));
+      Add_Test (Suite, Create_Test ("Bfd.Basic on object", "obj/bfd-tests.o"));
+      Add_Test (Suite, Create_Test ("Bfd.Basic on exec", "bin/bfdada_harness"));
    end Add_Tests;
 
 end Bfd.Tests;
