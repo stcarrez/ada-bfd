@@ -1,6 +1,6 @@
 /* Functions for BfdAda
-   Copyright 2001, 2002, 2003 Free Software Foundation, Inc.
-   Contributed by Stephane Carrez (stcarrez@nerim.fr)
+   Copyright 2001, 2002, 2003, 2012 Free Software Foundation, Inc.
+   Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
 

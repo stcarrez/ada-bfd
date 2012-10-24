@@ -79,10 +79,10 @@ package body Bfd.Symtab is
    ----------------------
 
    --  Return true if we are at end of the iterator.
-   function Is_Done (It : Symbol_Iterator) return Boolean is
+   function Has_Element (It : Symbol_Iterator) return Boolean is
    begin
-      return It.Pos >= It.Size;
-   end Is_Done;
+      return It.Pos < It.Size;
+   end Has_Element;
 
    --  Move the iterator to the next element.
    procedure Next (It : in out Symbol_Iterator) is
@@ -91,10 +91,10 @@ package body Bfd.Symtab is
    end Next;
 
    --  Return the current symbol pointed to by the iterator.
-   function Current (It : in Symbol_Iterator) return Symbol is
+   function Element (It : in Symbol_Iterator) return Symbol is
    begin
       return It.Syms (It.Pos);
-   end Current;
+   end Element;
 
    --  Return an iterator which allows scanning the symbol table.
    function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator is
@@ -198,5 +198,14 @@ package body Bfd.Symtab is
    begin
       return Symbols.Syms;
    end Get_Internal_Symbols;
+
+   --  Release the symbol table.
+   overriding
+   procedure Finalize (Symbols : in out Symbol_Table) is
+      procedure Free is
+        new Ada.Unchecked_Deallocation (Symbol_Array, Symbol_Array_Access);
+   begin
+      Free (Symbols.Syms);
+   end Finalize;
 
 end Bfd.Symtab;

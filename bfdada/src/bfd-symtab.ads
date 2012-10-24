@@ -165,13 +165,13 @@ package Bfd.Symtab is
 
    type Symbol_Iterator is private;
 
-   function Is_Done (It : Symbol_Iterator) return Boolean;
-   --  Return true if we are at end of the iterator.
+   function Has_Element (It : Symbol_Iterator) return Boolean;
+   --  Return true if the iterator contains an element.
 
    procedure Next (It : in out Symbol_Iterator);
    --  Move the iterator to the next element.
 
-   function Current (It : in Symbol_Iterator) return Symbol;
+   function Element (It : in Symbol_Iterator) return Symbol;
    --  Return the current symbol pointed to by the iterator.
 
    procedure Open_Symbols (File : in File_Type;
@@ -181,9 +181,6 @@ package Bfd.Symtab is
 
    function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator;
    --  Return an iterator which allows scanning the symbol table.
-
-   procedure Close_Symbols (Symbols : in out Symbol_Table);
-   --  Close the symbol table and free any resource allocated for it.
 
    procedure Set_Symbols (File : in File_Type;
                           Symbols : in out Symbol_Table);
@@ -222,6 +219,10 @@ private
       Syms : Symbol_Array_Access;
       Size : Natural := 0;
    end record;
+
+   --  Release the symbol table.
+   overriding
+   procedure Finalize (Symbols : in out Symbol_Table);
 
    type Symbol_Iterator is record
       Syms   : Symbol_Array_Access;
