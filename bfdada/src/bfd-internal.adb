@@ -29,9 +29,11 @@
 package body Bfd.Internal is
 
    function To_Ada (P : in Pointer) return String is
+      use type System.Address;
+
       N : Natural;
    begin
-      if P = Null_Address then
+      if P = System.Null_Address then
          return "";
       end if;
       N := Strlen (P);
