@@ -43,7 +43,7 @@ package Bfd.Thin.Disassembler is
    pragma Import (C, Set_Buffer, "bfd_ada_disassembler_set_buffer");
 
    procedure Set_Symbol_Table (D     : in Ptr;
-                               Sym   : in Bfd.Symtab.Symbol_Array_Access;
+                               Syms  : in Ptr;
                                Count : in Integer);
    pragma Import (C, Set_Symbol_Table, "bfd_ada_disassembler_set_symbol_table");
 
