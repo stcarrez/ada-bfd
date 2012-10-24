@@ -29,8 +29,12 @@
 package body Bfd.Internal is
 
    function To_Ada (P : in Pointer) return String is
-      N : constant Natural := Strlen (P);
+      N : Natural;
    begin
+      if P = Null_Address then
+         return "";
+      end if;
+      N := Strlen (P);
       if N > 1000 then
          raise Constraint_Error;
       end if;

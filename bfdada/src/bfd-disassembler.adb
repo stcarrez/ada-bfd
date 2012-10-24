@@ -30,6 +30,7 @@ with Interfaces.C;            use Interfaces.C;
 use  Interfaces;
 with Interfaces.C.Strings;    use Interfaces.C.Strings;
 with Bfd.Thin.Disassembler;
+with Ada.Text_IO;
 package body Bfd.Disassembler is
 
    EIO : constant Integer := -3;
@@ -192,7 +193,7 @@ package body Bfd.Disassembler is
                                Symtab : in Symbol_Table) is
       use Bfd.Thin.Disassembler;
    begin
-      Set_Symbol_Table (Info.Dis_Info, Symtab.Syms, Symtab.Size);
+      Set_Symbol_Table (Info.Dis_Info, Symtab.Syms (1)'Address, Symtab.Size);
    end Set_Symbol_Table;
 
    --  Disassembler one instruction at address Addr.
