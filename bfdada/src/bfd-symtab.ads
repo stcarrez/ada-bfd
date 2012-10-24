@@ -159,7 +159,6 @@ package Bfd.Symtab is
    ----------------------
    type Symbol_Array is array (Positive range <>) of Symbol;
    type Symbol_Array_Access is access all Symbol_Array;
-   pragma Convention (C, Symbol_Array_Access);
 
    type Symbol_Table is record
       Syms : Symbol_Array_Access;
