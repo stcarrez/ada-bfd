@@ -25,6 +25,7 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
+with Ada.Unchecked_Deallocation;
 
 with Bfd.Internal;
 with Bfd.Thin.Symtab;
@@ -80,7 +81,7 @@ package body Bfd.Symtab is
    --  Return true if we are at end of the iterator.
    function Is_Done (It : Symbol_Iterator) return Boolean is
    begin
-      return It.Pos >= It.Symtab.Size;
+      return It.Pos >= It.Size;
    end Is_Done;
 
    --  Move the iterator to the next element.
@@ -92,15 +93,16 @@ package body Bfd.Symtab is
    --  Return the current symbol pointed to by the iterator.
    function Current (It : in Symbol_Iterator) return Symbol is
    begin
-      return Get_Symbol (It.Symtab, It.Pos);
+      return It.Syms (It.Pos);
    end Current;
 
    --  Return an iterator which allows scanning the symbol table.
    function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator is
       It : Symbol_Iterator;
    begin
-      It.Symtab := Symbols;
-      It.Pos := 1;
+      It.Syms := Symbols.Syms;
+      It.Size := Symbols.Size;
+      It.Pos  := 1;
       return It;
    end Get_Iterator;
 
@@ -115,7 +117,6 @@ package body Bfd.Symtab is
 
       Cnt : aliased Integer
         := Bfd.Thin.Symtab.Get_Symtab_Upper_Bound (File.Abfd);
-      S : Symbol_Table;
 
       subtype Symbol_Array_Type is Symbol_Array (1 .. Positive (Cnt));
 
@@ -126,15 +127,16 @@ package body Bfd.Symtab is
       if Cnt < 0 then
          raise OPEN_ERROR;
       end if;
-      S.Size := Natural (Cnt);
-      S.Syms := Syms;
-      Symbols := S;
+      Symbols.Size := Natural (Cnt);
+      Symbols.Syms := Syms;
    end Open_Symbols;
 
    --  Close the symbol table and free any resource allocated for it.
    procedure Close_Symbols (Symbols : in out Symbol_Table) is
+      procedure Free is
+         new Ada.Unchecked_Deallocation (Symbol_Array, Symbol_Array_Access);
    begin
-      null;
+      Free (Symbols.Syms);
    end Close_Symbols;
 
    --  Set the symbol table associated with the BFD file.
@@ -190,5 +192,11 @@ package body Bfd.Symtab is
    begin
       return Symbols.Size;
    end Get_Size;
+
+   --  Internal operation to obtain the symbol table for the disassembler.
+   function Get_Internal_Symbols (Symbols : in Symbol_Table) return Symbol_Array_Access is
+   begin
+      return Symbols.Syms;
+   end Get_Internal_Symbols;
 
 end Bfd.Symtab;

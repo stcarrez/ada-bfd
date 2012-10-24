@@ -25,6 +25,7 @@
 --
 with System;
 with Ada.Strings.Unbounded;
+with Ada.Finalization;
 with Bfd.Sections;
 package Bfd.Symtab is
 
@@ -160,10 +161,7 @@ package Bfd.Symtab is
    type Symbol_Array is array (Positive range <>) of Symbol;
    type Symbol_Array_Access is access all Symbol_Array;
 
-   type Symbol_Table is record
-      Syms : Symbol_Array_Access;
-      Size : Natural := 0;
-   end record;
+   type Symbol_Table is limited private;
 
    type Symbol_Iterator is private;
 
@@ -209,6 +207,9 @@ package Bfd.Symtab is
 
    function Get_Size (Symbols : in Symbol_Table) return Natural;
 
+   --  Internal operation to obtain the symbol table for the disassembler.
+   function Get_Internal_Symbols (Symbols : in Symbol_Table) return Symbol_Array_Access;
+
 private
 
    type Symbol is new System.Address;
@@ -217,8 +218,14 @@ private
    --  to simplify things.  The symbol table in BFD is an array
    --  of asymbol pointers (asymbol**).
 
+   type Symbol_Table is new Ada.Finalization.Limited_Controlled with record
+      Syms : Symbol_Array_Access;
+      Size : Natural := 0;
+   end record;
+
    type Symbol_Iterator is record
-      Symtab : Symbol_Table;
+      Syms   : Symbol_Array_Access;
+      Size   : Natural := 0;
       Pos    : Positive := 1;
    end record;
    --  The symbol iterator keeps track of the symbol table
