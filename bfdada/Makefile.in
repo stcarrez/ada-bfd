@@ -78,10 +78,7 @@ autobuild:
 
 # Clean the root project of all build products.
 clean:
-	-$(GNATCLEAN) -q -P "$(GPRPATH)" -XLIBRARY_TYPE=static
-	-$(GNATCLEAN) -q -P "$(GPRPATH)" -XLIBRARY_TYPE=relocatable
-	-$(GNATCLEAN) -q -Ptests
-	-rm -f lib/*.a lib/*.$(DLLEXT)
+	-rm -rf obj/* lib/*
 
 # Clean root project and all imported projects too.
 clean_tree:
