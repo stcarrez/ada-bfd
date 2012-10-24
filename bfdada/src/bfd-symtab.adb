@@ -48,7 +48,7 @@ package body Bfd.Symtab is
    --  Return the section where the symbol is defined.
    function Get_Section (Sym : in Symbol) return Section is
    begin
-      return Current (Bfd.Thin.Symtab.Get_Symbol_Section (Sym));
+      return Element (Bfd.Thin.Symtab.Get_Symbol_Section (Sym));
    end Get_Section;
 
    --  Returns true if the symbol is local.
@@ -65,6 +65,13 @@ package body Bfd.Symtab is
       --  return Is_Local (File.Abfd, Name & ASCII.NUL);
       return False;
    end Is_Local_Label_Name;
+
+   function Is_Undefined_Class (C : in Character) return Boolean is
+      function Bfd_Is_Undefined_Class (C : in Character) return Interfaces.C.int;
+      pragma Import (C, Bfd_Is_Undefined_Class, "bfd_is_undefined_symclass");
+   begin
+      return Bfd_Is_Undefined_Class (C) /= 0;
+   end Is_Undefined_Class;
 
    ----------------------
    --  Symbol table iterator

@@ -227,7 +227,6 @@ private
 
    Null_Address : constant Symbol := Symbol (System.Null_Address);
 
-   pragma Import (C, Is_Undefined_Class, "bfd_is_undefined_symclass");
    pragma Import (C, Get_Symclass, "bfd_decode_symclass");
    --  C Functions provided by BFD library.
 
