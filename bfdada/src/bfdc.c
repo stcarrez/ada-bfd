@@ -76,7 +76,7 @@ bfd_read_symbols (bfd *abfd, int *cnt, asymbol **sy)
 {
   long size;
 
-  if (!bfd_get_file_flags (abfd) & HAS_SYMS)
+  if (!(bfd_get_file_flags (abfd) & HAS_SYMS))
     {
       *cnt = 0;
       return;
@@ -100,7 +100,7 @@ bfd_find_nearest_line_ (bfd *abfd,
                         unsigned *line)
 {
   if (bfd_find_nearest_line (abfd, sec, syms,
-                             (bfd_vma) addr, name, func, line))
+                             (bfd_vma) (addr) - sec->vma, name, func, line))
     return;
 
   *line = -1;
