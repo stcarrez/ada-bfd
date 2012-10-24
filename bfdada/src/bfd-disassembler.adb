@@ -193,7 +193,8 @@ package body Bfd.Disassembler is
                                Symtab : in Symbol_Table) is
       use Bfd.Thin.Disassembler;
    begin
-      Set_Symbol_Table (Info.Dis_Info, Symtab.Syms (1)'Address, Symtab.Size);
+      Set_Symbol_Table (Info.Dis_Info, Bfd.Symtab.Get_Internal_Symbols (Symtab) (1)'Address,
+                        Bfd.Symtab.Get_Size (Symtab));
    end Set_Symbol_Table;
 
    --  Disassembler one instruction at address Addr.
