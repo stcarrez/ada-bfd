@@ -23,10 +23,13 @@
 with Ada.Command_Line;
 with Ada.Streams;
 with Ada.Text_IO;
+with Ada.Strings.Unbounded;
+with Ada.Directories;
 
 with Bfd;
 with Bfd.Sections;
 with Bfd.Disassembler;
+with Bfd.Symtab;
 
 with Utils;
 procedure Disassemble is
@@ -38,6 +41,7 @@ procedure Disassemble is
    --------------------------------------------------
    procedure Disassemble_Section (File : in Bfd.File_Type) is
       use type Bfd.Vma_Type;
+      use Ada.Strings.Unbounded;
 
       Text_Section : constant Bfd.Sections.Section := Bfd.Sections.Find_Section (File, ".text");
       Size         : constant Ada.Streams.Stream_Element_Offset
@@ -46,11 +50,43 @@ procedure Disassemble is
       Section      : Ada.Streams.Stream_Element_Array (1 .. Size);
       Last         : Ada.Streams.Stream_Element_Offset;
       Info         : Utils.Small_Disassembler;
+      Symbols      : Bfd.Symtab.Symbol_Table;
+      Path         : Ada.Strings.Unbounded.Unbounded_String;
+      Func         : Ada.Strings.Unbounded.Unbounded_String;
+      Line         : Natural;
+      Current_Name : Ada.Strings.Unbounded.Unbounded_String;
+      Current_File : Ada.Strings.Unbounded.Unbounded_String;
    begin
+      Bfd.Symtab.Open_Symbols (File, Symbols);
       Bfd.Sections.Get_Section_Contents (File, Text_Section, 0, Section, Last);
       Bfd.Disassembler.Initialize (Info, File, "", Text_Section.Vma, Section);
+      Info.Set_Symbol_Table (Symbols);
       loop
-         Utils.Print (Utils.HexImage (Addr), 17);
+         Bfd.Symtab.Find_Nearest_Line (File, Text_Section, Symbols, Addr, Path, Func, Line);
+         if Current_File /= Path then
+            if Path /= "" then
+               Ada.Text_IO.Put ("In '");
+               Ada.Text_IO.Put (To_String (Path));
+               Ada.Text_IO.Put_Line ("':");
+               Current_Name := To_Unbounded_String (Ada.Directories.Simple_Name (To_String (Path)));
+            else
+               Current_Name := To_Unbounded_String ("");
+            end if;
+            Current_File := Path;
+         end if;
+         if Current_Name /= "" then
+            Ada.Text_IO.Put (To_String (Current_Name));
+            Ada.Text_IO.Put (":");
+         end if;
+         if Line > 0 then
+            Utils.Print (Natural'Image (Line) & ":", 5);
+         end if;
+         if Func /= "" then
+            Utils.Print ( "<" & To_String (Func) & ">", 20);
+            Ada.Text_IO.Put (":");
+         end if;
+
+         Utils.Print (Utils.HexImage (Addr) & ":", 17);
          Bfd.Disassembler.Disassemble (Bfd.Disassembler.Memory_Disassembler_Info_Type'Class (Info),
                                        Addr, Addr);
          Ada.Text_IO.New_Line;
