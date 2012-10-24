@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  bfdinfo -- Example for Bfd Ada library
---  Copyright (C) 2002, 2003, 2005 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Copyright (C) 2002, 2003, 2005, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -75,9 +75,9 @@ procedure BfdInfo is
       Utils.Print ("LMA", -17);
       Utils.Print ("Flags", -10);
       New_Line;
-      while not Bfd.Sections.Is_Done (Iter) loop
+      while Bfd.Sections.Has_Element (Iter) loop
          declare
-            S   : constant Bfd.Sections.Section := Bfd.Sections.Current (Iter);
+            S   : constant Bfd.Sections.Section := Bfd.Sections.Element (Iter);
             P   : String (1 .. 6) := (others => ' ');
             Pos : Positive := 1;
          begin
@@ -129,9 +129,9 @@ procedure BfdInfo is
    begin
       Bfd.Symtab.Open_Symbols (File, Symbols);
       It := Bfd.Symtab.Get_Iterator (Symbols);
-      while not Bfd.Symtab.Is_Done (It) loop
+      while Bfd.Symtab.Has_Element (It) loop
          declare
-            Sym   : constant Bfd.Symtab.Symbol       := Bfd.Symtab.Current (It);
+            Sym   : constant Bfd.Symtab.Symbol       := Bfd.Symtab.Element (It);
             Sec   : constant Bfd.Sections.Section    := Bfd.Symtab.Get_Section (Sym);
             Flags : constant Bfd.Symtab.Symbol_Flags := Bfd.Symtab.Get_Flags (Sym);
             C     : Character    := Bfd.Symtab.Get_Symclass (Sym);
@@ -154,7 +154,6 @@ procedure BfdInfo is
          end;
          Bfd.Symtab.Next (It);
       end loop;
-      Bfd.Symtab.Close_Symbols (Symbols);
    end List_Symbols;
 
    --------------------------------------------------
