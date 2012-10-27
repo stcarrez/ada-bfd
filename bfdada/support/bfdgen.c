@@ -66,6 +66,36 @@ int main(void)
   printf("   SEC_TIC54X_BLOCK                  : constant Section_Flags := 16#%04x#;\n", SEC_TIC54X_BLOCK);
   printf("   SEC_TIC54X_CLINK                  : constant Section_Flags := 16#%04x#;\n", SEC_TIC54X_CLINK);
   printf("   SEC_COFF_NOREAD                   : constant Section_Flags := 16#%04x#;\n", SEC_COFF_NOREAD);
+  printf("\n");
+
+  printf("   type Symbol_Flags is mod 2**32;\n");
+  printf("   for Symbol_Flags'Size use 32;\n");
+  printf("   BSF_NO_FLAGS                : constant Symbol_Flags := 16#%04x#;\n", BSF_NO_FLAGS);
+  printf("   BSF_LOCAL                   : constant Symbol_Flags := 16#%04x#;\n", BSF_LOCAL);
+  printf("   BSF_GLOBAL                  : constant Symbol_Flags := 16#%04x#;\n", BSF_GLOBAL);
+  printf("   BSF_DEBUGGING               : constant Symbol_Flags := 16#%04x#;\n", BSF_DEBUGGING);
+  printf("   BSF_FUNCTION                : constant Symbol_Flags := 16#%04x#;\n", BSF_FUNCTION);
+  printf("   BSF_KEEP                    : constant Symbol_Flags := 16#%04x#;\n", BSF_KEEP);
+  printf("   BSF_KEEP_G                  : constant Symbol_Flags := 16#%04x#;\n", BSF_KEEP_G);
+  printf("   BSF_WEAK                    : constant Symbol_Flags := 16#%04x#;\n", BSF_WEAK);
+  printf("   BSF_SECTION_SYM             : constant Symbol_Flags := 16#%04x#;\n", BSF_SECTION_SYM);
+  printf("   BSF_OLD_COMMON              : constant Symbol_Flags := 16#%04x#;\n", BSF_OLD_COMMON);
+  printf("   BSF_NOT_AT_END              : constant Symbol_Flags := 16#%04x#;\n", BSF_NOT_AT_END);
+  printf("   BSF_CONSTRUCTOR             : constant Symbol_Flags := 16#%04x#;\n", BSF_CONSTRUCTOR);
+  printf("   BSF_WARNING                 : constant Symbol_Flags := 16#%04x#;\n", BSF_WARNING);
+  printf("   BSF_INDIRECT                : constant Symbol_Flags := 16#%04x#;\n", BSF_INDIRECT);
+  printf("   BSF_FILE                    : constant Symbol_Flags := 16#%04x#;\n", BSF_FILE);
+  printf("   BSF_DYNAMIC                 : constant Symbol_Flags := 16#%04x#;\n", BSF_DYNAMIC);
+  printf("   BSF_OBJECT                  : constant Symbol_Flags := 16#%04x#;\n", BSF_OBJECT);
+  printf("   BSF_DEBUGGING_RELOC         : constant Symbol_Flags := 16#%04x#;\n", BSF_DEBUGGING_RELOC);
+  printf("   BSF_THREAD_LOCAL            : constant Symbol_Flags := 16#%04x#;\n", BSF_THREAD_LOCAL);
+  printf("   BSF_RELC                    : constant Symbol_Flags := 16#%04x#;\n", BSF_RELC);
+  printf("   BSF_SRELC                   : constant Symbol_Flags := 16#%04x#;\n", BSF_SRELC);
+  printf("   BSF_SYNTHETIC               : constant Symbol_Flags := 16#%04x#;\n", BSF_SYNTHETIC);
+  printf("   BSF_GNU_INDIRECT_FUNCTION   : constant Symbol_Flags := 16#%04x#;\n", BSF_GNU_INDIRECT_FUNCTION);
+  printf("   BSF_GNU_UNIQUE              : constant Symbol_Flags := 16#%04x#;\n", BSF_GNU_UNIQUE);
+  printf("\n");
+
   printf("end Bfd.Thin.Constants;\n");
   return 0;
 }
