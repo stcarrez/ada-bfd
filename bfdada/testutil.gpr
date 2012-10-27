@@ -9,7 +9,7 @@ project Testutil is
    for Library_Kind use Library_Type;
    for Library_Version use "lib" & Project'Library_Name & ".so." & Version;
 
-   for Library_Dir use "testutil/" & Project'Library_Kind;
+   for Library_Dir use "lib/testutil/" & Project'Library_Kind;
    for Object_Dir use "obj/testutil/" & Project'Library_Kind;
 
    package compiler is
