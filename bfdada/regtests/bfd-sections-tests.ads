@@ -20,20 +20,22 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with AUnit.Test_Suites;
+with Util.Tests;
 with Bfd;
 with Bfd.Tests;
 package Bfd.Sections.Tests is
 
-   type Test_Case is new Bfd.Tests.Test_Case with record
-      A : Natural;
-   end record;
+   subtype Test_Case is Bfd.Tests.Test_Case;
 
-   --  Override:
+   --  Test get section content operations
+   procedure Test_Get_Section_Contents (T : in out Test_Case);
 
-   --  Register routines to be run:
-   procedure Register_Tests (T : in out Test_Case);
+   --  Test find sections operations
+   procedure Test_Find_Section (T : in out Test_Case);
 
-   procedure Add_Tests (Suite : AUnit.Test_Suites.Access_Test_Suite);
+   --  Test basic sections operations
+   procedure Test_Sections (T : in out Test_Case);
+
+   procedure Add_Tests (Suite : in Util.Tests.Access_Test_Suite);
 
 end Bfd.Sections.Tests;
