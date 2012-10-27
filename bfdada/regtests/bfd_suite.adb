@@ -20,12 +20,12 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with AUnit.Test_Suites;
+with Util.Tests;
 
 with Bfd.Tests;
 with Bfd.Sections.Tests;
-function Bfd_Suite return AUnit.Test_Suites.Access_Test_Suite is
-   Result : constant AUnit.Test_Suites.Access_Test_Suite := new AUnit.Test_Suites.Test_Suite;
+function Bfd_Suite return Util.Tests.Access_Test_Suite is
+   Result : constant Util.Tests.Access_Test_Suite := new Util.Tests.Test_Suite;
 begin
    Bfd.Tests.Add_Tests (Result);
    Bfd.Sections.Tests.Add_Tests (Result);

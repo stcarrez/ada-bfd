@@ -20,10 +20,10 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with AUnit.Test_Runner;
+with Util.Tests;
 with Bfd_Suite;
 procedure Bfdada_Harness is
-   procedure Run is new AUnit.Test_Runner (Bfd_Suite);
+   procedure Harness is new Util.Tests.Harness (Bfd_Suite);
 begin
-   Run (Timed => True);
+   Harness ("bfdada-tests.xml");
 end Bfdada_Harness;
