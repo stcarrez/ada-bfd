@@ -21,37 +21,45 @@
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with Ada.Strings.Unbounded;
-with AUnit.Tests;
-with AUnit.Test_Cases;
-with AUnit.Test_Suites;
+with Util.Tests;
 
 with Bfd;
 package Bfd.Tests is
 
-   type Test_Case is new AUnit.Test_Cases.Test_Case with record
+   type Test_Case;
+
+   type Test_Method_Access is access procedure (T : in out Test_Case);
+
+   type Test_Case is new Util.Tests.Test_Case with record
       Test_Name : Ada.Strings.Unbounded.Unbounded_String;
       File_Name : Ada.Strings.Unbounded.Unbounded_String;
       File      : access File_Type;
+      Method    : Test_Method_Access;
    end record;
-
-   type Test_Ref is access all AUnit.Tests.Test'Class;
-
-   --  Override:
-
-   --  Register routines to be run:
-   procedure Register_Tests (T : in out Test_Case);
+   type Test_Case_Access is access all Test_Case'Class;
 
    --  Provide name identifying the test case:
-   function Name (T : Test_Case) return Ada.Strings.Unbounded.String_Access;
+   overriding
+   function Name (T : in Test_Case) return Util.Tests.Message_String;
 
    --  Setup before each routine:
+   overriding
    procedure Set_Up (T : in out Test_Case);
 
    --  Cleanup performed after each routine:
+   overriding
    procedure Tear_Down (T :  in out Test_Case);
+
+   --  Perform the test.
+   overriding
+   procedure Run_Test (T : in out Test_Case);
+
+   procedure Test_Open (T : in out Test_Case);
+
+   procedure Test_Basic (T : in out Test_Case);
 
    function Get_Test_File (T : in Test_Case) return String;
 
-   procedure Add_Tests (Suite : in AUnit.Test_Suites.Access_Test_Suite);
+   procedure Add_Tests (Suite : in Util.Tests.Access_Test_Suite);
 
 end Bfd.Tests;
