@@ -25,9 +25,11 @@ with Ada.Text_IO;
 with Ada.Streams;
 
 with Bfd.Sections;
+with Bfd.Thin.Constants;
 package body Bfd.Sections.Tests is
 
    use Ada.Strings.Unbounded;
+   use type Bfd.Thin.Constants.Section_Flags;
 
    --  --------------------
    --  Test basic sections operations
@@ -133,11 +135,11 @@ package body Bfd.Sections.Tests is
                Util.Tests.Assert_Equals (T, Integer (Last), Integer (Cnt),
                                         "Cannot get content of section " & Get_Name (Sec));
 
---                 if AUnit.Options.Verbose then
---                    Ada.Text_IO.Put_Line ("Read content of " & Get_Name (Sec)
---                                          & " " & Stream_Element_Offset'Image (Last)
---                                          & " bytes read");
---                 end if;
+               if Util.Tests.Verbose then
+                  Ada.Text_IO.Put_Line ("Read content of " & Get_Name (Sec)
+                                        & " " & Stream_Element_Offset'Image (Last)
+                                        & " bytes read");
+               end if;
 
                --  Crude test to check we got something in.
                if Get_Name (Sec) = ".text" then
