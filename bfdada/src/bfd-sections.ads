@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  <!-- Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -18,14 +18,17 @@
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
---  Boston, MA 02110-1301, USA.  -->
+--  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 --  The <tt>Bfd.Sections</tt> package gives access to the sections that
 --  compose a binary program.
 --
 with System;
 with Ada.Streams;
+with Bfd.Thin.Constants;
 package Bfd.Sections is
+
+   use Bfd.Thin;
 
    ----------------------
    -- Sections         --
@@ -33,44 +36,37 @@ package Bfd.Sections is
    --  The following types and functions deal with sections and
    --  how to access/scan them.
 
-   type Section_Flags is mod 2 ** 32;
-   for Section_Flags'Size use 32;
+   subtype Section_Flags is Bfd.Thin.Constants.Section_Flags;
 
    --  Constants below are extracted from the BFD C source file
    --  CODE FRAGMENT:  bfd/section.c:
-   SEC_NO_FLAGS : constant Section_Flags := 16#000#;
+   SEC_NO_FLAGS : constant Section_Flags := Constants.SEC_NO_FLAGS;
 
-   SEC_ALLOC : constant Section_Flags := 16#001#;
+   SEC_ALLOC : constant Section_Flags := Constants.SEC_ALLOC;
    --  Tells the OS to allocate space for this section when loading.
    --  This is clear for a section containing debug information only.
 
-   SEC_LOAD : constant Section_Flags := 16#002#;
+   SEC_LOAD : constant Section_Flags := Constants.SEC_LOAD;
    --  Tells the OS to load the section from the file when loading.
    --  This is clear for a @.bss@ section.
 
-   SEC_RELOC : constant Section_Flags := 16#004#;
+   SEC_RELOC : constant Section_Flags := Constants.SEC_RELOC;
    --  The section contains data still to be relocated, so there is
    --  some relocation information too.
 
-   SEC_ARCH_BIT_0 : constant Section_Flags := 16#008#;
-   --  ELF reserves 4 processor specific bits and 8 operating system
-   --  specific bits in sh_flags; at present we can get away with just
-   --  one in communicating between the assembler and BFD, but this
-   --  isn't a good long-term solution.
-
-   SEC_READONLY : constant Section_Flags := 16#08#;
+   SEC_READONLY : constant Section_Flags := Constants.SEC_READONLY;
    --  A signal to the OS that the section contains read only data.
 
-   SEC_CODE : constant Section_Flags := 16#010#;
+   SEC_CODE : constant Section_Flags := Constants.SEC_CODE;
    --  The section contains code only.
 
-   SEC_DATA : constant Section_Flags := 16#020#;
+   SEC_DATA : constant Section_Flags := Constants.SEC_DATA;
    --  The section contains data only.
 
-   SEC_ROM : constant Section_Flags := 16#040#;
+   SEC_ROM : constant Section_Flags := Constants.SEC_ROM;
    --  The section will reside in ROM.
 
-   SEC_CONSTRUCTOR : constant Section_Flags := 16#080#;
+   SEC_CONSTRUCTOR : constant Section_Flags := Constants.SEC_CONSTRUCTOR;
    --  The section contains constructor information. This section
    --  type is used by the linker to create lists of constructors and
    --  destructors used by <<g++>>. When a back end sees a symbol
@@ -82,22 +78,19 @@ package Bfd.Sections is
    --  contained within - exactly the operations it would peform on
    --  standard data.
 
-   SEC_CONSTRUCTOR_TEXT : constant Section_Flags := 16#1100#;
-   SEC_CONSTRUCTOR_DATA : constant Section_Flags := 16#2100#;
-   SEC_CONSTRUCTOR_BSS : constant Section_Flags := 16#3100#;
-   --  The section is a constructor, and should be placed at the
-   --  end of the text, data, or bss section(?).
-
-   SEC_HAS_CONTENTS : constant Section_Flags := 16#100#;
+   SEC_HAS_CONTENTS : constant Section_Flags := Constants.SEC_HAS_CONTENTS;
    --  The section has contents - a data section could be
    --  <<SEC_ALLOC>> | <<SEC_HAS_CONTENTS>>; a debug section could be
    --  <<SEC_HAS_CONTENTS>>
 
-   SEC_NEVER_LOAD : constant Section_Flags := 16#200#;
+   SEC_NEVER_LOAD : constant Section_Flags := Constants.SEC_NEVER_LOAD;
    --  An instruction to the linker to not output the section
    --  even if it has information which would normally be written.
 
-   SEC_COFF_SHARED_LIBRARY : constant Section_Flags := 16#800#;
+   SEC_THREAD_LOCAL : constant Section_Flags := Constants.SEC_THREAD_LOCAL;
+   --  The Section Contains Thread Local Data.
+
+   SEC_COFF_SHARED_LIBRARY : constant Section_Flags := Constants.SEC_COFF_SHARED_LIBRARY;
    --  The section is a COFF shared library section.  This flag is
    --  only for the linker.  If this type of section appears in
    --  the input file, the linker must copy it to the output file
@@ -108,7 +101,7 @@ package Bfd.Sections is
    --  allow the back end to control what the linker does with
    --  sections.
 
-   SEC_HAS_GOT_REF : constant Section_Flags := 16#4000#;
+   SEC_HAS_GOT_REF : constant Section_Flags := Constants.SEC_HAS_GOT_REF;
    --  The section has GOT references.  This flag is only for the
    --  linker, and is currently only used by the elf32-hppa back end.
    --  It will be set if global offset table references were detected
@@ -116,101 +109,108 @@ package Bfd.Sections is
    --  contains PIC code, and must be handled specially when doing a
    --  static link.
 
-   SEC_IS_COMMON : constant Section_Flags := 16#8000#;
+   SEC_IS_COMMON : constant Section_Flags := Constants.SEC_IS_COMMON;
    --  The section contains common symbols (symbols may be defined
    --  multiple times, the value of a symbol is the amount of
    --  space it requires, and the largest symbol value is the one
    --  used).  Most targets have exactly one of these (which we
    --  translate to bfd_com_section_ptr), but ECOFF has two.
 
-   SEC_DEBUGGING : constant Section_Flags := 16#10000#;
+   SEC_DEBUGGING : constant Section_Flags := Constants.SEC_DEBUGGING;
    --  The section contains only debugging information.  For
    --  example, this is set for ELF .debug and .stab sections.
    --  strip tests this flag to see if a section can be
    --  discarded.
 
-   SEC_IN_MEMORY : constant Section_Flags := 16#20000#;
+   SEC_IN_MEMORY : constant Section_Flags := Constants.SEC_IN_MEMORY;
    --  The contents of this section are held in memory pointed to
    --  by the contents field.  This is checked by bfd_get_section_contents,
    --  and the data is retrieved from memory if appropriate.
 
-   SEC_EXCLUDE : constant Section_Flags := 16#40000#;
+   SEC_EXCLUDE : constant Section_Flags := Constants.SEC_EXCLUDE;
    --  The contents of this section are to be excluded by the
    --  linker for executable and shared objects unless those
    --  objects are to be further relocated.
 
-   SEC_SORT_ENTRIES : constant Section_Flags := 16#80000#;
+   SEC_SORT_ENTRIES : constant Section_Flags := Constants.SEC_SORT_ENTRIES;
    --  The contents of this section are to be sorted based on the sum of
    --  the symbol and addend values specified by the associated relocation
    --  entries.  Entries without associated relocation entries will be
    --  appended to the end of the section in an unspecified order.
 
-   SEC_LINK_ONCE : constant Section_Flags := 16#100000#;
+   SEC_LINK_ONCE : constant Section_Flags := Constants.SEC_LINK_ONCE;
    --  When linking, duplicate sections of the same name should be
    --  discarded, rather than being combined into a single section as
    --  is usually done.  This is similar to how common symbols are
    --  handled.  See SEC_LINK_DUPLICATES below.
 
-   SEC_LINK_DUPLICATES : constant Section_Flags := 16#600000#;
+   SEC_LINK_DUPLICATES : constant Section_Flags := Constants.SEC_LINK_DUPLICATES;
    --  If SEC_LINK_ONCE is set, this bitfield describes how the linker
    --  should handle duplicate sections.
 
-   SEC_LINK_DUPLICATES_DISCARD : constant Section_Flags := 16#0#;
+   SEC_LINK_DUPLICATES_DISCARD : constant Section_Flags := Constants.SEC_LINK_DUPLICATES_DISCARD;
    --  This value for SEC_LINK_DUPLICATES means that duplicate
    --  sections with the same name should simply be discarded.
 
-   SEC_LINK_DUPLICATES_ONE_ONLY : constant Section_Flags := 16#200000#;
+   SEC_LINK_DUPLICATES_ONE_ONLY : constant Section_Flags := Constants.SEC_LINK_DUPLICATES_ONE_ONLY;
    --  This value for SEC_LINK_DUPLICATES means that the linker
    --  should warn if there are any duplicate sections, although
    --  it should still only link one copy.
 
-   SEC_LINK_DUPLICATES_SAME_SIZE : constant Section_Flags := 16#400000#;
+   SEC_LINK_DUPLICATES_SAME_SIZE : constant Section_Flags
+     := Constants.SEC_LINK_DUPLICATES_SAME_SIZE;
    --  This value for SEC_LINK_DUPLICATES means that the linker
    --  should warn if any duplicate sections are a different size.
 
-   SEC_LINK_DUPLICATES_SAME_CONTENTS : constant Section_Flags := 16#600000#;
+   SEC_LINK_DUPLICATES_SAME_CONTENTS : constant Section_Flags
+     := Constants.SEC_LINK_DUPLICATES_SAME_CONTENTS;
    --  This value for SEC_LINK_DUPLICATES means that the linker
    --  should warn if any duplicate sections contain different
    --  contents.
 
-   SEC_LINKER_CREATED : constant Section_Flags := 16#800000#;
+   SEC_LINKER_CREATED : constant Section_Flags := Constants.SEC_LINKER_CREATED;
    --  This section was created by the linker as part of dynamic
    --  relocation or other arcane processing.  It is skipped when
    --  going through the first-pass output, trusting that someone
    --  else up the line will take care of it later.
 
-   SEC_KEEP : constant Section_Flags := 16#1000000#;
+   SEC_KEEP : constant Section_Flags := Constants.SEC_KEEP;
    --  This section should not be subject to garbage collection.
 
-   SEC_SMALL_DATA : constant Section_Flags := 16#2000000#;
+   SEC_SMALL_DATA : constant Section_Flags := Constants.SEC_SMALL_DATA;
    --  This section contains "short" data, and should be placed
    --  "near" the GP.
 
-   SEC_SHARED : constant Section_Flags := 16#4000000#;
+   SEC_COFF_SHARED : constant Section_Flags := Constants.SEC_COFF_SHARED;
    --  This section contains data which may be shared with other
    --  executables or shared objects.  */
 
-   SEC_BLOCK : constant Section_Flags := 16#8000000#;
+   SEC_TIC54X_BLOCK : constant Section_Flags := Constants.SEC_TIC54X_BLOCK;
    --  When a section with this flag is being linked, then if the size of
    --  the input section is less than a page, it should not cross a page
    --  boundary.  If the size of the input section is one page or more, it
    --  should be aligned on a page boundary.  */
 
-   SEC_CLINK : constant Section_Flags := 16#10000000#;
+   SEC_TIC54X_CLINK : constant Section_Flags := Constants.SEC_TIC54X_CLINK;
    --  Conditionally link this section; do not link if there are no
    --  references found to any symbol in the section.  */
 
-   SEC_MERGE : constant Section_Flags := 16#20000000#;
+   SEC_MERGE : constant Section_Flags := Constants.SEC_MERGE;
    --  Attempt to merge identical entities in the section.
    --  Entity size is given in the entsize field.  */
 
-   SEC_STRINGS : constant Section_Flags := 16#40000000#;
+   SEC_STRINGS : constant Section_Flags := Constants.SEC_STRINGS;
    --  If given with SEC_MERGE, entities to merge are zero terminated
    --  strings where entsize specifies character size instead of fixed
    --  size entries.
 
-   SEC_GROUP : constant Section_Flags := 16#80000000#;
+   SEC_GROUP : constant Section_Flags := Constants.SEC_GROUP;
    --  This section contains data about section groups.
+
+   SEC_ELF_REVERSE_COPY : constant Section_Flags := Constants.SEC_ELF_REVERSE_COPY;
+   --  This input section should be copied to output in reverse order
+   --  as an array of pointers.  This is for ELF linker internal use
+   --  only.
 
    --  END FRAGMENT: bfd/section.c
 
