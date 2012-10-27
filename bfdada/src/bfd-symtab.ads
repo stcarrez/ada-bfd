@@ -27,101 +27,124 @@ with System;
 with Ada.Strings.Unbounded;
 with Ada.Finalization;
 with Bfd.Sections;
+with Bfd.Thin.Constants;
 package Bfd.Symtab is
 
    use Ada.Strings.Unbounded;
+   use Bfd.Thin;
 
    ----------------------
    -- Symbol_Flags     --
    ----------------------
-   type Symbol_Flags is mod 2**32;
-   for Symbol_Flags'Size use 32;
+   subtype Symbol_Flags is Bfd.Thin.Constants.Symbol_Flags;
    --  Represents the flags associated with a symbol.
 
    --  Constants below are extracted from the BFD C source file
    --  CODE FRAGMENT:  bfd/syms.c:
 
-   BSF_NO_FLAGS : constant Symbol_Flags := 16#00#;
    --  Attributes of a symbol.
+   BSF_NO_FLAGS : constant Symbol_Flags := Constants.BSF_NO_FLAGS;
 
-   BSF_LOCAL : constant Symbol_Flags := 16#01#;
    --  The symbol has local scope; <<static>> in <<C>>. The value
    --  is the offset into the section of the data.
+   BSF_LOCAL : constant Symbol_Flags := Constants.BSF_LOCAL;
 
-   BSF_GLOBAL : constant Symbol_Flags := 16#02#;
    --  The symbol has global scope; initialized data in <<C>>. The
    --  value is the offset into the section of the data.
+   BSF_GLOBAL : constant Symbol_Flags := Constants.BSF_GLOBAL;
 
-   BSF_EXPORT : constant Symbol_Flags := BSF_GLOBAL;
    --  The symbol has global scope and is exported. The value is
    --  the offset into the section of the data.
+   BSF_EXPORT : constant Symbol_Flags := Constants.BSF_GLOBAL;
 
    --  A normal C symbol would be one of:
-   --  <<BSF_LOCAL>>, <<BSF_FORT_COMM>>,  <<BSF_UNDEFINED>> or
+   --  <<BSF_LOCAL>>, <<BSF_COMMON>>,  <<BSF_UNDEFINED>> or
    --  <<BSF_GLOBAL>>.
 
-   BSF_DEBUGGING : constant Symbol_Flags := 16#08#;
-   --  The symbol is a debugging record. The value has an arbitary
+   --  The symbol is a debugging record. The value has an arbitrary
    --  meaning, unless BSF_DEBUGGING_RELOC is also set.
+   BSF_DEBUGGING : constant Symbol_Flags := Constants.BSF_DEBUGGING;
 
-   BSF_FUNCTION : constant Symbol_Flags := 16#10#;
    --  The symbol denotes a function entry point.  Used in ELF,
    --  perhaps others someday.
+   BSF_FUNCTION : constant Symbol_Flags := Constants.BSF_FUNCTION;
 
-   BSF_KEEP : constant Symbol_Flags := 16#20#;
-   BSF_KEEP_G : constant Symbol_Flags := 16#40#;
    --  Used by the linker.
+   BSF_KEEP : constant Symbol_Flags := Constants.BSF_KEEP;
+   BSF_KEEP_G : constant Symbol_Flags := Constants.BSF_KEEP_G;
 
-   BSF_WEAK : constant Symbol_Flags := 16#80#;
    --  A weak global symbol, overridable without warnings by
    --  a regular global symbol of the same name.
+   BSF_WEAK : constant Symbol_Flags := Constants.BSF_WEAK;
 
-   BSF_SECTION_SYM : constant Symbol_Flags := 16#100#;
    --  This symbol was created to point to a section, e.g. ELF's
    --  STT_SECTION symbols.
+   BSF_SECTION_SYM : constant Symbol_Flags := Constants.BSF_SECTION_SYM;
 
-   BSF_OLD_COMMON : constant Symbol_Flags := 16#200#;
    --  The symbol used to be a common symbol, but now it is
    --  allocated.
+   BSF_OLD_COMMON : constant Symbol_Flags := Constants.BSF_OLD_COMMON;
 
-   BFD_FORT_COMM_DEFAULT_VALUE : constant Symbol_Flags := 16#0#;
-   --  The default value for common data.
-
-   BSF_NOT_AT_END : constant Symbol_Flags := 16#400#;
    --  In some files the type of a symbol sometimes alters its
    --  location in an output file - ie in coff a <<ISFCN>> symbol
    --  which is also <<C_EXT>> symbol appears where it was
    --  declared and not at the end of a section.  This bit is set
    --  by the target BFD part to convey this information.
+   BSF_NOT_AT_END : constant Symbol_Flags := Constants.BSF_NOT_AT_END;
 
-   BSF_CONSTRUCTOR : constant Symbol_Flags := 16#800#;
    --  Signal that the symbol is the label of constructor section.
+   BSF_CONSTRUCTOR : constant Symbol_Flags := Constants.BSF_CONSTRUCTOR;
 
-   BSF_WARNING : constant Symbol_Flags := 16#1000#;
    --  Signal that the symbol is a warning symbol.  The name is a
    --  warning.  The name of the next symbol is the one to warn about;
    --  if a reference is made to a symbol with the same name as the next
    --  symbol, a warning is issued by the linker.
+   BSF_WARNING : constant Symbol_Flags := Constants.BSF_WARNING;
 
-   BSF_INDIRECT : constant Symbol_Flags := 16#2000#;
    --  Signal that the symbol is indirect.  This symbol is an indirect
    --  pointer to the symbol with the same name as the next symbol.
+   BSF_INDIRECT : constant Symbol_Flags := Constants.BSF_INDIRECT;
 
-   BSF_FILE : constant Symbol_Flags := 16#4000#;
    --  BSF_FILE marks symbols that contain a file name.  This is used
    --  for ELF STT_FILE symbols.
+   BSF_FILE : constant Symbol_Flags := Constants.BSF_FILE;
 
-   BSF_DYNAMIC : constant Symbol_Flags := 16#8000#;
    --  Symbol is from dynamic linking information.
+   BSF_DYNAMIC : constant Symbol_Flags := Constants.BSF_DYNAMIC;
 
-   BSF_OBJECT : constant Symbol_Flags := 16#10000#;
    --  The symbol denotes a data object.  Used in ELF, and perhaps
    --  others someday.
+   BSF_OBJECT : constant Symbol_Flags := Constants.BSF_OBJECT;
 
-   BSF_DEBUGGING_RELOC : constant Symbol_Flags := 16#20000#;
    --  This symbol is a debugging symbol.  The value is the offset
    --  into the section of the data.  BSF_DEBUGGING should be set
    --  as well.
+   BSF_DEBUGGING_RELOC : constant Symbol_Flags := Constants.BSF_DEBUGGING_RELOC;
+
+   --  This symbol is thread local.  Used in ELF.
+   BSF_THREAD_LOCAL : constant Symbol_Flags := Constants.BSF_THREAD_LOCAL;
+
+   --  This symbol represents a complex relocation expression,
+   --  with the expression tree serialized in the symbol name.
+   BSF_RELC : constant Symbol_Flags := Constants.BSF_RELC;
+
+   --  This symbol represents a signed complex relocation expression,
+   --  with the expression tree serialized in the symbol name.
+   BSF_SRELC : constant Symbol_Flags := Constants.BSF_SRELC;
+
+   --  This symbol was created by bfd_get_synthetic_symtab.
+   BSF_SYNTHETIC : constant Symbol_Flags := Constants.BSF_SYNTHETIC;
+
+   --  This symbol is an indirect code object.  Unrelated to BSF_INDIRECT.
+   --  The dynamic linker will compute the value of this symbol by
+   --  calling the function that it points to.  BSF_FUNCTION must
+   --  also be also set.
+   BSF_GNU_INDIRECT_FUNCTION : constant Symbol_Flags := Constants.BSF_GNU_INDIRECT_FUNCTION;
+
+   --  This symbol is a globally unique data object.  The dynamic linker
+   --  will make sure that in the entire process there is just one symbol
+   --  with this name and type in use.  BSF_OBJECT must also be set.
+   BSF_GNU_UNIQUE : constant Symbol_Flags := Constants.BSF_GNU_UNIQUE;
 
    --  END FRAGMENT: bfd/syms.c
 
