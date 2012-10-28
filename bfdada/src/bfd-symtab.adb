@@ -81,7 +81,7 @@ package body Bfd.Symtab is
    --  Return true if we are at end of the iterator.
    function Has_Element (It : Symbol_Iterator) return Boolean is
    begin
-      return It.Pos < It.Size;
+      return It.Pos <= It.Size;
    end Has_Element;
 
    --  Move the iterator to the next element.
