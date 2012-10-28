@@ -51,8 +51,12 @@ AC_CHECK_HEADERS(bfd.h dis-asm.h)
 
 AC_CHECK_LIB(bfd,bfd_openr,[LIBS="$LIBS -lbfd"])
 
+AC_CHECK_LIB(dl,dlopen,[CFLAGS="$CFLAGS -DHAVE_LIB_DL=1"])
+AC_CHECK_LIB(intl,dcgettext,[CFLAGS="$CFLAGS -DHAVE_LIB_INTL=1"])
+
 AUNITDIR=aunit-1.01
 AC_SUBST(AUNITDIR)
+AC_SUBST(CFLAGS)
 
 AC_OUTPUT(
 Makefile
