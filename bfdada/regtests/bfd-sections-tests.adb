@@ -24,6 +24,7 @@ with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Ada.Streams;
 
+with Bfd.Files;
 with Bfd.Sections;
 with Bfd.Thin.Constants;
 package body Bfd.Sections.Tests is
@@ -39,7 +40,7 @@ package body Bfd.Sections.Tests is
 
       Has_Code : Boolean := False;
    begin
-      T.Assert (Check_Format (T.File.all, OBJECT),
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
 
       S := Get_Sections (T.File.all);
@@ -71,7 +72,7 @@ package body Bfd.Sections.Tests is
    procedure Test_Find_Section (T : in out Test_Case) is
       Sec  : Section;
    begin
-      T.Assert (Check_Format (T.File.all, OBJECT),
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
 
       --  Check that Find_Section raises an exception when the section
@@ -111,7 +112,7 @@ package body Bfd.Sections.Tests is
       It   : Section_Iterator;
       Read_Something : Boolean := False;
    begin
-      T.Assert (Check_Format (T.File.all, OBJECT),
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
 
       It := Get_Sections (T.File.all);
@@ -179,7 +180,7 @@ package body Bfd.Sections.Tests is
          T.File_Name := To_Unbounded_String (File_Name);
          T.Test_Name := To_Unbounded_String (Test_Name);
          T.Method    := Method;
-         T.File := new File_Type;
+         T.File := new Bfd.Files.File_Type;
          Suite.Add_Test (T.all'Access);
       end Add_Test;
    begin

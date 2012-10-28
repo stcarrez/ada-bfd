@@ -24,6 +24,7 @@ with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Ada.Streams;
 
+with Bfd.Files;
 with Bfd.Sections;
 with Bfd.Thin.Constants;
 package body Bfd.Symtab.Tests is
@@ -38,15 +39,15 @@ package body Bfd.Symtab.Tests is
    procedure Test_Open_Symbols (T : in out Test_Case) is
       Symbols : Bfd.Symtab.Symbol_Table;
    begin
-      T.Assert (Check_Format (T.File.all, OBJECT),
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
       Bfd.Symtab.Open_Symbols (T.File.all, Symbols);
 
       --  Can't check in a portable way, assume some reasonable value.
-      T.Assert (Get_Symbol_Count (T.File.all) > 0
-                and Get_Symbol_Count (T.File.all) < 10000,
+      T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) > 0
+                and Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
                 "Bfd.Get_Symbol_Count returned 0");
 
    end Test_Open_Symbols;
@@ -60,7 +61,7 @@ package body Bfd.Symtab.Tests is
       Iter    : Symbol_Iterator;
       Count   : Natural;
    begin
-      T.Assert (Check_Format (T.File.all, OBJECT),
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
@@ -71,8 +72,8 @@ package body Bfd.Symtab.Tests is
                 "The symbol table seems empty.");
 
       --  Can't check in a portable way, assume some reasonable value.
-      T.Assert (Get_Symbol_Count (T.File.all) > 0
-                and Get_Symbol_Count (T.File.all) < 10000,
+      T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) > 0
+                and Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
                 "Bfd.Get_Symbol_Count returned 0");
 
       Count := 0;
@@ -91,10 +92,10 @@ package body Bfd.Symtab.Tests is
       end loop;
 
       Ada.Text_IO.Put_Line ("Iterate count: " & Natural'Image (Count));
-      Ada.Text_IO.Put_Line ("Symbol count: " & Natural'Image (Get_Symbol_Count (T.File.all)));
+      Ada.Text_IO.Put_Line ("Symbol count: " & Natural'Image (Bfd.Files.Get_Symbol_Count (T.File.all)));
 
       --  Iterator must match the symbol count.
-      T.Assert (Get_Symbol_Count (T.File.all) = Count,
+      T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) = Count,
                 "Bfd.Get_Symbol_Count returned 0");
 
    end Test_Symbol_Iterator;
@@ -104,12 +105,12 @@ package body Bfd.Symtab.Tests is
    --  --------------------
    procedure Test_Symbol (T         : in out Test_Case;
                           Name      : in String;
-                          Flag      : in Bfd.Symtab.Symbol_Flags;
+                          Flag      : in Bfd.Symbol_Flags;
                           Undefined : in Boolean) is
       Symbols : Bfd.Symtab.Symbol_Table;
       Sym     : Bfd.Symtab.Symbol;
    begin
-      T.Assert (Check_Format (T.File.all, OBJECT),
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
@@ -145,7 +146,7 @@ package body Bfd.Symtab.Tests is
       Symbols : Bfd.Symtab.Symbol_Table;
       Sym     : Bfd.Symtab.Symbol;
    begin
-      T.Assert (Check_Format (T.File.all, OBJECT),
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
@@ -204,7 +205,7 @@ package body Bfd.Symtab.Tests is
          T.File_Name := To_Unbounded_String (File_Name);
          T.Test_Name := To_Unbounded_String (Test_Name);
          T.Method    := Method;
-         T.File := new File_Type;
+         T.File := new Bfd.Files.File_Type;
          Suite.Add_Test (T.all'Access);
       end Add_Test;
    begin
