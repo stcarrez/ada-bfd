@@ -30,7 +30,7 @@ with Bfd;
 with Bfd.Files;
 with Bfd.Sections;
 with Bfd.Disassembler;
-with Bfd.Symtab;
+with Bfd.Symbols;
 
 with Utils;
 procedure Disassemble is
@@ -51,19 +51,19 @@ procedure Disassemble is
       Section      : Ada.Streams.Stream_Element_Array (1 .. Size);
       Last         : Ada.Streams.Stream_Element_Offset;
       Info         : Utils.Small_Disassembler;
-      Symbols      : Bfd.Symtab.Symbol_Table;
+      Symbols      : Bfd.Symbols.Symbol_Table;
       Path         : Ada.Strings.Unbounded.Unbounded_String;
       Func         : Ada.Strings.Unbounded.Unbounded_String;
       Line         : Natural;
       Current_Name : Ada.Strings.Unbounded.Unbounded_String;
       Current_File : Ada.Strings.Unbounded.Unbounded_String;
    begin
-      Bfd.Symtab.Open_Symbols (File, Symbols);
+      Bfd.Symbols.Open_Symbols (File, Symbols);
       Bfd.Sections.Get_Section_Contents (File, Text_Section, 0, Section, Last);
       Bfd.Disassembler.Initialize (Info, File, "", Text_Section.Vma, Section);
       Info.Set_Symbol_Table (Symbols);
       loop
-         Bfd.Symtab.Find_Nearest_Line (File, Text_Section, Symbols, Addr, Path, Func, Line);
+         Bfd.Symbols.Find_Nearest_Line (File, Text_Section, Symbols, Addr, Path, Func, Line);
          if Current_File /= Path then
             if Path /= "" then
                Ada.Text_IO.Put ("In '");

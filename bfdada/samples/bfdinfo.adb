@@ -27,7 +27,7 @@ with GNAT.Command_Line;
 with Bfd;
 with Bfd.Files;
 with Bfd.Sections;
-with Bfd.Symtab;
+with Bfd.Symbols;
 with Utils;
 
 procedure BfdInfo is
@@ -125,35 +125,35 @@ procedure BfdInfo is
    procedure List_Symbols (File : Bfd.Files.File_Type) is
       use type Bfd.Symbol_Flags;
 
-      Symbols : Bfd.Symtab.Symbol_Table;
-      It      : Bfd.Symtab.Symbol_Iterator;
+      Symbols : Bfd.Symbols.Symbol_Table;
+      It      : Bfd.Symbols.Symbol_Iterator;
    begin
-      Bfd.Symtab.Open_Symbols (File, Symbols);
-      It := Bfd.Symtab.Get_Iterator (Symbols);
-      while Bfd.Symtab.Has_Element (It) loop
+      Bfd.Symbols.Open_Symbols (File, Symbols);
+      It := Bfd.Symbols.Get_Iterator (Symbols);
+      while Bfd.Symbols.Has_Element (It) loop
          declare
-            Sym   : constant Bfd.Symtab.Symbol       := Bfd.Symtab.Element (It);
-            Sec   : constant Bfd.Sections.Section    := Bfd.Symtab.Get_Section (Sym);
-            Flags : constant Bfd.Symbol_Flags        := Bfd.Symtab.Get_Flags (Sym);
-            C     : Character    := Bfd.Symtab.Get_Symclass (Sym);
+            Sym   : constant Bfd.Symbols.Symbol       := Bfd.Symbols.Element (It);
+            Sec   : constant Bfd.Sections.Section    := Bfd.Symbols.Get_Section (Sym);
+            Flags : constant Bfd.Symbol_Flags        := Bfd.Symbols.Get_Flags (Sym);
+            C     : Character    := Bfd.Symbols.Get_Symclass (Sym);
          begin
-            if (Flags and Bfd.Symtab.BSF_OBJECT) /= 0 then
+            if (Flags and Bfd.Symbols.BSF_OBJECT) /= 0 then
                C := 'O';
                Put ("          ");
             elsif Bfd.Sections.Is_Undefined_Section (Sec) then
                Put ("          ");
             else
-               Utils.Print (Utils.HexImage (Bfd.Symtab.Get_Value (Sym)), 9);
-               if (Flags and Bfd.Symtab.BSF_GLOBAL) /= 0 then
+               Utils.Print (Utils.HexImage (Bfd.Symbols.Get_Value (Sym)), 9);
+               if (Flags and Bfd.Symbols.BSF_GLOBAL) /= 0 then
                   if C >= 'a' then
                      C := Character'Val (Character'Pos (C) + 32);
                   end if;
                end if;
             end if;
             Put (" " & C & " ");
-            Put_Line (Bfd.Symtab.Get_Name (Sym));
+            Put_Line (Bfd.Symbols.Get_Name (Sym));
          end;
-         Bfd.Symtab.Next (It);
+         Bfd.Symbols.Next (It);
       end loop;
    end List_Symbols;
 
