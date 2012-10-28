@@ -26,7 +26,7 @@
 --  observe its sections, its symbol table.
 --
 with System;
-
+with Interfaces.C.Strings;
 package Bfd.Internal is
 
    subtype Ptr is System.Address;
@@ -38,6 +38,9 @@ package Bfd.Internal is
 
    function Strlen (Name : in Ptr) return Natural;
    pragma Import (C, Strlen, "strlen");
+
+   function Strcmp (S1, S2 : in Interfaces.C.Strings.chars_ptr) return Integer;
+   pragma Import (C, Strcmp, "strcmp");
 
    procedure Strcpy (To : in Ptr; From : in Ptr);
    pragma Import (C, Strcpy, "strcpy");
