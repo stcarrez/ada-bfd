@@ -23,6 +23,7 @@ LN_S=@LN_S@
 MKDIR=mkdir
 CP=cp
 LN=ln -s
+CC=@CC@
 
 NAME=bfdada
 
@@ -109,7 +110,7 @@ DISTFILES=AUTHORS README INSTALL NEWS ChangeLog COPYING config.guess configure c
 configure.in Makefile.in install-sh missing \
 bfdada.gpr.in tests.gpr samples.gpr config.gpr testutil.gpr \
 src samples regtests \
-bin obj lib doc distrib support testutil
+bin obj lib distrib support testutil
 
 dist:
 	-rm -rf $(distdir)
@@ -128,9 +129,11 @@ dist:
 	    || cp -p $$d/$$file $(distdir)/$$file || :; \
 	  fi; \
 	done
+	-rm -rf $(distdir)/distrib/bfdada.gpr
 	-rm -f $(distdir)/bin/*
 	-rm -rf $(distdir)/obj/*
 	-rm -rf $(distdir)/lib/*
+	-rm -rf $(distdir)/regtests/result
 	tar --exclude=.svn --exclude="*~" --exclude="*.o" --exclude="*.ali" \
 	    --exclude="*.log" --exclude="*.a" \
 	    -cvzf $(DIST_FILE) $(distdir)
