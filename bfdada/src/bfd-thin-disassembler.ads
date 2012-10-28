@@ -22,7 +22,6 @@
 -----------------------------------------------------------------------
 --  This package defines the C import to access to the BFD C library.
 --
-with Bfd.Symtab;
 with Interfaces.C.Strings;
 package Bfd.Thin.Disassembler is
 

@@ -27,7 +27,7 @@ with System;
 with Ada.Streams;
 
 with Bfd.Files;
-with Bfd.Symtab;
+with Bfd.Symbols;
 package Bfd.Disassembler is
 
    type Insn_Type is (NONINSN,          --  Not a valid instruction
@@ -54,53 +54,53 @@ package Bfd.Disassembler is
    ----------------------
    type Disassembler_Info_Type is abstract tagged private;
 
+   --  Initialize the disassembler according to the BFD file.
    procedure Initialize (Info     : in out Disassembler_Info_Type'Class;
                          For_File : in Bfd.Files.File_Type;
                          Options  : in String);
-   --  Initialize the disassembler according to the BFD file.
 
-   procedure Disassemble (Info      : in out Disassembler_Info_Type;
-                          Addr      : in Vma_Type;
-                          Next_Addr : out Vma_Type);
    --  Disassemble one instruction at address Addr.
    --  It uses the Read procedure to read the memory to disassemble
    --  and calls Output to print the result.  Once disassembled,
    --  the address of the next instruction is returned in Next_Addr.
+   procedure Disassemble (Info      : in out Disassembler_Info_Type;
+                          Addr      : in Vma_Type;
+                          Next_Addr : out Vma_Type);
 
-   procedure Output (Info : in out Disassembler_Info_Type;
-                     Item : in String) is abstract;
    --  Print the result of disassembling the current instruction.
    --  This procedure is called by the disassembler to print the instruction
    --  and its operands.
-
    procedure Output (Info : in out Disassembler_Info_Type;
-                     Addr : in Vma_Type);
+                     Item : in String) is abstract;
+
    --  Print the address.
    --  The default just translates the address in hexadecimal and
    --  prints it with the Output procedure.  It can be overriden by a
    --  derived type to print a symbolic address.
+   procedure Output (Info : in out Disassembler_Info_Type;
+                     Addr : in Vma_Type);
 
-   function Symbol_At (Info : in Disassembler_Info_Type;
-                       Addr : in Vma_Type) return Boolean;
    --  Returns true if there is a symbol at the given address.
    --  The default always returns true.
+   function Symbol_At (Info : in Disassembler_Info_Type;
+                       Addr : in Vma_Type) return Boolean;
 
+   --  Reads Item'Size bytes starting at the given address.
+   --  This procedure is called by the disassembler to obtain the memory
+   --  to disassemble.  It is called several times depending on the assembler.
    procedure Read (Info : in out Disassembler_Info_Type;
                    Addr : in Vma_Type;
                    Item : out Ada.Streams.Stream_Element_Array;
                    Last : out Ada.Streams.Stream_Element_Offset) is abstract;
-   --  Reads Item'Size bytes starting at the given address.
-   --  This procedure is called by the disassembler to obtain the memory
-   --  to disassemble.  It is called several times depending on the assembler.
 
-   procedure Memory_Error (Info : in out Disassembler_Info_Type;
-                           Addr : in Vma_Type) is abstract;
    --  Report an error while reading memory.
    --  This is called when the Read procedure returns an error.
+   procedure Memory_Error (Info : in out Disassembler_Info_Type;
+                           Addr : in Vma_Type) is abstract;
 
-   procedure Set_Symbol_Table (Info   : in out Disassembler_Info_Type;
-                               Symtab : in Bfd.Symtab.Symbol_Table);
    --  Set the symbol table associated with the disassembler.
+   procedure Set_Symbol_Table (Info   : in out Disassembler_Info_Type;
+                               Symtab : in Bfd.Symbols.Symbol_Table);
 
    --  --------------------
    --  Memory Disassembler type
@@ -108,34 +108,34 @@ package Bfd.Disassembler is
    type Memory_Disassembler_Info_Type is abstract new Disassembler_Info_Type
      with private;
 
+   --  Initialize the disassembler according to the BFD file.
+   --  Setup the disassembler to the buffer passed in Buffer for reading
+   --  the instructions to disassemble.  The buffer's starting VMA address
+   --  is specified by Buffer_Vma.
    procedure Initialize (Info       : in out Memory_Disassembler_Info_Type'Class;
                          For_File   : in Bfd.Files.File_Type;
                          Options    : in String;
                          Buffer_Vma : in Vma_Type;
                          Buffer     : in Ada.Streams.Stream_Element_Array);
-   --  Initialize the disassembler according to the BFD file.
-   --  Setup the disassembler to the buffer passed in Buffer for reading
-   --  the instructions to disassemble.  The buffer's starting VMA address
-   --  is specified by Buffer_Vma.
 
-   procedure Memory_Error (Info : in out Memory_Disassembler_Info_Type;
-                           Addr : in Vma_Type);
    --  Report an error while reading memory.
    --  This is called when the Read procedure returns an error.
+   procedure Memory_Error (Info : in out Memory_Disassembler_Info_Type;
+                           Addr : in Vma_Type);
 
-   procedure Output (Info : in out Memory_Disassembler_Info_Type;
-                     Item : in String) is abstract;
    --  Print the result of disassembling the current instruction.
    --  This procedure is called to print the instruction and its
    --  operands.
+   procedure Output (Info : in out Memory_Disassembler_Info_Type;
+                     Item : in String) is abstract;
 
+   --  Reads Item'Size bytes starting at the given address.
+   --  This procedure uses the buffer passed to Disassembler to obtain
+   --  the memory.
    procedure Read (Info : in out Memory_Disassembler_Info_Type;
                    Addr : in Vma_Type;
                    Item : out Ada.Streams.Stream_Element_Array;
                    Last : out Ada.Streams.Stream_Element_Offset);
-   --  Reads Item'Size bytes starting at the given address.
-   --  This procedure uses the buffer passed to Disassembler to obtain
-   --  the memory.
 
 private
 
