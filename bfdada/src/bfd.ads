@@ -31,7 +31,6 @@ package Bfd is
 
    pragma Linker_Options ("-lbfd");
    pragma Linker_Options ("-liberty");
-   pragma Linker_Options ("-ldl");
    pragma Linker_Options ("-lz");
 
    type File_Flags is new Interfaces.Unsigned_32;

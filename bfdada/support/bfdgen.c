@@ -76,6 +76,16 @@ int main(void)
   
   printf("package Bfd.Constants is\n");
   printf("\n");
+
+#ifdef HAVE_LIB_DL
+  printf("   pragma Linker_Options (\"-ldl\");  --  Used by libbfd.a (Linux)\n");
+#endif
+
+#ifdef HAVE_LIB_INTL
+  printf("   pragma Linker_Options (\"-lintl\");  --  Used by libbfd.a (NetBSD)\n");
+#endif
+
+  printf("\n");
   printf("   SEC_NO_FLAGS                      : constant Section_Flags := 16#%04x#;\n", SEC_NO_FLAGS);
   printf("   SEC_ALLOC                         : constant Section_Flags := 16#%04x#;\n", SEC_ALLOC);
   printf("   SEC_LOAD                          : constant Section_Flags := 16#%04x#;\n", SEC_LOAD);
