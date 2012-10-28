@@ -1,5 +1,5 @@
 -----------------------------------------------------------------------
---  symtab -- BFD Symbol Table types and operations
+--  Symbols -- BFD Symbol Table types and operations
 --  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
@@ -28,10 +28,10 @@
 with Ada.Unchecked_Deallocation;
 
 with Bfd.Internal;
-with Bfd.Thin.Symtab;
+with Bfd.Thin.Symbols;
 with Interfaces.C;
 with Interfaces.C.Strings;
-package body Bfd.Symtab is
+package body Bfd.Symbols is
 
    use Bfd.Internal;
    use Bfd.Sections;
@@ -44,20 +44,20 @@ package body Bfd.Symtab is
    --  Return the symbol name.
    function Get_Name (Sym : in Symbol) return String is
    begin
-      return Interfaces.C.Strings.Value (Bfd.Thin.Symtab.Get_Symbol_Name (Sym));
+      return Interfaces.C.Strings.Value (Bfd.Thin.Symbols.Get_Symbol_Name (Sym));
    end Get_Name;
 
    --  Return the section where the symbol is defined.
    function Get_Section (Sym : in Symbol) return Section is
    begin
-      return Element (Bfd.Thin.Symtab.Get_Symbol_Section (Sym));
+      return Element (Bfd.Thin.Symbols.Get_Symbol_Section (Sym));
    end Get_Section;
 
    --  Returns true if the symbol is local.
    function Is_Local_Label (File : in Bfd.Files.File_Type;
                             Sym  : in Symbol) return Boolean is
    begin
-      return Bfd.Thin.Symtab.Is_Local (Bfd.Files.Get_Bfd_Pointer (File), Sym) /= 0;
+      return Bfd.Thin.Symbols.Is_Local (Bfd.Files.Get_Bfd_Pointer (File), Sym) /= 0;
    end Is_Local_Label;
 
    --  Returns true if the label is local.
@@ -117,13 +117,13 @@ package body Bfd.Symtab is
                            Symbols : out Symbol_Table) is
 
       Cnt : aliased Integer
-        := Bfd.Thin.Symtab.Get_Symtab_Upper_Bound (Bfd.Files.Get_Bfd_Pointer (File));
+        := Bfd.Thin.Symbols.Get_Symtab_Upper_Bound (Bfd.Files.Get_Bfd_Pointer (File));
 
       subtype Symbol_Array_Type is Symbol_Array (1 .. Positive (Cnt));
 
       Syms : Symbol_Array_Access := new Symbol_Array_Type;
    begin
-      Bfd.Thin.Symtab.Read_Symbols (Bfd.Files.Get_Bfd_Pointer (File), Cnt'Address,
+      Bfd.Thin.Symbols.Read_Symbols (Bfd.Files.Get_Bfd_Pointer (File), Cnt'Address,
                                     Syms (1)'Address);
       if Cnt < 0 then
          raise OPEN_ERROR;
@@ -145,7 +145,7 @@ package body Bfd.Symtab is
       L : aliased Integer := -1;
 
    begin
-      Bfd.Thin.Symtab.Find_Nearest_Line (Bfd.Files.Get_Bfd_Pointer (File), Sec.Opaque,
+      Bfd.Thin.Symbols.Find_Nearest_Line (Bfd.Files.Get_Bfd_Pointer (File), Sec.Opaque,
                                          Symbols.Syms (1)'Address, Addr,
                                          File_Name'Address,
                                          Func_Name'Address,
@@ -178,7 +178,7 @@ package body Bfd.Symtab is
       if not Symbols.Sorted then
          for I in 1 .. Symbols.Size loop
             S := Syms (I);
-            if Bfd.Internal.Strcmp (C_Name, Bfd.Thin.Symtab.Get_Symbol_Name (S)) = 0 then
+            if Bfd.Internal.Strcmp (C_Name, Bfd.Thin.Symbols.Get_Symbol_Name (S)) = 0 then
                Interfaces.C.Strings.Free (C_Name);
                return S;
             end if;
@@ -208,4 +208,4 @@ package body Bfd.Symtab is
       Free (Symbols.Syms);
    end Finalize;
 
-end Bfd.Symtab;
+end Bfd.Symbols;

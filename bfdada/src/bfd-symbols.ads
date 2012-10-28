@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
---  symtab -- BFD Symbol Table types and operations
---  <!-- Copyright (C) 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
+--  bfd-symbols -- BFD Symbol Table types and operations
+--  Copyright (C) 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (stcarrez@nerim.fr)
 --
 --  This file is part of BfdAda.
@@ -18,7 +18,7 @@
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
 --  the Free Software Foundation, 51 Franklin Street - Fifth Floor,
---  Boston, MA 02110-1301, USA.  -->
+--  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 --  This package gives access to the symbol table managed by the
 --  BFD library.
@@ -30,7 +30,7 @@ with Ada.Finalization;
 with Bfd.Files;
 with Bfd.Sections;
 with Bfd.Constants;
-package Bfd.Symtab is
+package Bfd.Symbols is
 
    use Ada.Strings.Unbounded;
 
@@ -265,4 +265,4 @@ private
    pragma Import (C, Get_Flags, "ada_bfd_asymbol_flags");
    --  C Functions provided by specific wrapper.
 
-end Bfd.Symtab;
+end Bfd.Symbols;

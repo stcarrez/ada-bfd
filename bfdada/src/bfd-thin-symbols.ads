@@ -24,19 +24,19 @@
 --
 with Interfaces.C;
 with Bfd.Sections;
-with Bfd.Symtab;
-package Bfd.Thin.Symtab is
+with Bfd.Symbols;
+package Bfd.Thin.Symbols is
 
-   function Get_Symbol_Name (Sym : in Bfd.Symtab.Symbol) return Interfaces.C.Strings.chars_ptr;
+   function Get_Symbol_Name (Sym : in Bfd.Symbols.Symbol) return Interfaces.C.Strings.chars_ptr;
    pragma Import (C, Get_Symbol_Name, "ada_bfd_asymbol_name");
 
-   function Get_Symbol_Section (Sym : in Bfd.Symtab.Symbol) return Bfd.Sections.Section_Iterator;
+   function Get_Symbol_Section (Sym : in Bfd.Symbols.Symbol) return Bfd.Sections.Section_Iterator;
    pragma Import (C, Get_Symbol_Section, "ada_bfd_asymbol_section");
 
-   function Is_Local (P : Ptr; Sym : in Bfd.Symtab.Symbol) return Interfaces.C.int;
+   function Is_Local (P : Ptr; Sym : in Bfd.Symbols.Symbol) return Interfaces.C.int;
    pragma Import (C, Is_Local, "bfd_is_local_label");
 
-   function Get_Symbol_Value (Sym : in Bfd.Symtab.Symbol) return Symbol_Value;
+   function Get_Symbol_Value (Sym : in Bfd.Symbols.Symbol) return Symbol_Value;
    pragma Import (C, Get_Symbol_Value, "ada_bfd_asymbol_value");
 
    procedure Read_Symbols (File : Ptr;
@@ -59,4 +59,4 @@ package Bfd.Thin.Symtab is
    function Get_Symtab_Upper_Bound (File : in Ptr) return Integer;
    pragma Import (C, Get_Symtab_Upper_Bound, "ada_bfd_get_symtab_upper_bound");
 
-end Bfd.Thin.Symtab;
+end Bfd.Thin.Symbols;
