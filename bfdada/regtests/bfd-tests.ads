@@ -56,6 +56,7 @@ package Bfd.Tests is
    overriding
    procedure Run_Test (T : in out Test_Case);
 
+   --  Test the Open, Close and Is_Open operations.
    procedure Test_Open (T : in out Test_Case);
 
    procedure Test_Basic (T : in out Test_Case);

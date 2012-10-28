@@ -39,6 +39,7 @@ package body Bfd.Tests is
    begin
       T.File := new File_Type;
       Open (T.File.all, Get_Test_File (T));
+
    exception
       when OPEN_ERROR =>
          Ada.Text_IO.Put_Line ("Test file '" & Get_Test_File (T) & "' cannot be opened");
@@ -56,15 +57,18 @@ package body Bfd.Tests is
       Free (T.File);
    end Tear_Down;
 
+   --  --------------------
    --  Perform the test.
+   --  --------------------
    overriding
    procedure Run_Test (T : in out Test_Case) is
    begin
       T.Method (T);
    end Run_Test;
 
-   --  Test Routines:
-
+   --  --------------------
+   --  Test the Open, Close and Is_Open operations.
+   --  --------------------
    procedure Test_Open (T : in out Test_Case) is
       Bfd  : File_Type;
    begin
@@ -149,8 +153,10 @@ package body Bfd.Tests is
 
       Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on object",
                 "obj/bfd-tests.o", Test_Basic'Access);
---        Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
---                  "bin/bfdada_harness", Test_Basic'Access);
+
+      --  Running the symbol count on the binary will fail if it is stripped.
+      --        Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
+      --                  "bin/bfdada_harness", Test_Basic'Access);
    end Add_Tests;
 
 end Bfd.Tests;
