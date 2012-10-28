@@ -30,6 +30,7 @@ package body Bfd.Symtab.Tests is
 
    use Ada.Strings.Unbounded;
    use type Bfd.Thin.Constants.Section_Flags;
+   use type Bfd.Thin.Constants.Symbol_Flags;
 
    --  --------------------
    --  Test loading the symbol table
@@ -77,9 +78,13 @@ package body Bfd.Symtab.Tests is
       Count := 0;
       while Bfd.Symtab.Has_Element (Iter) loop
          declare
-            Sym : constant Symbol := Bfd.Symtab.Element (Iter);
+            Sym  : constant Symbol := Bfd.Symtab.Element (Iter);
+            Name : constant String := Bfd.Symtab.Get_Name (Sym);
          begin
-            Ada.Text_IO.Put_Line (Bfd.Symtab.Get_Name (Sym));
+            T.Assert (Name'Length > 0, "Bfd.Symtab.Get_Name returns an empty name");
+            if Util.Tests.Verbose then
+               Ada.Text_IO.Put_Line (Name);
+            end if;
             Bfd.Symtab.Next (Iter);
          end;
          Count := Count + 1;
@@ -93,6 +98,94 @@ package body Bfd.Symtab.Tests is
                 "Bfd.Get_Symbol_Count returned 0");
 
    end Test_Symbol_Iterator;
+
+   --  --------------------
+   --  Test the getting a symbol by name
+   --  --------------------
+   procedure Test_Symbol (T         : in out Test_Case;
+                          Name      : in String;
+                          Flag      : in Bfd.Symtab.Symbol_Flags;
+                          Undefined : in Boolean) is
+      Symbols : Bfd.Symtab.Symbol_Table;
+      Sym     : Bfd.Symtab.Symbol;
+   begin
+      T.Assert (Check_Format (T.File.all, OBJECT),
+                "Bfd.Check_Format returned false");
+
+      --  We must load the symbol table first.
+      Bfd.Symtab.Open_Symbols (T.File.all, Symbols);
+
+      Sym := Bfd.Symtab.Get_Symbol (Symbols, Name);
+      T.Assert (Sym /= Null_Symbol, "Symbol '" & Name & "' not found");
+
+      Ada.Text_IO.Put_Line ("Flags: " & Symbol_Flags'Image (Bfd.Symtab.Get_Flags (Sym)));
+      Ada.Text_IO.Put_Line ("Value: " & Symbol_Value'Image (Bfd.Symtab.Get_Value (Sym)));
+      if Flag /= 0 then
+         T.Assert ((Bfd.Symtab.Get_Flags (Sym) and Flag) /= 0,
+                   "Symbol flag " & Symbol_Flags'Image (Flag) & " not set on " & Name);
+      end if;
+
+      declare
+         Sec   : constant Bfd.Sections.Section := Bfd.Symtab.Get_Section (Sym);
+      begin
+         if Undefined then
+            T.Assert (Bfd.Sections.Is_Undefined_Section (Sec),
+                      "Symbol " & Name & " not in undefined section");
+         else
+            T.Assert (not Bfd.Sections.Is_Undefined_Section (Sec),
+                      "Symbol " & Name & " is in undefined section");
+         end if;
+      end;
+   end Test_Symbol;
+
+   --  --------------------
+   --  Test the getting a symbol by name
+   --  --------------------
+   procedure Test_Get_Symbol (T : in out Test_Case) is
+      Symbols : Bfd.Symtab.Symbol_Table;
+      Sym     : Bfd.Symtab.Symbol;
+   begin
+      T.Assert (Check_Format (T.File.all, OBJECT),
+                "Bfd.Check_Format returned false");
+
+      --  We must load the symbol table first.
+      Bfd.Symtab.Open_Symbols (T.File.all, Symbols);
+
+      Sym := Bfd.Symtab.Get_Symbol (Symbols, "bfd__tests__name");
+      T.Assert (Sym /= Null_Symbol, "Symbol 'bfd__tests__name' not found");
+
+      Ada.Text_IO.Put_Line ("Flags: " & Symbol_Flags'Image (Bfd.Symtab.Get_Flags (Sym)));
+      Ada.Text_IO.Put_Line ("Value: " & Symbol_Value'Image (Bfd.Symtab.Get_Value (Sym)));
+      T.Assert ((Bfd.Symtab.Get_Flags (Sym) and Bfd.Symtab.BSF_GLOBAL) /= 0,
+                "Symbol must be global");
+
+      Sym := Bfd.Symtab.Get_Symbol (Symbols, "this_symbol_does_not_exist");
+      T.Assert (Sym = Null_Symbol, "A symbol was found while a null was expected");
+   end Test_Get_Symbol;
+
+   --  --------------------
+   --  Test a global symbol
+   --  --------------------
+   procedure Test_Global_Symbol (T : in out Test_Case) is
+   begin
+      Test_Symbol (T, "bfd__tests__name", Bfd.Symtab.BSF_GLOBAL, False);
+   end Test_Global_Symbol;
+
+   --  --------------------
+   --  Test an external/undefined symbol
+   --  --------------------
+   procedure Test_External_Symbol (T : in out Test_Case) is
+   begin
+      Test_Symbol (T, "bfd__close", Bfd.Symtab.BSF_NO_FLAGS, True);
+   end Test_External_Symbol;
+
+   --  --------------------
+   --  Test an external/undefined symbol
+   --  --------------------
+   procedure Test_Section_Symbol (T : in out Test_Case) is
+   begin
+      Test_Symbol (T, ".text", Bfd.Symtab.BSF_SECTION_SYM, False);
+   end Test_Section_Symbol;
 
    --  --------------------
    --  Add the tests in the testsuite
@@ -119,6 +212,14 @@ package body Bfd.Symtab.Tests is
                 "obj/bfd-tests.o", Test_Open_Symbols'Access);
       Add_Test ("Test Bfd.Symtab.Get_Iterator",
                 "obj/bfd-tests.o", Test_Symbol_Iterator'Access);
+      Add_Test ("Test Bfd.Symtab.Get_Symbol",
+                "obj/bfd-tests.o", Test_Get_Symbol'Access);
+      Add_Test ("Test Bfd.Symtab.Get_Symbol (global)",
+                "obj/bfd-tests.o", Test_Global_Symbol'Access);
+      Add_Test ("Test Bfd.Symtab.Get_Symbol (external)",
+                "obj/bfd-tests.o", Test_External_Symbol'Access);
+      Add_Test ("Test Bfd.Symtab.Get_Symbol (section symbol)",
+                "obj/bfd-tests.o", Test_Section_Symbol'Access);
    end Add_Tests;
 
 end Bfd.Symtab.Tests;

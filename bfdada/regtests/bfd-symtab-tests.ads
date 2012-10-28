@@ -33,6 +33,18 @@ package Bfd.Symtab.Tests is
    --  Test the symbol iterator
    procedure Test_Symbol_Iterator (T : in out Test_Case);
 
+   --  Test the getting a symbol by name
+   procedure Test_Get_Symbol (T : in out Test_Case);
+
+   --  Test a global symbol
+   procedure Test_Global_Symbol (T : in out Test_Case);
+
+   --  Test an external/undefined symbol
+   procedure Test_External_Symbol (T : in out Test_Case);
+
+   --  Test an external/undefined symbol
+   procedure Test_Section_Symbol (T : in out Test_Case);
+
    procedure Add_Tests (Suite : in Util.Tests.Access_Test_Suite);
 
 end Bfd.Symtab.Tests;
