@@ -22,6 +22,8 @@
 -----------------------------------------------------------------------
 
 with Ada.Text_IO;
+with Ada.Unchecked_Deallocation;
+
 with Bfd.Symtab;
 package body Bfd.Tests is
 
@@ -45,10 +47,13 @@ package body Bfd.Tests is
 
    overriding
    procedure Tear_Down (T : in out Test_Case) is
+      procedure Free is
+         new Ada.Unchecked_Deallocation (File_Type, File_Type_Access);
    begin
       if Is_Open (T.File.all) then
          Close (T.File.all);
       end if;
+      Free (T.File);
    end Tear_Down;
 
    --  Perform the test.
@@ -144,8 +149,8 @@ package body Bfd.Tests is
 
       Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on object",
                 "obj/bfd-tests.o", Test_Basic'Access);
-      Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
-                "bin/bfdada_harness", Test_Basic'Access);
+--        Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
+--                  "bin/bfdada_harness", Test_Basic'Access);
    end Add_Tests;
 
 end Bfd.Tests;

@@ -30,10 +30,12 @@ package Bfd.Tests is
 
    type Test_Method_Access is access procedure (T : in out Test_Case);
 
+   type File_Type_Access is access File_Type;
+
    type Test_Case is new Util.Tests.Test_Case with record
       Test_Name : Ada.Strings.Unbounded.Unbounded_String;
       File_Name : Ada.Strings.Unbounded.Unbounded_String;
-      File      : access File_Type;
+      File      : File_Type_Access;
       Method    : Test_Method_Access;
    end record;
    type Test_Case_Access is access all Test_Case'Class;
