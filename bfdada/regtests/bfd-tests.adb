@@ -122,7 +122,54 @@ package body Bfd.Tests is
 
    end Test_Basic;
 
+   --  --------------------
+   --  Test the Get_Flags operations.
+   --  --------------------
+   procedure Test_Get_Flags (T    : in out Test_Case;
+                             Name : in String;
+                             Flag : in Bfd.File_Flags) is
+      File  : Bfd.Files.File_Type;
+      Flags : Bfd.File_Flags;
+   begin
+      Bfd.Files.Open (File, Name);
+
+      T.Assert (Bfd.Files.Check_Format (File, Bfd.Files.OBJECT),
+                "Bfd.Check_Format returned false");
+
+      Flags := Bfd.Files.Get_File_Flags (File);
+      Ada.Text_IO.Put_Line ("File flags for " & Name & ": " & Bfd.File_Flags'Image (Flags));
+      T.Assert ((Flags and Flag) /= 0,
+                "The flag " & Bfd.File_Flags'Image (Flag) & " is not set on " & Name);
+   end Test_Get_Flags;
+
+   --  --------------------
+   --  Test the Get_File_Flags operation on a binary executable.
+   --  --------------------
+   procedure Test_Get_Binary_Flags (T    : in out Test_Case) is
+   begin
+      Test_Get_Flags (T, "bin/bfdada_harness", Bfd.Files.EXEC_P);
+   end Test_Get_Binary_Flags;
+
+   --  --------------------
+   --  Test the Get_File_Flags operation on a object file.
+   --  --------------------
+   procedure Test_Get_Object_Flags (T    : in out Test_Case) is
+   begin
+      Test_Get_Flags (T, "obj/bfd-tests.o", Bfd.Files.HAS_SYMS);
+   end Test_Get_Object_Flags;
+
+   --  --------------------
+   --  Test the Get_File_Flags operation on a object file.
+   --  --------------------
+   procedure Test_Get_Debug_Flags (T    : in out Test_Case) is
+   begin
+      Test_Get_Flags (T, "bin/bfdgen",
+                      Bfd.Files.Exec_P or Bfd.Files.HAS_SYMS or Bfd.Files.HAS_DEBUG);
+   end Test_Get_Debug_Flags;
+
+   --  --------------------
    --  Identifier of test case:
+   --  --------------------
    function Name (T : in Test_Case) return Util.Tests.Message_String is
    begin
       return To_String (T.Test_Name);
@@ -154,6 +201,15 @@ package body Bfd.Tests is
 
       Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on object",
                 "obj/bfd-tests.o", Test_Basic'Access);
+
+      Add_Test ("Test Bfd.Files.Get_File_Flags on exec",
+                "bin/bfdada_harness", Test_Get_Binary_Flags'Access);
+
+      Add_Test ("Test Bfd.Files.Get_File_Flags on objectc",
+                "obj/bfd-tests.o", Test_Get_Object_Flags'Access);
+
+      Add_Test ("Test Bfd.Files.Get_File_Flags on exec with debug",
+                "bin/bfdgn", Test_Get_Debug_Flags'Access);
 
       --  Running the symbol count on the binary will fail if it is stripped.
       --        Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",

@@ -60,6 +60,17 @@ package Bfd.Tests is
    --  Test the Open, Close and Is_Open operations.
    procedure Test_Open (T : in out Test_Case);
 
+   --  Test the Get_Flags operations.
+--     procedure Test_Get_Flags (T : in out Test_Case);
+   --  Test the Get_File_Flags operation on a binary executable.
+   procedure Test_Get_Binary_Flags (T    : in out Test_Case);
+
+   --  Test the Get_File_Flags operation on a object file.
+   procedure Test_Get_Object_Flags (T    : in out Test_Case);
+
+   --  Test the Get_File_Flags operation on a object file.
+   procedure Test_Get_Debug_Flags (T    : in out Test_Case);
+
    procedure Test_Basic (T : in out Test_Case);
 
    function Get_Test_File (T : in Test_Case) return String;
