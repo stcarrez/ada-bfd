@@ -60,7 +60,7 @@ install: install_static
 endif
 
 # Build executables for all mains defined by the project.
-build:	src/bfd-thin-constants.ads
+build:	src/bfd-constants.ads
 	$(GNATMAKE) -m -p -P"$(GPRPATH)" $(MAKE_ARGS)
 
 static:
@@ -170,7 +170,7 @@ prepare-release:
 	${SVN} info > CHANGES
 	${SVN} log -v > ChangeLog
 
-src/bfd-thin-constants.ads:	bin/bfdgen
+src/bfd-constants.ads:	bin/bfdgen
 	bin/bfdgen > $@
 
 bin/bfdgen:    support/bfdgen.c
