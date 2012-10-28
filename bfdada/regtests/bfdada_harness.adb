@@ -21,9 +21,9 @@
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with Util.Tests;
-with Bfd_Suite;
+with Bfd.Testsuite;
 procedure Bfdada_Harness is
-   procedure Harness is new Util.Tests.Harness (Bfd_Suite);
+   procedure Harness is new Util.Tests.Harness (Bfd.Testsuite.Suite);
 begin
    Harness ("bfdada-tests.xml");
 end Bfdada_Harness;
