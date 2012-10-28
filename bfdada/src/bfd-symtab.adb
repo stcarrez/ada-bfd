@@ -132,13 +132,6 @@ package body Bfd.Symtab is
       Symbols.Syms := Syms;
    end Open_Symbols;
 
-   --  Set the symbol table associated with the BFD file.
-   procedure Set_Symbols (File : in File_Type;
-                          Symbols : in out Symbol_Table) is
-   begin
-      null;
-   end Set_Symbols;
-
    procedure Find_Nearest_Line (File : in File_Type;
                                 Sec : in Section;
                                 Symbols : in Symbol_Table;

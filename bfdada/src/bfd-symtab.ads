@@ -207,10 +207,6 @@ package Bfd.Symtab is
    function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator;
    --  Return an iterator which allows scanning the symbol table.
 
-   procedure Set_Symbols (File : in File_Type;
-                          Symbols : in out Symbol_Table);
-   --  Set the symbol table associated with the BFD file.
-
    procedure Find_Nearest_Line (File : in File_Type;
                                 Sec : in Bfd.Sections.Section;
                                 Symbols : in Symbol_Table;
@@ -261,8 +257,6 @@ private
    end record;
    --  The symbol iterator keeps track of the symbol table
    --  and uses an index within it to mark the current symbol.
-
---     Null_Address : constant Symbol := Symbol (System.Null_Address);
 
    pragma Import (C, Get_Symclass, "bfd_decode_symclass");
    --  C Functions provided by BFD library.
