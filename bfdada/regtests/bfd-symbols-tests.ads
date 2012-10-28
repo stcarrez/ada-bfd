@@ -23,7 +23,7 @@
 with Util.Tests;
 with Bfd;
 with Bfd.Tests;
-package Bfd.Symtab.Tests is
+package Bfd.Symbols.Tests is
 
    subtype Test_Case is Bfd.Tests.Test_Case;
 
@@ -47,4 +47,4 @@ package Bfd.Symtab.Tests is
 
    procedure Add_Tests (Suite : in Util.Tests.Access_Test_Suite);
 
-end Bfd.Symtab.Tests;
+end Bfd.Symbols.Tests;

@@ -23,7 +23,7 @@
 
 with Bfd.Tests;
 with Bfd.Sections.Tests;
-with Bfd.Symtab.Tests;
+with Bfd.Symbols.Tests;
 package body Bfd.Testsuite is
 
    Tests : aliased Util.Tests.Test_Suite;
@@ -33,7 +33,7 @@ package body Bfd.Testsuite is
    begin
       Bfd.Tests.Add_Tests (Result);
       Bfd.Sections.Tests.Add_Tests (Result);
-      Bfd.Symtab.Tests.Add_Tests (Result);
+      Bfd.Symbols.Tests.Add_Tests (Result);
       return Result;
    end Suite;
 

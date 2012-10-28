@@ -25,7 +25,7 @@ with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 
 with Bfd.Files;
-with Bfd.Symtab;
+with Bfd.Symbols;
 package body Bfd.Tests is
 
    use Ada.Strings.Unbounded;
@@ -98,7 +98,7 @@ package body Bfd.Tests is
    end Test_Open;
 
    procedure Test_Basic (T : in out Test_Case) is
-      Symbols : Bfd.Symtab.Symbol_Table;
+      Symbols : Bfd.Symbols.Symbol_Table;
    begin
       --  Check that Get_Filename returns our test file.
       declare
@@ -112,7 +112,7 @@ package body Bfd.Tests is
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
-      Bfd.Symtab.Open_Symbols (T.File.all, Symbols);
+      Bfd.Symbols.Open_Symbols (T.File.all, Symbols);
       Ada.Text_IO.Put_Line ("Count: " & Natural'Image (Bfd.Files.Get_Symbol_Count (T.File.all)));
 
       --  Can't check in a portable way, assume some reasonable value.

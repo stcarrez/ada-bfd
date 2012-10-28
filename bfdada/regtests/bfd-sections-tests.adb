@@ -26,11 +26,10 @@ with Ada.Streams;
 
 with Bfd.Files;
 with Bfd.Sections;
-with Bfd.Thin.Constants;
+with Bfd.Constants;
 package body Bfd.Sections.Tests is
 
    use Ada.Strings.Unbounded;
-   use type Bfd.Thin.Constants.Section_Flags;
 
    --  --------------------
    --  Test basic sections operations
