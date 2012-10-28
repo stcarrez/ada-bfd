@@ -3,7 +3,7 @@ with "bfdada";
 
 project Samples is
 
-   Mains := ("bfdinfo.adb", "sections.adb", "disassemble.adb");
+   Mains := ("bfdinfo.adb", "sections.adb", "disassemble.adb", "symbol.adb");
 
    for Main use Mains;
 
