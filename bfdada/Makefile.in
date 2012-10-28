@@ -24,6 +24,7 @@ MKDIR=mkdir
 CP=cp
 LN=ln -s
 CC=@CC@
+CFLAGS=@CFLAGS@
 
 NAME=bfdada
 
@@ -180,4 +181,4 @@ src/bfd-constants.ads:	bin/bfdgen
 # Build this program with -g so that it is used by the unit tests to check some BFD flags.
 bin/bfdgen:    support/bfdgen.c
 	mkdir -p bin
-	$(CC) -o $@ -g support/bfdgen.c
+	$(CC) -o $@ $(CFLAGS) -g support/bfdgen.c
