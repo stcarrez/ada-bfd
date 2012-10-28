@@ -182,11 +182,3 @@ src/bfd-constants.ads:	bin/bfdgen
 bin/bfdgen:    support/bfdgen.c
 	mkdir -p bin
 	$(CC) -o $@ $(CFLAGS) -g support/bfdgen.c
-
-
-# prepare before releasing a new version of the package
-# (collect information about changes and SVN repository)
-prepare-release:
-	${SVN} update
-	${SVN} info > CHANGES
-	${SVN} log -v > ChangeLog
