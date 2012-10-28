@@ -63,5 +63,7 @@ package Bfd.Thin is
    function Get_Symbol_Count (Bfd : Ptr) return Natural;
    pragma Import (C, Get_Symbol_Count, "ada_bfd_get_symbol_count");
 
+   function Get_File_Flags (Bfd : Ptr) return File_Flags;
+   pragma Import (C, Get_File_Flags, "ada_bfd_get_file_flags");
 
 end Bfd.Thin;
