@@ -22,8 +22,6 @@
 -----------------------------------------------------------------------
 with System;
 with Interfaces;
-with Interfaces.C.Strings;
-with Ada.Finalization;
 
 --  The Bfd package exports the GNU Bfd library found in Binutils
 --  and Gdb.  It is not intended to be as complete as the C library
@@ -36,13 +34,17 @@ package Bfd is
    pragma Linker_Options ("-ldl");
    pragma Linker_Options ("-lz");
 
-   type Format is (UNKNOWN, --  unknown file format
-                   OBJECT,  --  linker/assembler/compiler object file
-                   ARCHIVE, --  object archive file
-                   CORE);   --  core dump
-   --  The bfd_format.
+   type File_Flags is new Integer;
+   --  Values that may appear in the flags field of a BFD.  These also
+   --  appear in the object_flags field of the bfd_target structure, where
+   --  they indicate the set of flags used by that backend (not all flags
+   --  are meaningful for all object file formats) (FIXME: at the moment,
+   --  the object_flags values have mostly just been copied from backend
+   --  to another, and are not necessarily correct).
 
-   type Flags is new Integer;
+   type Section_Flags is new Interfaces.Unsigned_32;
+
+   type Symbol_Flags is new Interfaces.Unsigned_32;
 
    type Unsigned_64 is new Interfaces.Unsigned_64;
 
@@ -98,11 +100,11 @@ package Bfd is
    --  @param Message the message to report
    pragma Convention (C, Error_Handler);
 
-   function Get_Error return Error;
    --  Return the current error code.
+   function Get_Error return Error;
 
-   procedure Set_Error (To : in Error);
    --  Set the current error code.
+   procedure Set_Error (To : in Error);
 
    function Get_Error_Message (Code : in Error) return String;
    --  Return an error message corresponding to the last error
@@ -111,64 +113,17 @@ package Bfd is
    --  @param Code the error code
    --  @return the error message corresponding to the error code
 
-   procedure Set_Error_Program_Name (To : in String);
    --  Set the program name in the BFD library.
+   procedure Set_Error_Program_Name (To : in String);
 
+   --  Set a new error handler in BFD library.
    procedure Set_Error_Handler (To  : in Error_Handler;
                                 Old : out Error_Handler);
-   --  Set a new error handler in BFD library.
-
-
-   ----------------------
-   -- BFD file         --
-   ----------------------
-   --  This part deal with opening and closing the main BFD file.
-
-   type File_Type is limited private;
-   --  The file type representing the opened BFD file.
-
-   procedure Open (File   : in out File_Type;
-                   Name   : in String;
-                   Target : in String := "");
-   --  Open the file and obtain a bfd handler.
-
-   procedure Close (File : in out File_Type);
-   --  Close the file, releasing any resource allocated for it.
-
-   function Is_Open (File : in File_Type) return Boolean;
-   --  Check if the file is open.
-   --
-   --  @return true if the file is open
-
-   function Get_Filename (File : in File_Type) return String;
-   --  Get the filename that was used to open the file.
-
-   function Check_Format (File   : in File_Type;
-                          Expect : in Format) return Boolean;
-   --  Check if the file is of the specified format.
-   --  @return true if the file is open and of the specified format
-
-   function Get_File_Flags (File : in File_Type) return Flags;
-
-   function Get_Start_Address (File : in File_Type) return Vma_Type;
-   --  Get the start address.
-
-   function Get_Symbol_Count (File : in File_Type) return Natural;
-   --  Return number of symbols.
-
 
    subtype Ptr is System.Address;
 private
    subtype Pointer is System.Address;
 
    type Bfd_Ptr is new System.Address;
-
-   type File_Type is new Ada.Finalization.Limited_Controlled with record
-      Abfd : Ptr := System.Null_Address;
-      Name : Interfaces.C.Strings.chars_ptr;
-   end record;
-
-   overriding
-   procedure Finalize (File : in out File_Type);
 
 end Bfd;
