@@ -27,7 +27,7 @@ with Bfd.Sections;
 with Bfd.Symtab;
 package Bfd.Thin.Symtab is
 
-   function Get_Symbol_Name (Sym : in Bfd.Symtab.Symbol) return Ptr;
+   function Get_Symbol_Name (Sym : in Bfd.Symtab.Symbol) return Interfaces.C.Strings.chars_ptr;
    pragma Import (C, Get_Symbol_Name, "ada_bfd_asymbol_name");
 
    function Get_Symbol_Section (Sym : in Bfd.Symtab.Symbol) return Bfd.Sections.Section_Iterator;
