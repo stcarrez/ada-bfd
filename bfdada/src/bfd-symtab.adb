@@ -30,6 +30,7 @@ with Ada.Unchecked_Deallocation;
 with Bfd.Internal;
 with Bfd.Thin.Symtab;
 with Interfaces.C;
+with Interfaces.C.Strings;
 package body Bfd.Symtab is
 
    use Bfd.Internal;
@@ -43,7 +44,7 @@ package body Bfd.Symtab is
    --  Return the symbol name.
    function Get_Name (Sym : in Symbol) return String is
    begin
-      return To_Ada (Bfd.Thin.Symtab.Get_Symbol_Name (Sym));
+      return Interfaces.C.Strings.Value (Bfd.Thin.Symtab.Get_Symbol_Name (Sym));
    end Get_Name;
 
    --  Return the section where the symbol is defined.
@@ -131,14 +132,6 @@ package body Bfd.Symtab is
       Symbols.Syms := Syms;
    end Open_Symbols;
 
-   --  Close the symbol table and free any resource allocated for it.
-   procedure Close_Symbols (Symbols : in out Symbol_Table) is
-      procedure Free is
-         new Ada.Unchecked_Deallocation (Symbol_Array, Symbol_Array_Access);
-   begin
-      Free (Symbols.Syms);
-   end Close_Symbols;
-
    --  Set the symbol table associated with the BFD file.
    procedure Set_Symbols (File : in File_Type;
                           Symbols : in out Symbol_Table) is
@@ -179,13 +172,27 @@ package body Bfd.Symtab is
       return Symbols.Syms (Pos);
    end Get_Symbol;
 
+   --  --------------------
+   --  Get the symbol with the given name.
+   --  Returns Null_Symbol if the symbol was not found.
+   --  --------------------
    function Get_Symbol (Symbols : in Symbol_Table;
-                        Name : in String) return Symbol is
-      pragma Unreferenced (Symbols, Name);
-
-      S : constant Symbol := Null_Address;
+                        Name    : in String) return Symbol is
+      Syms   : constant Symbol_Array_Access := Symbols.Syms;
+      S      : Symbol;
+      C_Name : Interfaces.C.Strings.chars_ptr := Interfaces.C.Strings.New_String (Name);
    begin
-      return S;
+      if not Symbols.Sorted then
+         for I in 1 .. Symbols.Size loop
+            S := Syms (I);
+            if Bfd.Internal.Strcmp (C_Name, Bfd.Thin.Symtab.Get_Symbol_Name (S)) = 0 then
+               Interfaces.C.Strings.Free (C_Name);
+               return S;
+            end if;
+         end loop;
+      end if;
+      Interfaces.C.Strings.Free (C_Name);
+      return Null_Symbol;
    end Get_Symbol;
 
    function Get_Size (Symbols : in Symbol_Table) return Natural is

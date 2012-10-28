@@ -153,6 +153,8 @@ package Bfd.Symtab is
    ----------------------
    type Symbol is private;
 
+   Null_Symbol : constant Symbol;
+
    function Get_Flags (Sym : in Symbol) return Symbol_Flags;
    --  Get the flags associated with the symbol.
 
@@ -222,8 +224,10 @@ package Bfd.Symtab is
    function Get_Symbol (Symbols : in Symbol_Table;
                         Pos : in Positive) return Symbol;
 
+   --  Get the symbol with the given name.
+   --  Returns Null_Symbol if the symbol was not found.
    function Get_Symbol (Symbols : in Symbol_Table;
-                        Name : in String) return Symbol;
+                        Name    : in String) return Symbol;
 
    function Get_Size (Symbols : in Symbol_Table) return Natural;
 
@@ -238,9 +242,12 @@ private
    --  to simplify things.  The symbol table in BFD is an array
    --  of asymbol pointers (asymbol**).
 
+   Null_Symbol : constant Symbol := Symbol (System.Null_Address);
+
    type Symbol_Table is new Ada.Finalization.Limited_Controlled with record
-      Syms : Symbol_Array_Access;
-      Size : Natural := 0;
+      Syms   : Symbol_Array_Access;
+      Size   : Natural := 0;
+      Sorted : Boolean := False;
    end record;
 
    --  Release the symbol table.
@@ -255,7 +262,7 @@ private
    --  The symbol iterator keeps track of the symbol table
    --  and uses an index within it to mark the current symbol.
 
-   Null_Address : constant Symbol := Symbol (System.Null_Address);
+--     Null_Address : constant Symbol := Symbol (System.Null_Address);
 
    pragma Import (C, Get_Symclass, "bfd_decode_symclass");
    --  C Functions provided by BFD library.
