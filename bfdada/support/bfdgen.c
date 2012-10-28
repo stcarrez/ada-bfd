@@ -21,6 +21,54 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #include <stdio.h>
 #include "bfd.h"
 
+/**
+ * If a BFD define does not exist, pretend the flag is 0.
+ * An Ada program can check conditionally for the availablility
+ * of the flag by checking that the definition is not 0.
+ */
+#ifndef SEC_ELF_REVERSE_COPY
+# define SEC_ELF_REVERSE_COPY 0
+#endif
+
+#ifndef SEC_COFF_NOREAD
+# define SEC_COFF_NOREAD 0
+#endif
+
+#ifndef BSF_RELC
+# define BSF_RELC 0
+#endif
+
+#ifndef BSF_SRELC
+# define BSF_SRELC 0
+#endif
+
+#ifndef BSF_SYNTHETIC
+# define BSF_SYNTHETIC 0
+#endif
+
+#ifndef BSF_GNU_INDIRECT_FUNCTION
+# define BSF_GNU_INDIRECT_FUNCTION 0
+#endif
+
+#ifndef BSF_GNU_UNIQUE
+# define BSF_GNU_UNIQUE 0
+#endif
+
+#ifndef BFD_DETERMINISTIC_OUTPUT
+# define BFD_DETERMINISTIC_OUTPUT 0
+#endif
+
+#ifndef BFD_COMPRESS
+# define BFD_COMPRESS 0
+#endif
+
+#ifndef BFD_DECOMPRESS
+# define BFD_DECOMPRESS 0
+#endif
+
+#ifndef BFD_PLUGIN
+# define BFD_PLUGIN 0
+#endif
 
 int main(void)
 {
