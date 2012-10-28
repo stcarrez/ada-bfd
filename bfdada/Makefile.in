@@ -107,9 +107,9 @@ force:
 # Files to package in source distribution
 DISTFILES=AUTHORS README INSTALL NEWS ChangeLog COPYING config.guess configure config.sub \
 configure.in Makefile.in install-sh missing \
-bfdada.gpr.in tests.gpr samples.gpr config.gpr \
+bfdada.gpr.in tests.gpr samples.gpr config.gpr testutil.gpr \
 src samples regtests \
-bin obj lib doc distrib aunit-1.01
+bin obj lib doc distrib support testutil
 
 dist:
 	-rm -rf $(distdir)
