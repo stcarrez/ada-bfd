@@ -203,7 +203,6 @@ package body Bfd.Symbols.Tests is
          T.File_Name := To_Unbounded_String (File_Name);
          T.Test_Name := To_Unbounded_String (Test_Name);
          T.Method    := Method;
-         T.File := new Bfd.Files.File_Type;
          Suite.Add_Test (T.all'Access);
       end Add_Test;
    begin

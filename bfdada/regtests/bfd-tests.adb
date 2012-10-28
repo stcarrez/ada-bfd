@@ -156,6 +156,7 @@ package body Bfd.Tests is
    procedure Test_Get_Object_Flags (T    : in out Test_Case) is
    begin
       Test_Get_Flags (T, "obj/bfd-tests.o", Bfd.Files.HAS_SYMS);
+      Test_Get_Flags (T, "obj/bfd-tests.o", Bfd.Files.HAS_RELOC);
    end Test_Get_Object_Flags;
 
    --  --------------------
@@ -163,8 +164,8 @@ package body Bfd.Tests is
    --  --------------------
    procedure Test_Get_Debug_Flags (T    : in out Test_Case) is
    begin
-      Test_Get_Flags (T, "bin/bfdgen",
-                      Bfd.Files.Exec_P or Bfd.Files.HAS_SYMS or Bfd.Files.HAS_DEBUG);
+      Test_Get_Flags (T, "bin/bfdgen", Bfd.Files.HAS_SYMS);
+      Test_Get_Flags (T, "bin/bfdgen", Bfd.Files.EXEC_P);
    end Test_Get_Debug_Flags;
 
    --  --------------------
@@ -189,7 +190,6 @@ package body Bfd.Tests is
          T.File_Name := To_Unbounded_String (File_Name);
          T.Test_Name := To_Unbounded_String (Test_Name);
          T.Method    := Method;
-         T.File := new Bfd.Files.File_Type;
          Suite.Add_Test (T.all'Access);
       end Add_Test;
 
