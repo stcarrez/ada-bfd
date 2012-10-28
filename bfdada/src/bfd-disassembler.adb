@@ -25,10 +25,10 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with Ada.Streams; use Ada.Streams;
-with Interfaces.C;            use Interfaces.C;
+with Ada.Streams;
+with Interfaces.C;
 use  Interfaces;
-with Interfaces.C.Strings;    use Interfaces.C.Strings;
+with Interfaces.C.Strings;
 with Bfd.Thin.Disassembler;
 with Ada.Text_IO;
 package body Bfd.Disassembler is
@@ -44,7 +44,7 @@ package body Bfd.Disassembler is
    --  Handlers called by C callbacks
    ----------------------
    procedure Disassembler_Output (Info   : Disassembler_Ref;
-                                  Buffer : Strings.chars_ptr);
+                                  Buffer : Interfaces.C.Strings.chars_ptr);
    pragma Export (C, Disassembler_Output, "ada_disassembler_output");
 
    --  The prototype of these callbacks must match the functions
@@ -69,9 +69,9 @@ package body Bfd.Disassembler is
    pragma Export (C, Read_Memory_Handler, "ada_dis_read_memory_handler");
 
    procedure Disassembler_Output (Info   : Disassembler_Ref;
-                                  Buffer : Strings.chars_ptr) is
+                                  Buffer : Interfaces.C.Strings.chars_ptr) is
    begin
-      Output (Info.all, Value (Buffer));
+      Output (Info.all, Interfaces.C.Strings.Value (Buffer));
    end Disassembler_Output;
 
    procedure Disassembler_Output_Address (Addr : in Vma_Type;
@@ -115,14 +115,15 @@ package body Bfd.Disassembler is
                                  Buffer_Addr : in System.Address;
                                  Len         : in Integer;
                                  Data        : in Ptr) return Integer is
+      use type Ada.Streams.Stream_Element_Offset;
 
       --  Buffer_Addr points to some local buffer allocated by the
       --  opcodes C library (on the stack).  Map that buffer to the
       --  Ada type (no copy).
-      Buf : Stream_Element_Array (1 .. Stream_Element_Offset (Len));
+      Buf : Ada.Streams.Stream_Element_Array (1 .. Ada.Streams.Stream_Element_Offset (Len));
       for Buf'Address use Buffer_Addr;
 
-      Last : Stream_Element_Offset;
+      Last : Ada.Streams.Stream_Element_Offset;
       Info : constant Disassembler_Ref := Get_Disassembler_Data (Data);
    begin
       Read (Info.all, Addr, Buf, Last);
@@ -179,18 +180,18 @@ package body Bfd.Disassembler is
 
    --  Initialize the disassembler according to the BFD file.
    procedure Initialize (Info     : in out Disassembler_Info_Type'Class;
-                         For_File : in File_Type;
+                         For_File : in Bfd.Files.File_Type;
                          Options  : in String) is
       use Bfd.Thin.Disassembler;
    begin
-      Info.Abfd := For_File.Abfd;
+      Info.Abfd := Bfd.Files.Get_Bfd_Pointer (For_File);
       Info.Dis_Info := Disassembler_Init (Info'Address, Info.Abfd,
-                                          New_String (Options));
+                                          Interfaces.C.Strings.New_String (Options));
    end Initialize;
 
    --  Set the symbol table associated with the disassembler.
    procedure Set_Symbol_Table (Info   : in out Disassembler_Info_Type;
-                               Symtab : in Symbol_Table) is
+                               Symtab : in Bfd.Symtab.Symbol_Table) is
       use Bfd.Thin.Disassembler;
    begin
       Set_Symbol_Table (Info.Dis_Info, Bfd.Symtab.Get_Internal_Symbols (Symtab) (1)'Address,
@@ -214,7 +215,7 @@ package body Bfd.Disassembler is
    ----------------------
    --  Initialize the disassembler according to the BFD file.
    procedure Initialize (Info       : in out Memory_Disassembler_Info_Type'Class;
-                         For_File   : in File_Type;
+                         For_File   : in Bfd.Files.File_Type;
                          Options    : in String;
                          Buffer_Vma : in Vma_Type;
                          Buffer     : in Ada.Streams.Stream_Element_Array) is

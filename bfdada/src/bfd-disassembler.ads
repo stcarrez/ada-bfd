@@ -25,7 +25,9 @@
 --
 with System;
 with Ada.Streams;
-with Bfd.Symtab; use Bfd.Symtab;
+
+with Bfd.Files;
+with Bfd.Symtab;
 package Bfd.Disassembler is
 
    type Insn_Type is (NONINSN,          --  Not a valid instruction
@@ -53,7 +55,7 @@ package Bfd.Disassembler is
    type Disassembler_Info_Type is abstract tagged private;
 
    procedure Initialize (Info     : in out Disassembler_Info_Type'Class;
-                         For_File : in File_Type;
+                         For_File : in Bfd.Files.File_Type;
                          Options  : in String);
    --  Initialize the disassembler according to the BFD file.
 
@@ -97,7 +99,7 @@ package Bfd.Disassembler is
    --  This is called when the Read procedure returns an error.
 
    procedure Set_Symbol_Table (Info   : in out Disassembler_Info_Type;
-                               Symtab : in Symbol_Table);
+                               Symtab : in Bfd.Symtab.Symbol_Table);
    --  Set the symbol table associated with the disassembler.
 
    --  --------------------
@@ -107,7 +109,7 @@ package Bfd.Disassembler is
      with private;
 
    procedure Initialize (Info       : in out Memory_Disassembler_Info_Type'Class;
-                         For_File   : in File_Type;
+                         For_File   : in Bfd.Files.File_Type;
                          Options    : in String;
                          Buffer_Vma : in Vma_Type;
                          Buffer     : in Ada.Streams.Stream_Element_Array);
