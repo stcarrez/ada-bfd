@@ -30,8 +30,6 @@ with Bfd.Constants;
 package body Bfd.Symbols.Tests is
 
    use Ada.Strings.Unbounded;
---     use type Bfd.Thin.Constants.Section_Flags;
---     use type Bfd.Thin.Constants.Symbol_Flags;
 
    --  --------------------
    --  Test loading the symbol table
@@ -177,7 +175,7 @@ package body Bfd.Symbols.Tests is
    --  --------------------
    procedure Test_External_Symbol (T : in out Test_Case) is
    begin
-      Test_Symbol (T, "bfd__close", Bfd.Symbols.BSF_NO_FLAGS, True);
+      Test_Symbol (T, "bfd__files__close", Bfd.Symbols.BSF_NO_FLAGS, True);
    end Test_External_Symbol;
 
    --  --------------------
