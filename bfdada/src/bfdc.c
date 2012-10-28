@@ -175,3 +175,9 @@ ada_bfd_get_symbol_count (bfd* abfd)
 {
    return bfd_get_symcount (abfd);
 }
+
+int
+ada_bfd_get_file_flags (bfd* abfd)
+{
+  return bfd_get_file_flags (abfd);
+}
