@@ -173,5 +173,7 @@ prepare-release:
 src/bfd-constants.ads:	bin/bfdgen
 	bin/bfdgen > $@
 
+# Utility for the generation of bfd-constants.ads
+# Build this program with -g so that it is used by the unit tests to check some BFD flags.
 bin/bfdgen:    support/bfdgen.c
-	$(CC) -o $@ support/bfdgen.c
+	$(CC) -o $@ -g support/bfdgen.c
