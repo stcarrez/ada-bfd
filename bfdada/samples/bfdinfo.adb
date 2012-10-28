@@ -25,6 +25,7 @@ with Ada.Command_Line;
 with GNAT.Command_Line;
 
 with Bfd;
+with Bfd.Files;
 with Bfd.Sections;
 with Bfd.Symtab;
 with Utils;
@@ -42,8 +43,8 @@ procedure BfdInfo is
    RC : Ada.Command_Line.Exit_Status := 0;
 
    procedure Usage;
-   procedure List_Section (File : Bfd.File_Type);
-   procedure List_Symbols (File : Bfd.File_Type);
+   procedure List_Section (File : Bfd.Files.File_Type);
+   procedure List_Symbols (File : Bfd.Files.File_Type);
    procedure Parse_Arguments;
 
    --------------------------------------------------
@@ -64,8 +65,8 @@ procedure BfdInfo is
    --------------------------------------------------
    --  List the sections of the BFD file
    --------------------------------------------------
-   procedure List_Section (File : Bfd.File_Type) is
-      use type Bfd.Sections.Section_Flags;
+   procedure List_Section (File : Bfd.Files.File_Type) is
+      use type Bfd.Section_Flags;
 
       Iter : Bfd.Sections.Section_Iterator := Bfd.Sections.Get_Sections (File);
    begin
@@ -121,8 +122,8 @@ procedure BfdInfo is
    --------------------------------------------------
    --  List the symbols of the BFD file
    --------------------------------------------------
-   procedure List_Symbols (File : Bfd.File_Type) is
-      use type Bfd.Symtab.Symbol_Flags;
+   procedure List_Symbols (File : Bfd.Files.File_Type) is
+      use type Bfd.Symbol_Flags;
 
       Symbols : Bfd.Symtab.Symbol_Table;
       It      : Bfd.Symtab.Symbol_Iterator;
@@ -133,7 +134,7 @@ procedure BfdInfo is
          declare
             Sym   : constant Bfd.Symtab.Symbol       := Bfd.Symtab.Element (It);
             Sec   : constant Bfd.Sections.Section    := Bfd.Symtab.Get_Section (Sym);
-            Flags : constant Bfd.Symtab.Symbol_Flags := Bfd.Symtab.Get_Flags (Sym);
+            Flags : constant Bfd.Symbol_Flags        := Bfd.Symtab.Get_Flags (Sym);
             C     : Character    := Bfd.Symtab.Get_Symclass (Sym);
          begin
             if (Flags and Bfd.Symtab.BSF_OBJECT) /= 0 then
@@ -209,16 +210,16 @@ procedure BfdInfo is
       loop
          declare
             Arg  : constant String := Get_Argument;
-            File : Bfd.File_Type;
+            File : Bfd.Files.File_Type;
          begin
             exit when Arg = "";
 
-            Bfd.Open (File, Arg, "");
-            if Bfd.Check_Format (File, Bfd.OBJECT) then
+            Bfd.Files.Open (File, Arg, "");
+            if Bfd.Files.Check_Format (File, Bfd.Files.OBJECT) then
                List_Section (File);
                List_Symbols (File);
             end if;
-            Bfd.Close (File);
+            Bfd.Files.Close (File);
 
          exception
             when Bfd.OPEN_ERROR =>
