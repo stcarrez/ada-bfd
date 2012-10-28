@@ -24,13 +24,14 @@ with Ada.Strings.Unbounded;
 with Util.Tests;
 
 with Bfd;
+with Bfd.Files;
 package Bfd.Tests is
 
    type Test_Case;
 
    type Test_Method_Access is access procedure (T : in out Test_Case);
 
-   type File_Type_Access is access File_Type;
+   type File_Type_Access is access Bfd.Files.File_Type;
 
    type Test_Case is new Util.Tests.Test_Case with record
       Test_Name : Ada.Strings.Unbounded.Unbounded_String;

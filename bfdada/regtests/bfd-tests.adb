@@ -24,6 +24,7 @@
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 
+with Bfd.Files;
 with Bfd.Symtab;
 package body Bfd.Tests is
 
@@ -37,8 +38,8 @@ package body Bfd.Tests is
    overriding
    procedure Set_Up (T : in out Test_Case) is
    begin
-      T.File := new File_Type;
-      Open (T.File.all, Get_Test_File (T));
+      T.File := new Bfd.Files.File_Type;
+      Bfd.Files.Open (T.File.all, Get_Test_File (T));
 
    exception
       when OPEN_ERROR =>
@@ -49,10 +50,10 @@ package body Bfd.Tests is
    overriding
    procedure Tear_Down (T : in out Test_Case) is
       procedure Free is
-         new Ada.Unchecked_Deallocation (File_Type, File_Type_Access);
+         new Ada.Unchecked_Deallocation (Bfd.Files.File_Type, File_Type_Access);
    begin
-      if Is_Open (T.File.all) then
-         Close (T.File.all);
+      if Bfd.Files.Is_Open (T.File.all) then
+         Bfd.Files.Close (T.File.all);
       end if;
       Free (T.File);
    end Tear_Down;
@@ -70,24 +71,24 @@ package body Bfd.Tests is
    --  Test the Open, Close and Is_Open operations.
    --  --------------------
    procedure Test_Open (T : in out Test_Case) is
-      Bfd  : File_Type;
+      File  : Bfd.Files.File_Type;
    begin
       --  Check that OPEN_ERROR exception is raised.
       begin
-         Open (Bfd, "src/bfd.adsx");
+         Bfd.Files.Open (File, "src/bfd.adsx");
          T.Assert (False, "Bfd.Open didn't raise OPEN_ERROR exception");
       exception
          when OPEN_ERROR =>
-            T.Assert (not Is_Open (Bfd),
+            T.Assert (not Bfd.Files.Is_Open (File),
                       "Bfd.Is_Open returns true after OPEN_ERROR exception");
       end;
 
       --  Check that we can open a file.
       begin
-         Open (Bfd, Get_Test_File (T));
-         T.Assert (Is_Open (Bfd), "Bfd.Is_Open returns false for opened file");
-         Close (Bfd);
-         T.Assert (Is_Open (Bfd) = False,
+         Bfd.Files.Open (File, Get_Test_File (T));
+         T.Assert (bfd.Files.Is_Open (File), "Bfd.Is_Open returns false for opened file");
+         Bfd.Files.Close (File);
+         T.Assert (Bfd.Files.Is_Open (File) = False,
                    "Bfd.Is_Open returns true after Bfd.Close");
       exception
          when OPEN_ERROR =>
@@ -101,22 +102,22 @@ package body Bfd.Tests is
    begin
       --  Check that Get_Filename returns our test file.
       declare
-         Name : constant String := Get_Filename (T.File.all);
+         Name : constant String := Bfd.Files.Get_Filename (T.File.all);
       begin
          T.Assert (Name = Get_Test_File (T),
                    "Bfd.Get_Filename returned an invalid filename");
       end;
 
-      T.Assert (Check_Format (T.File.all, OBJECT),
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
       Bfd.Symtab.Open_Symbols (T.File.all, Symbols);
-      Ada.Text_IO.Put_Line ("Count: " & Natural'Image (Get_Symbol_Count (T.File.all)));
+      Ada.Text_IO.Put_Line ("Count: " & Natural'Image (Bfd.Files.Get_Symbol_Count (T.File.all)));
 
       --  Can't check in a portable way, assume some reasonable value.
-      T.Assert (Get_Symbol_Count (T.File.all) > 0
-                and Get_Symbol_Count (T.File.all) < 10000,
+      T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) > 0
+                and Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
                 "Bfd.Get_Symbol_Count returned 0");
 
    end Test_Basic;
@@ -141,7 +142,7 @@ package body Bfd.Tests is
          T.File_Name := To_Unbounded_String (File_Name);
          T.Test_Name := To_Unbounded_String (Test_Name);
          T.Method    := Method;
-         T.File := new File_Type;
+         T.File := new Bfd.Files.File_Type;
          Suite.Add_Test (T.all'Access);
       end Add_Test;
 
