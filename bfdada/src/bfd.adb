@@ -113,6 +113,7 @@ package body Bfd is
       end if;
 
       if File.Abfd = System.Null_Address then
+         Interfaces.C.Strings.Free (File.Name);
          raise OPEN_ERROR;
       end if;
    end Open;
