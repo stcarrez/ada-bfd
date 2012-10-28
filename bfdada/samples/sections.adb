@@ -24,6 +24,7 @@ with Ada.Command_Line;
 with Ada.Text_IO;
 
 with Bfd;
+with Bfd.Files;
 with Bfd.Sections;
 
 with Utils;
@@ -31,13 +32,13 @@ procedure Sections is
 
    RC : Ada.Command_Line.Exit_Status := 0;
 
-   procedure List_Section (File : in Bfd.File_Type);
+   procedure List_Section (File : in Bfd.Files.File_Type);
 
    --------------------------------------------------
    --  List the sections of the BFD file
    --------------------------------------------------
-   procedure List_Section (File : in Bfd.File_Type) is
-      use type Bfd.Sections.Section_Flags;
+   procedure List_Section (File : in Bfd.Files.File_Type) is
+      use type Bfd.Section_Flags;
 
       Iter : Bfd.Sections.Section_Iterator := Bfd.Sections.Get_Sections (File);
    begin
@@ -106,13 +107,13 @@ begin
    for I in 1 .. Count loop
       declare
          Path : constant String := Ada.Command_Line.Argument (I);
-         File : Bfd.File_Type;
+         File : Bfd.Files.File_Type;
       begin
-         Bfd.Open (File, Path, "");
-         if Bfd.Check_Format (File, Bfd.OBJECT) then
+         Bfd.Files.Open (File, Path, "");
+         if Bfd.Files.Check_Format (File, Bfd.Files.OBJECT) then
             List_Section (File);
          end if;
-         Bfd.Close (File);
+         Bfd.Files.Close (File);
 
       exception
          when Bfd.OPEN_ERROR =>
