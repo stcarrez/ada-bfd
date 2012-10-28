@@ -26,17 +26,17 @@
 with System;
 with Ada.Strings.Unbounded;
 with Ada.Finalization;
+
+with Bfd.Files;
 with Bfd.Sections;
-with Bfd.Thin.Constants;
+with Bfd.Constants;
 package Bfd.Symtab is
 
    use Ada.Strings.Unbounded;
-   use Bfd.Thin;
 
    ----------------------
    -- Symbol_Flags     --
    ----------------------
-   subtype Symbol_Flags is Bfd.Thin.Constants.Symbol_Flags;
    --  Represents the flags associated with a symbol.
 
    --  Constants below are extracted from the BFD C source file
@@ -170,11 +170,11 @@ package Bfd.Symtab is
    function Get_Symclass (Sym : in Symbol) return Character;
    --  Return a character corresponding to the symbol class of Sym.
 
-   function Is_Local_Label (File : in File_Type;
+   function Is_Local_Label (File : in Bfd.Files.File_Type;
                             Sym  : in Symbol) return Boolean;
    --  Returns true if the symbol is local.
 
-   function Is_Local_Label_Name (File : in File_Type;
+   function Is_Local_Label_Name (File : in Bfd.Files.File_Type;
                                  Name : in String) return Boolean;
    --  Returns true if the label is local.
 
@@ -199,7 +199,7 @@ package Bfd.Symtab is
    function Element (It : in Symbol_Iterator) return Symbol;
    --  Return the current symbol pointed to by the iterator.
 
-   procedure Open_Symbols (File : in File_Type;
+   procedure Open_Symbols (File : in Bfd.Files.File_Type;
                            Symbols : out Symbol_Table);
    --  Open and read all the symbols.
    --  The symbol table must be closed to avoid memory leaks.
@@ -207,7 +207,7 @@ package Bfd.Symtab is
    function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator;
    --  Return an iterator which allows scanning the symbol table.
 
-   procedure Find_Nearest_Line (File : in File_Type;
+   procedure Find_Nearest_Line (File : in Bfd.Files.File_Type;
                                 Sec : in Bfd.Sections.Section;
                                 Symbols : in Symbol_Table;
                                 Addr : in Vma_Type;

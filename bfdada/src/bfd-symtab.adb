@@ -54,14 +54,14 @@ package body Bfd.Symtab is
    end Get_Section;
 
    --  Returns true if the symbol is local.
-   function Is_Local_Label (File : in File_Type;
+   function Is_Local_Label (File : in Bfd.Files.File_Type;
                             Sym  : in Symbol) return Boolean is
    begin
-      return Bfd.Thin.Symtab.Is_Local (File.Abfd, Sym) /= 0;
+      return Bfd.Thin.Symtab.Is_Local (Bfd.Files.Get_Bfd_Pointer (File), Sym) /= 0;
    end Is_Local_Label;
 
    --  Returns true if the label is local.
-   function Is_Local_Label_Name (File : in File_Type;
+   function Is_Local_Label_Name (File : in Bfd.Files.File_Type;
                                  Name : in String) return Boolean is
    begin
       --  return Is_Local (File.Abfd, Name & ASCII.NUL);
@@ -113,17 +113,17 @@ package body Bfd.Symtab is
 
    --  Open and read all the symbols.
    --  The symbol table must be closed to avoid leaks.
-   procedure Open_Symbols (File : in File_Type;
+   procedure Open_Symbols (File : in Bfd.Files.File_Type;
                            Symbols : out Symbol_Table) is
 
       Cnt : aliased Integer
-        := Bfd.Thin.Symtab.Get_Symtab_Upper_Bound (File.Abfd);
+        := Bfd.Thin.Symtab.Get_Symtab_Upper_Bound (Bfd.Files.Get_Bfd_Pointer (File));
 
       subtype Symbol_Array_Type is Symbol_Array (1 .. Positive (Cnt));
 
       Syms : Symbol_Array_Access := new Symbol_Array_Type;
    begin
-      Bfd.Thin.Symtab.Read_Symbols (File.Abfd, Cnt'Address,
+      Bfd.Thin.Symtab.Read_Symbols (Bfd.Files.Get_Bfd_Pointer (File), Cnt'Address,
                                     Syms (1)'Address);
       if Cnt < 0 then
          raise OPEN_ERROR;
@@ -132,7 +132,7 @@ package body Bfd.Symtab is
       Symbols.Syms := Syms;
    end Open_Symbols;
 
-   procedure Find_Nearest_Line (File : in File_Type;
+   procedure Find_Nearest_Line (File : in Bfd.Files.File_Type;
                                 Sec : in Section;
                                 Symbols : in Symbol_Table;
                                 Addr : Vma_Type;
@@ -145,7 +145,7 @@ package body Bfd.Symtab is
       L : aliased Integer := -1;
 
    begin
-      Bfd.Thin.Symtab.Find_Nearest_Line (File.Abfd, Sec.Opaque,
+      Bfd.Thin.Symtab.Find_Nearest_Line (Bfd.Files.Get_Bfd_Pointer (File), Sec.Opaque,
                                          Symbols.Syms (1)'Address, Addr,
                                          File_Name'Address,
                                          Func_Name'Address,
