@@ -179,4 +179,5 @@ src/bfd-constants.ads:	bin/bfdgen
 # Utility for the generation of bfd-constants.ads
 # Build this program with -g so that it is used by the unit tests to check some BFD flags.
 bin/bfdgen:    support/bfdgen.c
+	mkdir -p bin
 	$(CC) -o $@ -g support/bfdgen.c
