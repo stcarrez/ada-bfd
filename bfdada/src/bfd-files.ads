@@ -116,10 +116,6 @@ package Bfd.Files is
    --  BFD is a dummy, for plugins.
    BFD_PLUGIN : constant File_Flags := Constants.BFD_PLUGIN;
 
-   OPEN_ERROR : exception;
-   USE_ERROR  : exception;
-   NOT_FOUND  : exception;
-
    ----------------------
    -- BFD file         --
    ----------------------
