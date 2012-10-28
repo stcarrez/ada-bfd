@@ -32,32 +32,36 @@ package body Bfd.Sections is
 
    use type Interfaces.C.int;
 
-   function Get_Sections (File : in File_Type) return Section_Iterator is
-
+   --  -----------------------
+   --  Get an iterator to scan the BFD sections.
+   --  -----------------------
+   function Get_Sections (File : in Bfd.Files.File_Type) return Section_Iterator is
       Iter : Section_Iterator;
    begin
-      Iter := Bfd.Thin.Sections.Get_Sections (File.Abfd);
+      Iter := Bfd.Thin.Sections.Get_Sections (Bfd.Files.Get_Bfd_Pointer (File));
       return Iter;
    end Get_Sections;
 
-   procedure Next (Iter : in out Section_Iterator) is
-
-   begin
-      Iter := Bfd.Thin.Sections.Get_Next_Section (Iter);
-   end Next;
-
-   function Is_Done (Iter : in Section_Iterator) return Boolean is
-      use type System.Address;
-   begin
-      return System.Address (Iter) = System.Null_Address;
-   end Is_Done;
-
+   --  -----------------------
+   --  Return true if the iterator contains an element.
+   --  -----------------------
    function Has_Element (Iter : in Section_Iterator) return Boolean is
       use type System.Address;
    begin
       return System.Address (Iter) /= System.Null_Address;
    end Has_Element;
 
+   --  -----------------------
+   --  Move to the next section.
+   --  -----------------------
+   procedure Next (Iter : in out Section_Iterator) is
+   begin
+      Iter := Bfd.Thin.Sections.Get_Next_Section (Iter);
+   end Next;
+
+   --  -----------------------
+   --  Return the current section pointed to by the iterator.
+   --  -----------------------
    function Element (Iter : in Section_Iterator) return Section is
       S : Section;
    begin
@@ -69,12 +73,17 @@ package body Bfd.Sections is
       return S;
    end Element;
 
+   --  -----------------------
+   --  Return the name of the section.
+   --  -----------------------
    function Get_Name (S : in Section) return String is
    begin
       return Bfd.Internal.To_Ada (Bfd.Thin.Sections.Get_Section_Name (S.Opaque));
    end Get_Name;
 
+   --  -----------------------
    --  Return true if this is the UNDEF section.
+   --  -----------------------
    function Is_Undefined_Section (S : in Section) return Boolean is
 
       function Is_Undefined (S : Section_Iterator) return Interfaces.C.int;
@@ -84,7 +93,9 @@ package body Bfd.Sections is
       return Is_Undefined (S.Opaque) /= 0;
    end Is_Undefined_Section;
 
+   --  -----------------------
    --  Return true if this is the COMMON section.
+   --  -----------------------
    function Is_Common_Section (S : in Section) return Boolean is
 
       function Is_Common (S : Section_Iterator) return Interfaces.C.int;
@@ -94,7 +105,9 @@ package body Bfd.Sections is
       return Is_Common (S.Opaque) /= 0;
    end Is_Common_Section;
 
+   --  -----------------------
    --  Return true if this is the ABS section.
+   --  -----------------------
    function Is_Absolute_Section (S : in Section) return Boolean is
 
       function Is_Absolute (S : Section_Iterator) return Interfaces.C.int;
@@ -104,24 +117,26 @@ package body Bfd.Sections is
       return Is_Absolute (S.Opaque) /= 0;
    end Is_Absolute_Section;
 
+   --  -----------------------
    --  Get the content of the section starting at the given position.
    --  The result is truncated if the buffer is not large enough
-   procedure Get_Section_Contents (File : in File_Type;
-                                   S : in Section;
-                                   Pos : in Ada.Streams.Stream_Element_Offset := 0;
+   --  -----------------------
+   procedure Get_Section_Contents (File : in Bfd.Files.File_Type;
+                                   S    : in Section;
+                                   Pos  : in Ada.Streams.Stream_Element_Offset := 0;
                                    Item : out Ada.Streams.Stream_Element_Array;
                                    Last : out Ada.Streams.Stream_Element_Offset) is
 
       use type Ada.Streams.Stream_Element_Offset;
 
-      function Get_Section_Contents (Bfd : in Ptr;
-                                     S : in Section_Iterator;
-                                     Buf : in System.Address;
-                                     Pos : in Unsigned_64;
+      function Get_Section_Contents (Bfd  : in Ptr;
+                                     S    : in Section_Iterator;
+                                     Buf  : in System.Address;
+                                     Pos  : in Unsigned_64;
                                      Size : in Unsigned_64) return Interfaces.C.int;
       pragma Import (C, Get_Section_Contents, "ada_bfd_get_section_contents");
 
-      Result : constant Boolean := Get_Section_Contents (File.Abfd,
+      Result : constant Boolean := Get_Section_Contents (Bfd.Files.Get_Bfd_Pointer (File),
                                                          S.Opaque,
                                                          Item (Item'First)'Address,
                                                          Unsigned_64 (Pos),
@@ -134,21 +149,17 @@ package body Bfd.Sections is
       end if;
    end Get_Section_Contents;
 
-   --  Set the content of the section
-   procedure Set_Section_Content (File : in File_Type;
-                                  S : in out Section;
-                                  Item : in Ada.Streams.Stream_Element_Array) is
-   begin
-      null;
-   end Set_Section_Content;
-
-   function Find_Section (File : in File_Type;
+   --  -----------------------
+   --  Find the section given its name.
+   --  Raises NOT_FOUND if the section does not exist.
+   --  -----------------------
+   function Find_Section (File : in Bfd.Files.File_Type;
                           Name : in String) return Section is
       Iter : Section_Iterator := Get_Sections (File);
    begin
-      while not Is_Done (Iter) loop
+      while Has_Element (Iter) loop
          declare
-            S : constant Section := Current (Iter);
+            S : constant Section := Element (Iter);
          begin
             if Get_Name (S) = Name then
                return S;
@@ -156,23 +167,7 @@ package body Bfd.Sections is
             Next (Iter);
          end;
       end loop;
-      raise NOT_FOUND with "Section " & Name & " not found";
+      raise NOT_FOUND with "Section '" & Name & "' not found";
    end Find_Section;
-
-   --  Set the size of the section.
-   procedure Set_Section_Size (File : in File_Type;
-                               S : in out Section;
-                               Size : in Size_Type) is
-   begin
-      null;
-   end Set_Section_Size;
-
-   procedure Set_Section_Contents (File : in File_Type;
-                                   S : in out Section;
-                                   Offset : in Offset_Type;
-                                   Size : in Size_Type) is
-   begin
-      null;
-   end Set_Section_Contents;
 
 end Bfd.Sections;

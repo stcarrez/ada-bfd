@@ -23,20 +23,17 @@
 --  The <tt>Bfd.Sections</tt> package gives access to the sections that
 --  compose a binary program.
 --
-with System;
 with Ada.Streams;
-with Bfd.Thin.Constants;
-package Bfd.Sections is
 
-   use Bfd.Thin;
+with Bfd.Constants;
+with Bfd.Files;
+package Bfd.Sections is
 
    ----------------------
    -- Sections         --
    ----------------------
    --  The following types and functions deal with sections and
    --  how to access/scan them.
-
-   subtype Section_Flags is Bfd.Thin.Constants.Section_Flags;
 
    --  Constants below are extracted from the BFD C source file
    --  CODE FRAGMENT:  bfd/section.c:
@@ -214,9 +211,17 @@ package Bfd.Sections is
 
    --  END FRAGMENT: bfd/section.c
 
-   type Section_Iterator is private;
+   ----------------------
+   --  Section iterator
+   ----------------------
    --  Section iterator to walk the sections of a file.
+   type Section_Iterator is private;
 
+   ----------------------
+   --  Section
+   ----------------------
+   --  Represents a section.
+   --  The opaque is really the C section pointer.
    type Section is record
       Vma    : Vma_Type;
       Lma    : Lma_Type;
@@ -224,71 +229,44 @@ package Bfd.Sections is
       Flags  : Section_Flags;
       Opaque : Section_Iterator;
    end record;
-   --  Represents a section.
-   --  The opaque is really the C section pointer.
 
-
-   function Get_Sections (File : in File_Type) return Section_Iterator;
    --  Get an iterator to scan the BFD sections.
+   function Get_Sections (File : in Bfd.Files.File_Type) return Section_Iterator;
 
-   function Is_Done (Iter : in Section_Iterator) return Boolean;
-   pragma Obsolescent (Entity => Is_Done);
-   --  Return true if the iterator reached the last section.
-
-   function Has_Element (Iter : in Section_Iterator) return Boolean;
    --  Return true if the iterator contains an element.
+   function Has_Element (Iter : in Section_Iterator) return Boolean;
 
-   procedure Next (Iter : in out Section_Iterator);
    --  Move to the next section.
+   procedure Next (Iter : in out Section_Iterator);
 
-   function Element (Iter : in Section_Iterator) return Section;
    --  Return the current section pointed to by the iterator.
+   function Element (Iter : in Section_Iterator) return Section;
 
-   function Current (Iter : in Section_Iterator) return Section renames Element;
-   pragma Obsolescent (Entity => Current);
-
-   function Get_Name (S : in Section) return String;
    --  Return the name of the section.
+   function Get_Name (S : in Section) return String;
 
-   function Is_Undefined_Section (S : in Section) return Boolean;
    --  Return true if this is the UNDEF section.
+   function Is_Undefined_Section (S : in Section) return Boolean;
 
-   function Is_Common_Section (S : in Section) return Boolean;
    --  Return true if this is the COMMON section.
+   function Is_Common_Section (S : in Section) return Boolean;
 
-   function Is_Absolute_Section (S : in Section) return Boolean;
    --  Return true if this is the ABS section.
+   function Is_Absolute_Section (S : in Section) return Boolean;
 
-
+   --  Get the content of the section starting at the given position.
+   --  The result is truncated if the buffer is not large enough
    procedure Get_Section_Contents
-     (File : in File_Type;
+     (File : in Bfd.Files.File_Type;
       S    : in Section;
       Pos  : in Ada.Streams.Stream_Element_Offset := 0;
       Item : out Ada.Streams.Stream_Element_Array;
       Last : out Ada.Streams.Stream_Element_Offset);
-   --  Get the content of the section starting at the given position.
-   --  The result is truncated if the buffer is not large enough
 
-   procedure Set_Section_Content (File : in File_Type;
-                                  S    : in out Section;
-                                  Item : in Ada.Streams.Stream_Element_Array);
-   --  Set the content of the section
-
-   function Find_Section (File : in File_Type;
-                          Name : in String) return Section;
    --  Find the section given its name.
    --  Raises NOT_FOUND if the section does not exist.
-
-   procedure Set_Section_Size (File : in File_Type;
-                               S    : in out Section;
-                               Size : in Size_Type);
-   --  Set the size of the section.
-
-   procedure Set_Section_Contents (File   : in File_Type;
-                                   S      : in out Section;
-                                   Offset : in Offset_Type;
-                                   Size   : in Size_Type);
-
+   function Find_Section (File : in Bfd.Files.File_Type;
+                          Name : in String) return Section;
 
 private
    type Section_Iterator is new System.Address;
