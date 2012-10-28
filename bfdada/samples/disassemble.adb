@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded;
 with Ada.Directories;
 
 with Bfd;
+with Bfd.Files;
 with Bfd.Sections;
 with Bfd.Disassembler;
 with Bfd.Symtab;
@@ -34,12 +35,12 @@ with Bfd.Symtab;
 with Utils;
 procedure Disassemble is
 
-   procedure Disassemble_Section (File : in Bfd.File_Type);
+   procedure Disassemble_Section (File : in Bfd.Files.File_Type);
 
    --------------------------------------------------
    --  List the sections of the BFD file
    --------------------------------------------------
-   procedure Disassemble_Section (File : in Bfd.File_Type) is
+   procedure Disassemble_Section (File : in Bfd.Files.File_Type) is
       use type Bfd.Vma_Type;
       use Ada.Strings.Unbounded;
 
@@ -105,13 +106,13 @@ begin
    for I in 1 .. Count loop
       declare
          Path : constant String := Ada.Command_Line.Argument (I);
-         File : Bfd.File_Type;
+         File : Bfd.Files.File_Type;
       begin
-         Bfd.Open (File, Path, "");
-         if Bfd.Check_Format (File, Bfd.OBJECT) then
+         Bfd.Files.Open (File, Path, "");
+         if Bfd.Files.Check_Format (File, Bfd.Files.OBJECT) then
             Disassemble_Section (File);
          end if;
-         Bfd.Close (File);
+         Bfd.Files.Close (File);
 
       exception
          when Bfd.OPEN_ERROR =>
