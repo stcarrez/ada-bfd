@@ -25,7 +25,6 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with Interfaces.C;
 with Bfd.Internal;
 with Bfd.Thin;
 package body Bfd is

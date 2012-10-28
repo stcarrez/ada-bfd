@@ -34,7 +34,7 @@ package Bfd is
    pragma Linker_Options ("-ldl");
    pragma Linker_Options ("-lz");
 
-   type File_Flags is new Integer;
+   type File_Flags is new Interfaces.Unsigned_32;
    --  Values that may appear in the flags field of a BFD.  These also
    --  appear in the object_flags field of the bfd_target structure, where
    --  they indicate the set of flags used by that backend (not all flags
