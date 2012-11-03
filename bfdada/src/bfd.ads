@@ -29,9 +29,6 @@ with Interfaces;
 --  observe its sections, its symbol table.
 package Bfd is
 
-   pragma Linker_Options ("-lbfd");
-   pragma Linker_Options ("-liberty");
-   pragma Linker_Options ("-lz");
 
    type File_Flags is new Interfaces.Unsigned_32;
    --  Values that may appear in the flags field of a BFD.  These also
