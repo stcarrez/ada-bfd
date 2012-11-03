@@ -37,30 +37,37 @@ package body Bfd.Symbols is
    use Bfd.Sections;
    use type Interfaces.C.int;
 
-   ----------------------
-   --  Symbol function and procedures
-   ----------------------
+   procedure Free is
+     new Ada.Unchecked_Deallocation (Symbol_Array, Symbol_Array_Access);
 
+   ----------------------
    --  Return the symbol name.
+   ----------------------
    function Get_Name (Sym : in Symbol) return String is
    begin
       return Interfaces.C.Strings.Value (Bfd.Thin.Symbols.Get_Symbol_Name (Sym));
    end Get_Name;
 
+   ----------------------
    --  Return the section where the symbol is defined.
+   ----------------------
    function Get_Section (Sym : in Symbol) return Section is
    begin
       return Element (Bfd.Thin.Symbols.Get_Symbol_Section (Sym));
    end Get_Section;
 
+   ----------------------
    --  Returns true if the symbol is local.
+   ----------------------
    function Is_Local_Label (File : in Bfd.Files.File_Type;
                             Sym  : in Symbol) return Boolean is
    begin
       return Bfd.Thin.Symbols.Is_Local (Bfd.Files.Get_Bfd_Pointer (File), Sym) /= 0;
    end Is_Local_Label;
 
+   ----------------------
    --  Returns true if the label is local.
+   ----------------------
    function Is_Local_Label_Name (File : in Bfd.Files.File_Type;
                                  Name : in String) return Boolean is
    begin
@@ -79,25 +86,33 @@ package body Bfd.Symbols is
    --  Symbol table iterator
    ----------------------
 
+   ----------------------
    --  Return true if we are at end of the iterator.
+   ----------------------
    function Has_Element (It : Symbol_Iterator) return Boolean is
    begin
       return It.Pos <= It.Size;
    end Has_Element;
 
+   ----------------------
    --  Move the iterator to the next element.
+   ----------------------
    procedure Next (It : in out Symbol_Iterator) is
    begin
       It.Pos := It.Pos + 1;
    end Next;
 
+   ----------------------
    --  Return the current symbol pointed to by the iterator.
+   ----------------------
    function Element (It : in Symbol_Iterator) return Symbol is
    begin
       return It.Syms (It.Pos);
    end Element;
 
+   ----------------------
    --  Return an iterator which allows scanning the symbol table.
+   ----------------------
    function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator is
       It : Symbol_Iterator;
    begin
@@ -111,9 +126,10 @@ package body Bfd.Symbols is
    --  Symbol table operations
    ----------------------
 
+   ----------------------
    --  Open and read all the symbols.
-   --  The symbol table must be closed to avoid leaks.
-   procedure Open_Symbols (File : in Bfd.Files.File_Type;
+   ----------------------
+   procedure Read_Symbols (File    : in Bfd.Files.File_Type;
                            Symbols : out Symbol_Table) is
 
       Cnt : aliased Integer
@@ -126,11 +142,12 @@ package body Bfd.Symbols is
       Bfd.Thin.Symbols.Read_Symbols (Bfd.Files.Get_Bfd_Pointer (File), Cnt'Address,
                                     Syms (1)'Address);
       if Cnt < 0 then
+         Free (Syms);
          raise OPEN_ERROR;
       end if;
       Symbols.Size := Natural (Cnt);
       Symbols.Syms := Syms;
-   end Open_Symbols;
+   end Read_Symbols;
 
    procedure Find_Nearest_Line (File : in Bfd.Files.File_Type;
                                 Sec : in Section;
@@ -203,17 +220,19 @@ package body Bfd.Symbols is
       return Symbols.Size;
    end Get_Size;
 
+   ----------------------
    --  Internal operation to obtain the symbol table for the disassembler.
+   ----------------------
    function Get_Internal_Symbols (Symbols : in Symbol_Table) return Symbol_Array_Access is
    begin
       return Symbols.Syms;
    end Get_Internal_Symbols;
 
+   ----------------------
    --  Release the symbol table.
+   ----------------------
    overriding
    procedure Finalize (Symbols : in out Symbol_Table) is
-      procedure Free is
-        new Ada.Unchecked_Deallocation (Symbol_Array, Symbol_Array_Access);
    begin
       Free (Symbols.Syms);
    end Finalize;

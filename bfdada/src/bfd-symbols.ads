@@ -199,10 +199,9 @@ package Bfd.Symbols is
    function Element (It : in Symbol_Iterator) return Symbol;
    --  Return the current symbol pointed to by the iterator.
 
-   procedure Open_Symbols (File : in Bfd.Files.File_Type;
+   procedure Read_Symbols (File    : in Bfd.Files.File_Type;
                            Symbols : out Symbol_Table);
    --  Open and read all the symbols.
-   --  The symbol table must be closed to avoid memory leaks.
 
    function Get_Iterator (Symbols : in Symbol_Table) return Symbol_Iterator;
    --  Return an iterator which allows scanning the symbol table.
