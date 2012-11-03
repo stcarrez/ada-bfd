@@ -89,7 +89,7 @@ int main(void)
 #endif
 
 #if !defined(HAVE_LIB_DL) && !defined(HAVE_LIB_INTL)
-  printf("\"\");
+  printf("\"\"");
 #endif
   printf(";\n");
 
