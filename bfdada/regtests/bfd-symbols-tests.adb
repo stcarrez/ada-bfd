@@ -41,7 +41,7 @@ package body Bfd.Symbols.Tests is
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
-      Bfd.Symbols.Open_Symbols (T.File.all, Symbols);
+      Bfd.Symbols.Read_Symbols (T.File.all, Symbols);
 
       --  Can't check in a portable way, assume some reasonable value.
       T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) > 0
@@ -63,7 +63,7 @@ package body Bfd.Symbols.Tests is
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
-      Bfd.Symbols.Open_Symbols (T.File.all, Symbols);
+      Bfd.Symbols.Read_Symbols (T.File.all, Symbols);
 
       Iter := Bfd.Symbols.Get_Iterator (Symbols);
       T.Assert (Bfd.Symbols.Has_Element (Iter),
@@ -112,7 +112,7 @@ package body Bfd.Symbols.Tests is
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
-      Bfd.Symbols.Open_Symbols (T.File.all, Symbols);
+      Bfd.Symbols.Read_Symbols (T.File.all, Symbols);
 
       Sym := Bfd.Symbols.Get_Symbol (Symbols, Name);
       T.Assert (Sym /= Null_Symbol, "Symbol '" & Name & "' not found");
@@ -148,7 +148,7 @@ package body Bfd.Symbols.Tests is
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
-      Bfd.Symbols.Open_Symbols (T.File.all, Symbols);
+      Bfd.Symbols.Read_Symbols (T.File.all, Symbols);
 
       Sym := Bfd.Symbols.Get_Symbol (Symbols, "bfd__tests__name");
       T.Assert (Sym /= Null_Symbol, "Symbol 'bfd__tests__name' not found");

@@ -112,7 +112,7 @@ package body Bfd.Tests is
                 "Bfd.Check_Format returned false");
 
       --  We must load the symbol table first.
-      Bfd.Symbols.Open_Symbols (T.File.all, Symbols);
+      Bfd.Symbols.Read_Symbols (T.File.all, Symbols);
       Ada.Text_IO.Put_Line ("Count: " & Natural'Image (Bfd.Files.Get_Symbol_Count (T.File.all)));
 
       --  Can't check in a portable way, assume some reasonable value.
