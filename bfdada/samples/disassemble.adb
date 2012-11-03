@@ -58,7 +58,7 @@ procedure Disassemble is
       Current_Name : Ada.Strings.Unbounded.Unbounded_String;
       Current_File : Ada.Strings.Unbounded.Unbounded_String;
    begin
-      Bfd.Symbols.Open_Symbols (File, Symbols);
+      Bfd.Symbols.Read_Symbols (File, Symbols);
       Bfd.Sections.Get_Section_Contents (File, Text_Section, 0, Section, Last);
       Bfd.Disassembler.Initialize (Info, File, "", Text_Section.Vma, Section);
       Info.Set_Symbol_Table (Symbols);

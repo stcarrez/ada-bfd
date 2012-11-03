@@ -128,7 +128,7 @@ procedure BfdInfo is
       Symbols : Bfd.Symbols.Symbol_Table;
       It      : Bfd.Symbols.Symbol_Iterator;
    begin
-      Bfd.Symbols.Open_Symbols (File, Symbols);
+      Bfd.Symbols.Read_Symbols (File, Symbols);
       It := Bfd.Symbols.Get_Iterator (Symbols);
       while Bfd.Symbols.Has_Element (It) loop
          declare

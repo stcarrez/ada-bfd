@@ -49,7 +49,7 @@ begin
    begin
       Bfd.Files.Open (File, Path, "");
       if Bfd.Files.Check_Format (File, Bfd.Files.OBJECT) then
-         Bfd.Symbols.Open_Symbols (File, Symbols);
+         Bfd.Symbols.Read_Symbols (File, Symbols);
          for I in 2 .. Count loop
             declare
                Name : constant String := Ada.Command_Line.Argument (I);
