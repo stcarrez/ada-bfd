@@ -26,6 +26,7 @@
 --  observe its sections, its symbol table.
 --
 with Interfaces.C;
+with Interfaces.C.Strings;
 with Bfd.Internal;
 with Bfd.Thin;
 package body Bfd.Files is
@@ -107,7 +108,7 @@ package body Bfd.Files is
    function Get_Filename (File : in File_Type) return String is
    begin
       Check_Bfd (File);
-      return Bfd.Internal.To_Ada (Bfd.Thin.Get_Filename (File.Abfd));
+      return Interfaces.C.Strings.Value (Bfd.Thin.Get_Filename (File.Abfd));
    end Get_Filename;
 
    --  -----------------------

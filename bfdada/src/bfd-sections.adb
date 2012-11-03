@@ -26,7 +26,7 @@
 --  observe its sections, its symbol table.
 --
 with Interfaces.C;
-with Bfd.Internal;
+with Interfaces.C.Strings;
 with Bfd.Thin.Sections;
 package body Bfd.Sections is
 
@@ -78,7 +78,7 @@ package body Bfd.Sections is
    --  -----------------------
    function Get_Name (S : in Section) return String is
    begin
-      return Bfd.Internal.To_Ada (Bfd.Thin.Sections.Get_Section_Name (S.Opaque));
+      return Interfaces.C.Strings.Value (Bfd.Thin.Sections.Get_Section_Name (S.Opaque));
    end Get_Name;
 
    --  -----------------------

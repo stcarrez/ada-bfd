@@ -48,7 +48,4 @@ package Bfd.Internal is
    procedure Memcpy (To : in Ptr; From : in Ptr; Size : in Natural);
    pragma Import (C, Memcpy, "memcpy");
 
-   function To_Ada (P : in Pointer) return String;
-   procedure To_Ada (P : in Pointer; S : out String);
-
 end Bfd.Internal;

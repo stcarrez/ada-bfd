@@ -140,23 +140,33 @@ package body Bfd.Symbols is
                                 Func : out Unbounded_String;
                                 Line : out Natural) is
 
-      File_Name : aliased Ptr := System.Null_Address;
-      Func_Name : aliased Ptr := System.Null_Address;
+      use type Interfaces.C.Strings.chars_ptr;
+
+      File_Name : aliased Interfaces.C.Strings.chars_ptr := Interfaces.C.Strings.Null_Ptr;
+      Func_Name : aliased Interfaces.C.Strings.chars_ptr := Interfaces.C.Strings.Null_Ptr;
       L : aliased Integer := -1;
 
    begin
       Bfd.Thin.Symbols.Find_Nearest_Line (Bfd.Files.Get_Bfd_Pointer (File), Sec.Opaque,
-                                         Symbols.Syms (1)'Address, Addr,
-                                         File_Name'Address,
-                                         Func_Name'Address,
-                                         L'Address);
+                                          Symbols.Syms (1)'Address, Addr,
+                                          File_Name'Address,
+                                          Func_Name'Address,
+                                          L'Address);
       if L < 0 then
          raise NOT_FOUND;
       end if;
 
       Line := Natural (L);
-      Name := To_Unbounded_String (To_Ada (File_Name));
-      Func := To_Unbounded_String (To_Ada (Func_Name));
+      if File_Name /= Interfaces.C.Strings.Null_Ptr then
+         Name := To_Unbounded_String (Interfaces.C.Strings.Value (File_Name));
+      else
+         Name := To_Unbounded_String ("");
+      end if;
+      if Func_Name /= Interfaces.C.Strings.Null_Ptr then
+         Func := To_Unbounded_String (Interfaces.C.Strings.Value (Func_Name));
+      else
+         Func := To_Unbounded_String ("");
+      end if;
    end Find_Nearest_Line;
 
    function Get_Symbol (Symbols : in Symbol_Table;

@@ -30,10 +30,10 @@ package Bfd.Thin is
    function Get_Error_Type return Integer;
    pragma Import (C, Get_Error_Type, "bfd_get_error");
 
-   function Get_Error_Message (Code : Error) return Ptr;
+   function Get_Error_Message (Code : Error) return Interfaces.C.Strings.chars_ptr;
    pragma Import (C, Get_Error_Message, "bfd_errmsg");
 
-   function Get_Filename (File : in Ptr) return Ptr;
+   function Get_Filename (File : in Ptr) return Interfaces.C.Strings.chars_ptr;
    pragma Import (C, Get_Filename, "_bfd_get_filename");
 
    function Get_Error return Error;

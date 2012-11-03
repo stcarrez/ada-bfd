@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  BFD -- Thin Ada layer for Bfd (common Bfd functions)
---  <!-- Copyright (C) 2002, 2003, 2004 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  <!-- Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
@@ -22,32 +22,32 @@
 -----------------------------------------------------------------------
 --  This package defines the C import to access to the BFD C library.
 --
-with Bfd.Sections; use Bfd.Sections;
+with Bfd.Sections;
 package Bfd.Thin.Sections is
 
    --  Section operations
-   function Get_Section_Vma (Sect : in Section_Iterator) return Vma_Type;
+   function Get_Section_Vma (Sect : in Bfd.Sections.Section_Iterator) return Vma_Type;
    pragma Import (C, Get_Section_Vma, "_bfd_get_section_vma");
 
-   function Get_Section_Lma (Sect : in Section_Iterator) return Lma_Type;
+   function Get_Section_Lma (Sect : in Bfd.Sections.Section_Iterator) return Lma_Type;
    pragma Import (C, Get_Section_Lma, "_bfd_get_section_lma");
 
-   function Get_Section_Size (Sect : in Section_Iterator) return Size_Type;
+   function Get_Section_Size (Sect : in Bfd.Sections.Section_Iterator) return Size_Type;
    pragma Import (C, Get_Section_Size, "_bfd_get_section_size");
 
    function Get_Section_Flags
-     (Sect : in Section_Iterator) return Section_Flags;
+     (Sect : in Bfd.Sections.Section_Iterator) return Section_Flags;
    pragma Import (C, Get_Section_Flags, "_bfd_get_section_flags");
 
-   function Get_Section_Name (Sect : in Section_Iterator) return Ptr;
+   function Get_Section_Name (Sect : in Bfd.Sections.Section_Iterator)
+                              return Interfaces.C.Strings.chars_ptr;
    pragma Import (C, Get_Section_Name, "_bfd_get_section_name");
 
-   function Get_Sections (File : in Ptr) return Section_Iterator;
+   function Get_Sections (File : in Ptr) return Bfd.Sections.Section_Iterator;
    pragma Import (C, Get_Sections, "bfd_get_sections");
 
-   function Get_Next_Section (File : in Section_Iterator)
-                              return Section_Iterator;
+   function Get_Next_Section (File : in Bfd.Sections.Section_Iterator)
+                              return Bfd.Sections.Section_Iterator;
    pragma Import (C, Get_Next_Section, "bfd_next_section");
-
 
 end Bfd.Thin.Sections;

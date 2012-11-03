@@ -48,8 +48,8 @@ package Bfd.Thin.Symbols is
                                 Sec : in Bfd.Sections.Section_Iterator;
                                 Syms : in Ptr;
                                 Addr : in Vma_Type;
-                                Name : in Ptr;
-                                Func : in Ptr;
+                                Name : in System.Address;
+                                Func : in System.Address;
                                 Line : in Ptr);
    pragma Import (C, Find_Nearest_Line, "bfd_find_nearest_line_");
 

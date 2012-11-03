@@ -27,6 +27,7 @@
 --
 with Bfd.Internal;
 with Bfd.Thin;
+with Interfaces.C.Strings;
 package body Bfd is
 
    use type System.Address;
@@ -76,7 +77,7 @@ package body Bfd is
    --  -----------------------
    function Get_Error_Message (Code : Error) return String is
    begin
-      return Bfd.Internal.To_Ada (Bfd.Thin.Get_Error_Message (Code));
+      return Interfaces.C.Strings.Value (Bfd.Thin.Get_Error_Message (Code));
    end Get_Error_Message;
 
 end Bfd;
