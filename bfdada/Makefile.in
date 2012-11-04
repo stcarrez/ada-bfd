@@ -108,7 +108,7 @@ force:
 
 # Files to package in source distribution
 DISTFILES=AUTHORS README INSTALL NEWS ChangeLog COPYING config.guess configure config.sub \
-configure.in Makefile.in install-sh missing \
+configure.in Makefile.in install-sh missing aclocal.m4 \
 bfdada.gpr.in tests.gpr samples.gpr config.gpr testutil.gpr \
 src samples regtests \
 bin obj lib distrib support testutil
