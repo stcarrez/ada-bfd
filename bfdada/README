@@ -13,3 +13,10 @@ The Ada-BFD library allows to:
   - get access to the symbol table,
   - use the BFD disassembler
 
+The Ada BFD library is distributed under the GNU GENERAL PUBLIC LICENSE, Version 2
+(see COPYING).
+
+The unit tests used by Ada BFD use the Ada Util and Ada Test Util libraries distributed
+under the Apache License Version 2 (see testutil/LICENSE.txt).  They also use the
+Ahven Unit Test Library distributed under the ISC license (see testutil/LICENSE.Ahven).
+These unit test libraries are not installed.
