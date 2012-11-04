@@ -1,6 +1,6 @@
 /* Functions for BfdAda
-   Copyright 2001, 2002, 2003 Free Software Foundation, Inc.
-   Contributed by Stephane Carrez (stcarrez@nerim.fr)
+   Copyright 2001, 2002, 2003, 2012 Free Software Foundation, Inc.
+   Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
 
@@ -21,7 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #include <bfd.h>
 #include <stdlib.h>
 #include <stdarg.h>
-#include <dis-asm.h>
 
 void*
 _bfd_get_filename (struct bfd *abfd)
