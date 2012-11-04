@@ -1,7 +1,7 @@
-Installing and compiling BfdAda
+Installing and compiling Ada BFD
 ===============================
 
-To compile BfdAda you'll need:
+To compile Ada BFD you'll need:
 
  - an Ada compiler (GNAT or gcc 4.6).
 
@@ -21,10 +21,10 @@ You can install the library by using:
   make install
 
 
-Compiling the BfdAda samples
+Compiling the Ada BFD samples
 ============================
 
-Several samples are provided to show how to use the BfdAda library.
+Several samples are provided to show how to use the Ada BFD library.
 To build them, use:
 
   make samples
