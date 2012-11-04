@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------
 --  bfd-symbols -- BFD Symbol Table types and operations
 --  Copyright (C) 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
---  Written by Stephane Carrez (stcarrez@nerim.fr)
+--  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
 --
