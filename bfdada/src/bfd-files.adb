@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2001, 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2014 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -26,8 +26,6 @@
 --  observe its sections, its symbol table.
 --
 with Interfaces.C;
-with Interfaces.C.Strings;
-with Bfd.Internal;
 with Bfd.Thin;
 package body Bfd.Files is
 
