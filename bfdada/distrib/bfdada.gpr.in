@@ -6,6 +6,6 @@ project Bfdada is
    for Library_Kind use "LIBRARY_TYPE";
 
    for Source_Dirs use ("INSTALL/share/ada/adainclude/bfdada");
-   for Library_ALI_Dir use "INSTALL/lib/ada/adalib/bfdada/" & Project'Library_Kind;
+   for Library_ALI_Dir use "INSTALL/lib/ada/adalib/bfdada/";
    for Externally_Built use "true";
 end Bfdada;
