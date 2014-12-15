@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2001, 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2014 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -97,6 +97,7 @@ package Bfd.Files is
 
    --  The sections in this BFD specify a memory page.
    HAS_LOAD_PAGE : constant File_Flags := Constants.HAS_LOAD_PAGE;
+   pragma Obsolescent (HAS_LOAD_PAGE, "HAS_LOAD_PAGE has been removed from bfd C library");
 
    --  This BFD has been created by the linker and doesn't correspond
    --  to any input file.
