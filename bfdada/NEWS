@@ -1,3 +1,7 @@
+Version 1.0.1 - Dec 2014
+  - Fix build with binutils > 2.24
+  - Add support for debian package creation
+
 Version 1.0 - Nov 2012
   - Fixed installation of library
   - Added examples for BfdAda
