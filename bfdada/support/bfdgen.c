@@ -1,5 +1,5 @@
 /* Generate a package from bfd.h definitions
-   Copyright 2012 Free Software Foundation, Inc.
+   Copyright 2012, 2014 Free Software Foundation, Inc.
    Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
