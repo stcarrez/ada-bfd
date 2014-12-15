@@ -148,10 +148,10 @@ install_shared:
 install_lib:
 	$(MKDIR) -p ${includedir}/$(NAME)
 	$(MKDIR) -p ${projectdir}/
-	${MKDIR} -p ${alidir}/$(NAME)/$(LIBRARY_TYPE)
+	${MKDIR} -p ${alidir}/$(NAME)
 	${CP} -p src/*.ad[bs] ${includedir}/$(NAME)
 	sed -e "s,INSTALL,${prefix},g" -e "s,LIBRARY_TYPE,$(LIBRARY_TYPE),g" < distrib/bfdada.gpr > ${projectdir}/bfdada.gpr
-	${CP} -p lib/$(LIBRARY_TYPE)/*.ali ${alidir}/$(NAME)/$(LIBRARY_TYPE)/
+	${CP} -p lib/$(LIBRARY_TYPE)/*.ali ${alidir}/$(NAME)/
 ifeq ($(LIBRARY_TYPE),static)
 	${CP} lib/$(LIBRARY_TYPE)/libada-bfd.a ${libdir}/
 else
