@@ -29,7 +29,7 @@ with Interfaces.C;
 with Bfd.Thin;
 package body Bfd.Files is
 
-   pragma Linker_Options ("-lbfd" & Bfd.Constants.LINKER_OPTIONS);
+   pragma Linker_Options ("-lbfd" & ASCII.NUL & "-liberty" & Bfd.Constants.LINKER_OPTIONS);
    pragma Linker_Options ("-lz");
 
    use type System.Address;
