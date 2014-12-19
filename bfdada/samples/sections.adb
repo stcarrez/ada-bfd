@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  sections -- Simple Example to list ELF sections
---  Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2012, 2014 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -101,6 +101,11 @@ procedure Sections is
 
 begin
    Bfd.Set_Error_Program_Name (To => "sections");
+
+   if Count = 0 then
+      Ada.Text_IO.Put_Line ("Usage: sections file...");
+      RC := 2;
+   end if;
 
    --  Open each file passed as argument and try dumping its
    --  sections and symbol table.
