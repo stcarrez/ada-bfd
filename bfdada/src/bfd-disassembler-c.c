@@ -1,5 +1,5 @@
 /* Functions for BfdAda
-   Copyright 2001, 2002, 2003, 2012 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2012, 2014 Free Software Foundation, Inc.
    Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
@@ -24,23 +24,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #include <stdarg.h>
 #include <dis-asm.h>
 
-extern void ada_dis_memory_handler(int status, bfd_vma addr,
+extern void ada_dis_memory_handler(int status, unsigned long long addr,
                                    struct disassemble_info* info);
 
-void
-bfdada_memory_error_handler (int status, bfd_vma memaddr,
-                          struct disassemble_info* info)
+static void
+bfd_ada_dis_memory_handler (int status, bfd_vma memaddr,
+                            struct disassemble_info* info)
 {
   ada_dis_memory_handler (status, (unsigned long long) memaddr,
                           info->application_data);
 }
 
-extern int ada_dis_symbol_at_address (bfd_vma addr,
+extern int ada_dis_symbol_at_address (unsigned long long addr,
                                       struct disassemble_info* info);
 
-extern int ada_dis_read_memory_handler (bfd_vma addr, bfd_byte* myaddr,
+static int
+bfd_ada_dis_symbol_at_address (bfd_vma addr,
+                               struct disassemble_info* info)
+{
+    return ada_dis_symbol_at_address ((unsigned long long) addr, info);
+}
+
+extern int ada_dis_read_memory_handler (unsigned long long addr, bfd_byte* myaddr,
                                         unsigned int length,
                                         struct disassemble_info *info);
+
+static int
+bfd_ada_dis_read_memory_handler (bfd_vma addr, bfd_byte* myaddr,
+                                 unsigned int length,
+                                 struct disassemble_info *info)
+{
+    return ada_dis_read_memory_handler ((unsigned long long) addr, myaddr, length, info);
+}
 
 /* Pseudo FILE object for strings.  */
 typedef struct
@@ -51,7 +66,7 @@ typedef struct
 } SFILE;
 
 extern void ada_disassembler_output (void* data, char* buffer);
-extern void ada_disassembler_output_address (bfd_vma addr,
+extern void ada_disassembler_output_address (unsigned long long addr,
                                              struct disassemble_info *info);
 
 /* sprintf to a "stream".  */
@@ -81,6 +96,12 @@ dis_printf (SFILE *f, const char *format, ...)
   return n;
 }
 
+static void bfd_ada_disassembler_output_address (bfd_vma addr,
+                                                 struct disassemble_info *info)
+{
+    ada_disassembler_output_address ((unsigned long long) addr, info);
+}
+
 void*
 bfd_ada_disassembler_init (void* data, bfd* abfd, char* disassembler_options)
 {
@@ -95,10 +116,10 @@ bfd_ada_disassembler_init (void* data, bfd* abfd, char* disassembler_options)
 
   init_disassemble_info (info, (FILE*) file, (fprintf_ftype) dis_printf);
   info->application_data = data;
-  info->memory_error_func = ada_dis_memory_handler;
-  info->symbol_at_address_func = ada_dis_symbol_at_address;
-  info->read_memory_func = ada_dis_read_memory_handler;
-  info->print_address_func = ada_disassembler_output_address;
+  info->memory_error_func = bfd_ada_dis_memory_handler;
+  info->symbol_at_address_func = bfd_ada_dis_symbol_at_address;
+  info->read_memory_func = bfd_ada_dis_read_memory_handler;
+  info->print_address_func = bfd_ada_disassembler_output_address;
 
   info->flavour = bfd_get_flavour (abfd);
   info->arch = bfd_get_arch (abfd);
