@@ -83,7 +83,7 @@ procedure Disassemble is
             Utils.Print (Natural'Image (Line) & ":", 5);
          end if;
          if Func /= "" then
-            Utils.Print ( "<" & To_String (Func) & ">", 20);
+            Utils.Print ("<" & To_String (Func) & ">", 20);
             Ada.Text_IO.Put (":");
          end if;
 
