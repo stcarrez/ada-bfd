@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  disassemble -- Simple Disassembler
---  Copyright (C) 2006, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2006, 2012, 2014 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -100,6 +100,11 @@ procedure Disassemble is
 
 begin
    Bfd.Set_Error_Program_Name (To => "disassemble");
+
+   if Count = 0 then
+      Ada.Text_IO.Put_Line ("Usage: disassemble file...");
+      RC := 2;
+   end if;
 
    --  Open each file passed as argument and try dumping its
    --  sections and symbol table.
