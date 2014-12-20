@@ -5,8 +5,18 @@ To compile Ada BFD you'll need:
 
  - an Ada compiler (GNAT or gcc 4.6).
 
- - the binutils 2.22 installed for development
-   (you need the bfd.h include; see binutils-dev package on Debian or Ubuntu)
+ - the binutils 2.22 or higher installed for development.
+   You need the bfd.h include as well as libbfd and libiberty.
+   On Debian systems (including Ubuntu) install the development packages
+   by using:
+
+     sudo apt-get install binutils-dev
+     sudo apt-get install libiberty-dev
+
+   On NetBSD 6.1, you need to install by using:
+
+     sudo pkgin install binutils-2.24nb3
+     sudo pkgin install gettext-lib-0.19.2
 
 
 Run the GNU configure command and build the library:
