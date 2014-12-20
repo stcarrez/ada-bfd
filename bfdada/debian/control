@@ -9,8 +9,7 @@ Homepage: http://code.google.com/p/ada-bfd/
 Package: libada-bfd1.0-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, libada-bfd1.0 (= ${binary:Version}), gnat, gnat-4.6
-Suggests: libada-bfd1.0-dbg
+Depends: ${misc:Depends}, libada-bfd1.0 (= ${binary:Version}), gnat, gnat-4.6, binutils-dev (>= 2.22)
 Description: Ada BFD Library
  The Ada-BFD is a library which provides Ada API for GNU Binutils BFD
  library.  This package contains the Ada development files and it allows
