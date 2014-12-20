@@ -22,7 +22,7 @@ pkgname=libada-bfd
 libname=libada-bfd
 libprefix=$(libname)_
 
-LIBRARY_TYPE=dynamic
+LIBRARY_TYPE=static
 
 %:
 	dh $@ 
@@ -62,14 +62,6 @@ $(pkgname)$(aliversion)-dev:
 	dh_install -p$@ usr/lib/ada/adalib/bfdada/*.ali /usr/lib/ada/adalib/bfdada
 	dh_install -p$@ usr/share/ada/adainclude/bfdada.gpr /usr/share/ada/adainclude
 	dh_install -p$@ usr/share/ada/adainclude/bfdada/*.ad[bs] /usr/share/ada/adainclude/bfdada
-	#dh_install -p$@ samples/*.ads usr/share/doc/$@/examples
-	#dh_install -p$@ samples/*.properties usr/share/doc/$@/examples
-	#dh_install -p$@ samples/*.xmi usr/share/doc/$@/examples
-	#dh_install -p$@ samples/*.adb usr/share/doc/$@/examples
-	#dh_install -p$@ samples.gpr usr/share/doc/$@/
-	#dh_install -p$@ config.gpr usr/share/doc/$@/
-	#dh_link -p$@ usr/lib/$(DEB_HOST_MULTIARCH)/$(libname).so.$(soversion) \
-	#             usr/lib/$(DEB_HOST_MULTIARCH)/$(libname).so
 	dh_strip -p$@ -X.a
 
 # Add specific link options when the libada_util.so shared library is created.  The -ld is passed but it
