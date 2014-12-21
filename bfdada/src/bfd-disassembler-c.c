@@ -150,11 +150,11 @@ bfd_ada_disassembler_get_data (struct disassemble_info* info)
 
 int
 bfd_ada_disassembler_disassemble (bfd* abfd, struct disassemble_info* info,
-                                  bfd_vma vma)
+                                  unsigned long long vma)
 {
   disassembler_ftype handler = disassembler (abfd);
-  
-  return (* handler) (vma, info);
+
+  return (* handler) ((bfd_vma) vma, info);
 }
 
 void
@@ -168,7 +168,7 @@ bfd_ada_disassembler_set_symbol_table (struct disassemble_info *info,
 void
 bfd_ada_disassembler_set_buffer (struct disassemble_info *info,
                                  void* buffer, int size,
-                                 bfd_vma buffer_vma)
+                                 unsigned long long buffer_vma)
 {
   info->buffer = buffer;
   info->buffer_vma = buffer_vma;
