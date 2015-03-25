@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  bfd-symbols -- BFD Symbol Table types and operations
---  Copyright (C) 2002, 2003, 2004, 2006 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2006, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -228,6 +228,11 @@ package Bfd.Symbols is
 
    --  Internal operation to obtain the symbol table for the disassembler.
    function Get_Internal_Symbols (Symbols : in Symbol_Table) return Symbol_Array_Access;
+
+   --  Demangle the symbol name.
+   function Demangle (File    : in Bfd.Files.File_Type;
+                      Name    : in String;
+                      Options : in Bfd.Demangle_Flags) return String;
 
 private
 
