@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  Symbols -- BFD Symbol Table types and operations
---  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -227,6 +227,30 @@ package body Bfd.Symbols is
    begin
       return Symbols.Syms;
    end Get_Internal_Symbols;
+
+   ----------------------
+   --  Demangle the symbol name.
+   ----------------------
+   function Demangle (File    : in Bfd.Files.File_Type;
+                      Name    : in String;
+                      Options : in Bfd.Demangle_Flags) return String is
+      use type Interfaces.C.Strings.chars_ptr;
+
+      C_Name : Interfaces.C.Strings.chars_ptr := Interfaces.C.Strings.New_String (Name);
+      D_Name : Interfaces.C.Strings.chars_ptr;
+   begin
+      D_Name := Bfd.Thin.Symbols.Demangle (Bfd.Files.Get_Bfd_Pointer (File), C_Name, Options);
+      Interfaces.C.Strings.Free (C_Name);
+      if D_Name = Interfaces.C.Strings.Null_Ptr then
+         return "";
+      end if;
+      declare
+         Result : constant String := Interfaces.C.Strings.Value (D_Name);
+      begin
+         Interfaces.C.Strings.Free (D_Name);
+         return Result;
+      end;
+   end Demangle;
 
    ----------------------
    --  Release the symbol table.
