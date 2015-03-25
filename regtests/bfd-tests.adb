@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Tests -- Tests for Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2012, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -24,7 +24,6 @@
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 
-with Bfd.Files;
 with Bfd.Symbols;
 package body Bfd.Tests is
 
@@ -86,7 +85,7 @@ package body Bfd.Tests is
       --  Check that we can open a file.
       begin
          Bfd.Files.Open (File, Get_Test_File (T));
-         T.Assert (bfd.Files.Is_Open (File), "Bfd.Is_Open returns false for opened file");
+         T.Assert (Bfd.Files.Is_Open (File), "Bfd.Is_Open returns false for opened file");
          Bfd.Files.Close (File);
          T.Assert (Bfd.Files.Is_Open (File) = False,
                    "Bfd.Is_Open returns true after Bfd.Close");
@@ -99,6 +98,7 @@ package body Bfd.Tests is
 
    procedure Test_Basic (T : in out Test_Case) is
       Symbols : Bfd.Symbols.Symbol_Table;
+      pragma Unreferenced (Symbols);
    begin
       --  Check that Get_Filename returns our test file.
       declare
