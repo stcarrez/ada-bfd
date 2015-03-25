@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2001, 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -41,6 +41,8 @@ package Bfd is
    type Section_Flags is new Interfaces.Unsigned_32;
 
    type Symbol_Flags is new Interfaces.Unsigned_32;
+
+   type Demangle_Flags is new Interfaces.Unsigned_32;
 
    type Unsigned_64 is new Interfaces.Unsigned_64;
 
