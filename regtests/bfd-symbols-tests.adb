@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Tests -- Tests for BFD section Ada API
---  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -187,6 +187,26 @@ package body Bfd.Symbols.Tests is
    end Test_Section_Symbol;
 
    --  --------------------
+   --  Test the demangle of symbol.
+   --  --------------------
+   procedure Test_Demangle_Symbol (T : in out Test_Case) is
+      use Util.Tests;
+
+      procedure Check (Name, Expect : in String) is
+         Value : constant String := Bfd.Symbols.Demangle (T.File.all, Name, Constants.DMGL_GNAT);
+      begin
+         Ada.Text_IO.Put_Line ("Demangle " & Name & "=" & Value);
+         T.Assert (Value = Expect, "Bfd.Symbols.Demangle " & Name);
+      end Check;
+
+   begin
+      Check ("bfd__symbols__get_name", "bfd.symbols.get_name");
+      Check ("ada__calendar__conversion_operations__to_ada_time", "ada.calendar.conversion_operations.to_ada_time");
+      Check ("ada__command_line_E", "<ada__command_line_E>");
+      Check ("util__streams___elabs", "util.streams'Elab_Spec");
+   end Test_Demangle_Symbol;
+
+   --  --------------------
    --  Add the tests in the testsuite
    --  --------------------
    procedure Add_Tests (Suite : in Util.Tests.Access_Test_Suite) is
@@ -218,6 +238,8 @@ package body Bfd.Symbols.Tests is
                 "obj/bfd-tests.o", Test_External_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (section symbol)",
                 "obj/bfd-tests.o", Test_Section_Symbol'Access);
+      Add_Test ("Test Bfd.Symbols.Demangle (symbol)",
+                "obj/bfd-tests.o", Test_Demangle_Symbol'Access);
    end Add_Tests;
 
 end Bfd.Symbols.Tests;
