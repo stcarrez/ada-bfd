@@ -20,22 +20,25 @@
 --  the Free Software Foundation,51 Franklin Street - Fifth Floor,
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
-with Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Ada.Streams;
 
 with Bfd.Files;
 with Bfd.Sections;
 with Bfd.Constants;
 package body Bfd.Symbols.Tests is
 
-   use Ada.Strings.Unbounded;
+   --  Test the getting a symbol by name
+   procedure Test_Symbol (T         : in out Test_Case;
+                          Name      : in String;
+                          Flag      : in Bfd.Symbol_Flags;
+                          Undefined : in Boolean);
 
    --  --------------------
    --  Test loading the symbol table
    --  --------------------
    procedure Test_Open_Symbols (T : in out Test_Case) is
       Symbols : Bfd.Symbols.Symbol_Table;
+      pragma Unreferenced (Symbols);
    begin
       T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
@@ -90,7 +93,8 @@ package body Bfd.Symbols.Tests is
       end loop;
 
       Ada.Text_IO.Put_Line ("Iterate count: " & Natural'Image (Count));
-      Ada.Text_IO.Put_Line ("Symbol count: " & Natural'Image (Bfd.Files.Get_Symbol_Count (T.File.all)));
+      Ada.Text_IO.Put_Line ("Symbol count: "
+                            & Natural'Image (Bfd.Files.Get_Symbol_Count (T.File.all)));
 
       --  Iterator must match the symbol count.
       T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) = Count,
@@ -192,6 +196,8 @@ package body Bfd.Symbols.Tests is
    procedure Test_Demangle_Symbol (T : in out Test_Case) is
       use Util.Tests;
 
+      procedure Check (Name, Expect : in String);
+
       procedure Check (Name, Expect : in String) is
          Value : constant String := Bfd.Symbols.Demangle (T.File.all, Name, Constants.DMGL_GNAT);
       begin
@@ -201,7 +207,8 @@ package body Bfd.Symbols.Tests is
 
    begin
       Check ("bfd__symbols__get_name", "bfd.symbols.get_name");
-      Check ("ada__calendar__conversion_operations__to_ada_time", "ada.calendar.conversion_operations.to_ada_time");
+      Check ("ada__calendar__conversion_operations__to_ada_time",
+             "ada.calendar.conversion_operations.to_ada_time");
       Check ("ada__command_line_E", "<ada__command_line_E>");
       Check ("util__streams___elabs", "util.streams'Elab_Spec");
    end Test_Demangle_Symbol;
