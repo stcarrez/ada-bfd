@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Symbols Tests -- Tests for BFD symbols Ada API
---  Copyright (C) 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2012, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -44,6 +44,9 @@ package Bfd.Symbols.Tests is
 
    --  Test an external/undefined symbol
    procedure Test_Section_Symbol (T : in out Test_Case);
+
+   --  Test the demangle of symbol.
+   procedure Test_Demangle_Symbol (T : in out Test_Case);
 
    procedure Add_Tests (Suite : in Util.Tests.Access_Test_Suite);
 
