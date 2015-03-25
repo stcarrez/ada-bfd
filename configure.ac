@@ -1,5 +1,5 @@
 dnl Autoconf configure script for BfdAda
-dnl Copyright 2001, 2002, 2003, 2005 Free Software Foundation, Inc.
+dnl Copyright 2001, 2002, 2003, 2005, 2015 Free Software Foundation, Inc.
 dnl
 dnl This file is part of BfdAda.
 dnl 
@@ -19,17 +19,16 @@ dnl Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(src/bfd.ads)
+AC_INIT([ada-bfd], [1.1])
+AC_CONFIG_SRCDIR([src/bfd.ads])
 
 AC_CANONICAL_SYSTEM
-dnl AM_MAINTAINER_MODE
-AM_INIT_AUTOMAKE(BfdAda,1.0)
 AC_EXEEXT
 
 # Current release settings
 BFDADA_MAJOR_VERSION=1
-BFDADA_MINOR_VERSION=0
-BFDADA_MICRO_VERSION=1
+BFDADA_MINOR_VERSION=1
+BFDADA_MICRO_VERSION=0
 BFDADA_VERSION=$BFDADA_MAJOR_VERSION.$BFDADA_MINOR_VERSION.$BFDADA_MICRO_VERSION
 
 # checking for local tools
@@ -49,7 +48,7 @@ AC_SUBST(EXEC_PREFIX)
 
 AC_CONFIG_HEADERS([src/config.h])
 
-AC_CHECK_HEADERS(bfd.h dis-asm.h)
+AC_CHECK_HEADERS(bfd.h dis-asm.h libiberty/demangle.h)
 
 AC_CHECK_LIB(bfd,bfd_openr,[LIBS="$LIBS -lbfd"])
 
