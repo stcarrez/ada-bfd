@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Tests -- Tests for Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -72,6 +72,10 @@ package Bfd.Tests is
    procedure Test_Get_Debug_Flags (T    : in out Test_Case);
 
    procedure Test_Basic (T : in out Test_Case);
+
+   procedure Test_Get_Flags (T    : in out Test_Case;
+                             Name : in String;
+                             Flag : in Bfd.File_Flags);
 
    function Get_Test_File (T : in Test_Case) return String;
 
