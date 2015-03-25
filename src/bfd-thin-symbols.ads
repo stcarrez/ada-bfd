@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Thin Ada layer for Bfd (common Bfd functions)
---  <!-- Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2012, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -58,5 +58,10 @@ package Bfd.Thin.Symbols is
 
    function Get_Symtab_Upper_Bound (File : in Ptr) return Integer;
    pragma Import (C, Get_Symtab_Upper_Bound, "ada_bfd_get_symtab_upper_bound");
+
+   function Demangle (File    : in Ptr;
+                      Name    : in Interfaces.C.Strings.chars_ptr;
+                      Options : in Bfd.Demangle_Flags) return Interfaces.C.Strings.chars_ptr;
+   pragma Import (C, Demangle, "bfd_demangle");
 
 end Bfd.Thin.Symbols;
