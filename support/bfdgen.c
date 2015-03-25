@@ -1,5 +1,5 @@
 /* Generate a package from bfd.h definitions
-   Copyright 2012, 2014 Free Software Foundation, Inc.
+   Copyright 2012, 2014, 2015 Free Software Foundation, Inc.
    Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
@@ -20,7 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
 #include "config.h"
 #include <stdio.h>
-#include "bfd.h"
+#include <libiberty/demangle.h>
+#include <bfd.h>
 
 /**
  * If a BFD define does not exist, pretend the flag is 0.
@@ -182,6 +183,26 @@ int main(void)
   printf("   BFD_COMPRESS                : constant File_Flags := 16#%04x#;\n", BFD_COMPRESS);
   printf("   BFD_DECOMPRESS              : constant File_Flags := 16#%04x#;\n", BFD_DECOMPRESS);
   printf("   BFD_PLUGIN                  : constant File_Flags := 16#%04x#;\n", BFD_PLUGIN);
+
+  printf("\n");
+  printf("   --  Demangle flags (see C include <demangle.h> from libiberty).\n");
+  printf("   DMGL_NO_OPTS                : constant Demangle_Flags := 16#%04x#;\n", DMGL_NO_OPTS);
+  printf("   DMGL_PARAMS                 : constant Demangle_Flags := 16#%04x#;\n", DMGL_PARAMS);
+  printf("   DMGL_ANSI                   : constant Demangle_Flags := 16#%04x#;\n", DMGL_ANSI);
+  printf("   DMGL_JAVA                   : constant Demangle_Flags := 16#%04x#;\n", DMGL_JAVA);
+  printf("   DMGL_VERBOSE                : constant Demangle_Flags := 16#%04x#;\n", DMGL_VERBOSE);
+  printf("   DMGL_TYPES                  : constant Demangle_Flags := 16#%04x#;\n", DMGL_TYPES);
+  printf("   DMGL_RET_POSTFIX            : constant Demangle_Flags := 16#%04x#;\n", DMGL_RET_POSTFIX);
+  printf("   DMGL_RET_DROP               : constant Demangle_Flags := 16#%04x#;\n", DMGL_RET_DROP);
+  printf("   DMGL_AUTO                   : constant Demangle_Flags := 16#%04x#;\n", DMGL_AUTO);
+  printf("   DMGL_GNU                    : constant Demangle_Flags := 16#%04x#;\n", DMGL_GNU);
+  printf("   DMGL_LUCID                  : constant Demangle_Flags := 16#%04x#;\n", DMGL_LUCID);
+  printf("   DMGL_ARM                    : constant Demangle_Flags := 16#%04x#;\n", DMGL_ARM);
+  printf("   DMGL_HP                     : constant Demangle_Flags := 16#%04x#;\n", DMGL_HP);
+  printf("   DMGL_EDG                    : constant Demangle_Flags := 16#%04x#;\n", DMGL_EDG);
+  printf("   DMGL_GNU_V3                 : constant Demangle_Flags := 16#%04x#;\n", DMGL_GNU_V3);
+  printf("   DMGL_GNAT                   : constant Demangle_Flags := 16#%04x#;\n", DMGL_GNAT);
+  printf("\n");
 
   printf("end Bfd.Constants;\n");
   return 0;
