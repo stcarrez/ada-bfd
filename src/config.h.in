@@ -33,6 +33,12 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define to 1 if you have the <libiberty/demangle.h> header file. */
+#undef HAVE_LIBIBERTY_DEMANGLE_H
+
+/* Define to 1 if you have the <demangle.h> header file. */
+#undef HAVE_DEMANGLE_H
+
 /* Name of package */
 #undef PACKAGE
 
