@@ -48,7 +48,7 @@ AC_SUBST(EXEC_PREFIX)
 
 AC_CONFIG_HEADERS([src/config.h])
 
-AC_CHECK_HEADERS(bfd.h dis-asm.h libiberty/demangle.h)
+AC_CHECK_HEADERS(bfd.h dis-asm.h demangle.h libiberty/demangle.h)
 
 AC_CHECK_LIB(bfd,bfd_openr,[LIBS="$LIBS -lbfd"])
 
