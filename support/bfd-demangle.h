@@ -30,8 +30,6 @@
 #if !defined (DEMANGLE_H)
 #define DEMANGLE_H
 
-#include "libiberty.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
