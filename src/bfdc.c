@@ -1,5 +1,5 @@
 /* Functions for BfdAda
-   Copyright 2001, 2002, 2003, 2012 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2012, 2015 Free Software Foundation, Inc.
    Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
@@ -147,6 +147,54 @@ unsigned long
 ada_bfd_asymbol_flags (asymbol* sym)
 {
    return sym->flags;
+}
+
+/**
+ * The elf_internal_sym and elf_symbol_value structures are defined in binutils
+ * bfd/elf-bfd.h and include/elf/internal.h headers.  These headers are not
+ * installed on the system, so we get a copy of their definition here.
+ * These definitions are only used by ada_bfd_asymbol_size to find the symbol size.
+ */
+
+typedef struct elf_internal_sym {
+  bfd_vma       st_value;               /* Value of the symbol */
+  bfd_vma       st_size;                /* Associated symbol size */
+  unsigned long st_name;                /* Symbol name, index in string tbl */
+  unsigned char st_info;                /* Type and binding attributes */
+  unsigned char st_other;               /* Visibilty, and target specific */
+  unsigned char st_target_internal;     /* Internal-only information */
+  unsigned int  st_shndx;               /* Associated section index */
+} Elf_Internal_Sym;
+
+typedef struct elf_symbol_value {
+  /* The BFD symbol.  */
+  asymbol symbol;
+  /* ELF symbol information.  */
+  Elf_Internal_Sym internal_elf_sym;
+  /* Backend specific information.  */
+  union
+    {
+      unsigned int hppa_arg_reloc;
+      void *mips_extr;
+      void *any;
+    }
+  tc_data;
+
+  /* Version information.  This is from an Elf_Internal_Versym
+     structure in a SHT_GNU_versym section.  It is zero if there is no
+     version information.  */
+  unsigned short version;
+} elf_symbol_value;
+
+unsigned long long
+ada_bfd_asymbol_size (asymbol* sym)
+{
+  bfd* abfd = bfd_asymbol_bfd (sym);
+
+  if (bfd_get_flavour (abfd) == bfd_target_elf_flavour)
+    return ((elf_symbol_value *) sym)->internal_elf_sym.st_size;
+  else
+    return 0;
 }
 
 unsigned long
