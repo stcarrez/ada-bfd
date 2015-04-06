@@ -159,8 +159,11 @@ package body Bfd.Symbols.Tests is
 
       Ada.Text_IO.Put_Line ("Flags: " & Symbol_Flags'Image (Bfd.Symbols.Get_Flags (Sym)));
       Ada.Text_IO.Put_Line ("Value: " & Symbol_Value'Image (Bfd.Symbols.Get_Value (Sym)));
+      Ada.Text_IO.Put_Line ("Size:  " & Symbol_Value'Image (Bfd.Symbols.Get_Symbol_Size (Sym)));
       T.Assert ((Bfd.Symbols.Get_Flags (Sym) and Bfd.Symbols.BSF_GLOBAL) /= 0,
                 "Symbol must be global");
+      T.Assert (Bfd.Symbols.Get_Value (Sym) /= 0, "Symbol must be have a size > 0");
+      T.Assert (Bfd.Symbols.Get_Symbol_Size (Sym) /= 0, "Symbol must be have a size > 0");
 
       Sym := Bfd.Symbols.Get_Symbol (Symbols, "this_symbol_does_not_exist");
       T.Assert (Sym = Null_Symbol, "A symbol was found while a null was expected");
