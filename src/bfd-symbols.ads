@@ -167,6 +167,9 @@ package Bfd.Symbols is
    function Get_Value (Sym : in Symbol) return Symbol_Value;
    --  Return the value
 
+   function Get_Symbol_Size (Sym : in Symbol) return Symbol_Value;
+   --  Return the symbol size for ELF targets.
+
    function Get_Symclass (Sym : in Symbol) return Character;
    --  Return a character corresponding to the symbol class of Sym.
 
@@ -266,6 +269,7 @@ private
    --  C Functions provided by BFD library.
 
    pragma Import (C, Get_Value, "ada_bfd_asymbol_value");
+   pragma Import (C, Get_Symbol_Size, "ada_bfd_asymbol_size");
    pragma Import (C, Get_Flags, "ada_bfd_asymbol_flags");
    --  C Functions provided by specific wrapper.
 
