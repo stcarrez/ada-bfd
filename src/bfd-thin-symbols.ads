@@ -39,6 +39,9 @@ package Bfd.Thin.Symbols is
    function Get_Symbol_Value (Sym : in Bfd.Symbols.Symbol) return Symbol_Value;
    pragma Import (C, Get_Symbol_Value, "ada_bfd_asymbol_value");
 
+   function Get_Symbol_Size (Sym : in Bfd.Symbols.Symbol) return Symbol_Value;
+   pragma Import (C, Get_Symbol_Size, "ada_bfd_asymbol_size");
+
    procedure Read_Symbols (File : Ptr;
                            Cnt : System.Address;
                            S : System.Address);
