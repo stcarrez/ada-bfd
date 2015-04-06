@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  symbol -- Bfd Ada example to load and search a symbol in the symbol table
---  Copyright (C) 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2012, 2015 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -60,6 +60,7 @@ begin
                      Sec   : constant Bfd.Sections.Section := Bfd.Symbols.Get_Section (Sym);
                      Flags : constant Bfd.Symbol_Flags     := Bfd.Symbols.Get_Flags (Sym);
                      Value : constant Bfd.Symbol_Value     := Bfd.Symbols.Get_Value (Sym);
+                     Size  : constant Bfd.Symbol_Value     := Bfd.Symbols.Get_Symbol_Size (Sym);
                   begin
                      if Bfd.Sections.Is_Undefined_Section (Sec) then
                         Ada.Text_IO.Put_Line (Name & ": undefined symbol");
@@ -67,12 +68,14 @@ begin
                      elsif (Flags and Bfd.Symbols.BSF_GLOBAL) /= 0 then
                         Ada.Text_IO.Put_Line (Name & ": global symbol in section "
                                               & Bfd.Sections.Get_Name (Sec)
-                                              & "(" & Bfd.Symbol_Value'Image (Value) & ")");
+                                              & "(" & Bfd.Symbol_Value'Image (Value) & ")"
+                                              & " - " & Bfd.Symbol_Value'Image (Size));
 
                      elsif (Flags and Bfd.Symbols.BSF_LOCAL) /= 0 then
                         Ada.Text_IO.Put_Line (Name & ": local symbol in section "
                                               & Bfd.Sections.Get_Name (Sec)
-                                              & "(" & Bfd.Symbol_Value'Image (Value) & ")");
+                                              & "(" & Bfd.Symbol_Value'Image (Value) & ")"
+                                              & " - " & Bfd.Symbol_Value'Image (Size));
 
                      else
                         Ada.Text_IO.Put_Line (Name & ": other symbol in section "
