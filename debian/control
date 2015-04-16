@@ -1,7 +1,7 @@
 Source: libada-bfd
 Priority: extra
 Maintainer: Stephane Carrez <Stephane.Carrez@gmail.com>
-Build-Depends: debhelper (>= 8.0.0), autotools-dev, gnat, gnat-4.6, binutils-dev (>= 2.22)
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, gnat, gnat-4.6, binutils-dev (>= 2.22), libiberty-dev
 Standards-Version: 3.9.2
 Section: libdevel
 Homepage: http://code.google.com/p/ada-bfd/
