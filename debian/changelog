@@ -1,3 +1,9 @@
+libada-bfd (1.1.0) unstable; urgency=low
+
+  * Update for ada bfd 1.1.0.
+
+ -- Stephane Carrez <Stephane.Carrez@gmail.com>  Thu, 16 Apr 2015 23:06:41 +0200
+
 libada-bfd (1.0.1) testing; urgency=low
 
   * Initial Release.
