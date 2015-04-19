@@ -236,10 +236,12 @@ package body Bfd.Symbols is
                       Options : in Bfd.Demangle_Flags) return String is
       use type Interfaces.C.Strings.chars_ptr;
 
-      C_Name : Interfaces.C.Strings.chars_ptr := Interfaces.C.Strings.New_String (Name);
+      C_Name : Interfaces.C.Strings.chars_ptr;
       D_Name : Interfaces.C.Strings.chars_ptr;
+      Abfd   : constant Ptr := Bfd.Files.Get_Bfd_Pointer (File);
    begin
-      D_Name := Bfd.Thin.Symbols.Demangle (Bfd.Files.Get_Bfd_Pointer (File), C_Name, Options);
+      C_Name := Interfaces.C.Strings.New_String (Name);
+      D_Name := Bfd.Thin.Symbols.Demangle (Abfd, C_Name, Options);
       Interfaces.C.Strings.Free (C_Name);
       if D_Name = Interfaces.C.Strings.Null_Ptr then
          return "";
