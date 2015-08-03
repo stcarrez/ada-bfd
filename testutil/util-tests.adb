@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  AUnit utils - Helper for writing unit tests
---  Copyright (C) 2009, 2010, 2011, 2012 Stephane Carrez
+--  Copyright (C) 2009, 2010, 2011, 2012, 2013 Stephane Carrez
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,12 +17,14 @@
 -----------------------------------------------------------------------
 with GNAT.Command_Line;
 with GNAT.Regpat;
+with GNAT.Traceback.Symbolic;
 
 with Ada.Command_Line;
 with Ada.Directories;
 with Ada.IO_Exceptions;
 with Ada.Text_IO;
 with Ada.Calendar.Formatting;
+with Ada.Exceptions;
 
 with Util.Strings;
 with Util.Measures;
@@ -51,6 +53,10 @@ package body Util.Tests is
 
    --  Verbose flag activated by the '-v' option.
    Verbose_Flag      : Boolean := False;
+
+   --  When not empty, defines the name of the test that is enabled.  Other tests are disabled.
+   --  This is initialized by the -r test option.
+   Enabled_Test      : Unbounded_String;
 
    --  ------------------------------
    --  Get a path to access a test file.
@@ -143,6 +149,16 @@ package body Util.Tests is
    begin
       return Verbose_Flag;
    end Verbose;
+
+   --  ------------------------------
+   --  Returns True if the test with the given name is enabled.
+   --  By default all the tests are enabled.  When the -r test option is passed
+   --  all the tests are disabled except the test specified by the -r option.
+   --  ------------------------------
+   function Is_Test_Enabled (Name : in String) return Boolean is
+   begin
+      return Length (Enabled_Test) = 0 or Enabled_Test = Name;
+   end Is_Test_Enabled;
 
    --  ------------------------------
    --  Check that the value matches what we expect.
@@ -302,6 +318,68 @@ package body Util.Tests is
    end Assert_Equal_Files;
 
    --  ------------------------------
+   --  Check that two files are equal.  This is intended to be used by
+   --  tests that create files that are then checked against patterns.
+   --  ------------------------------
+   procedure Assert_Equal_Files (T       : in Test'Class;
+                                 Expect  : in String;
+                                 Test    : in String;
+                                 Message : in String := "Test failed";
+                                 Source  : String := GNAT.Source_Info.File;
+                                 Line    : Natural := GNAT.Source_Info.Line) is
+      use Util.Files;
+
+      Expect_File : Unbounded_String;
+      Test_File   : Unbounded_String;
+      Same        : Boolean;
+   begin
+      begin
+         if not Ada.Directories.Exists (Expect) then
+            T.Assert (Condition => False,
+                      Message => "Expect file '" & Expect & "' does not exist",
+                      Source  => Source, Line => Line);
+         end if;
+         Read_File (Path => Expect,
+                    Into => Expect_File);
+         Read_File (Path => Test,
+                    Into => Test_File);
+
+      exception
+         when others =>
+            if Update_Test_Files then
+               Ada.Directories.Copy_File (Source_Name => Test,
+                                          Target_Name => Expect);
+            else
+               raise;
+            end if;
+      end;
+
+      --  Check file sizes
+      Assert_Equals (T       => T,
+                     Expect  => Length (Expect_File),
+                     Value   => Length (Test_File),
+                     Message => Message & ": Invalid file sizes",
+                     Source  => Source,
+                     Line    => Line);
+
+      Same := Expect_File = Test_File;
+      if Same then
+         return;
+      end if;
+   end Assert_Equal_Files;
+
+   --  ------------------------------
+   --  Report a test failed.
+   --  ------------------------------
+   procedure Fail (T       : in Test'Class;
+                   Message : in String := "Test failed";
+                   Source  : in String := GNAT.Source_Info.File;
+                   Line    : in Natural := GNAT.Source_Info.Line) is
+   begin
+      T.Assert (False, Message, Source, Line);
+   end Fail;
+
+   --  ------------------------------
    --  Default initialization procedure.
    --  ------------------------------
    procedure Initialize_Test (Props : in Util.Properties.Manager) is
@@ -330,7 +408,7 @@ package body Util.Tests is
       begin
          Put_Line ("Test harness: " & Name);
          Put ("Usage: harness [-xml result.xml] [-t timeout] [-p prefix] [-v]"
-              & "[-config file.properties] [-d dir]");
+              & "[-config file.properties] [-d dir] [-r testname]");
          Put_Line ("[-update]");
          Put_Line ("-xml file      Produce an XML test report");
          Put_Line ("-config file   Specify a test configuration file");
@@ -338,20 +416,21 @@ package body Util.Tests is
          Put_Line ("-t timeout     Test execution timeout in seconds");
          Put_Line ("-v             Activate the verbose test flag");
          Put_Line ("-p prefix      Add the prefix to the test class names");
+         Put_Line ("-r testname    Run only the tests for the given testsuite name");
          Put_Line ("-update        Update the test reference files if a file");
          Put_Line ("               is missing or the test generates another output");
-         Put_Line ("               (See Asset_Equals_File)");
+         Put_Line ("               (See Assert_Equals_File)");
          Ada.Command_Line.Set_Exit_Status (2);
       end Help;
 
-      Perf     : aliased Util.Measures.Measure_Set;
-      Result   : Util.XUnit.Status;
-      XML      : Boolean := False;
-      Output   : Ada.Strings.Unbounded.Unbounded_String;
-      Chdir    : Ada.Strings.Unbounded.Unbounded_String;
+      Perf      : aliased Util.Measures.Measure_Set;
+      Result    : Util.XUnit.Status;
+      XML       : Boolean := False;
+      Output    : Ada.Strings.Unbounded.Unbounded_String;
+      Chdir     : Ada.Strings.Unbounded.Unbounded_String;
    begin
       loop
-         case Getopt ("huvx: t: p: c: config: d: update help xml: timeout:") is
+         case Getopt ("h u v x: t: p: c: config: d: r: update help xml: timeout:") is
             when ASCII.NUL =>
                exit;
 
@@ -386,6 +465,9 @@ package body Util.Tests is
                      Ada.Command_Line.Set_Exit_Status (2);
                      return;
                end;
+
+            when 'r' =>
+               Enabled_Test := To_Unbounded_String (Parameter);
 
             when 'p' =>
                Harness_Prefix := To_Unbounded_String (Parameter & " ");
@@ -452,6 +534,13 @@ package body Util.Tests is
          Put_Line ("No parameter for " & Full_Switch);
          Help;
          return;
+
+      when E : others =>
+         Put_Line ("Exception: " & Ada.Exceptions.Exception_Name (E));
+         Put_Line ("Message:   " & Ada.Exceptions.Exception_Message (E));
+         Put_Line ("Stacktrace:");
+         Put_Line (GNAT.Traceback.Symbolic.Symbolic_Traceback (E));
+         Ada.Command_Line.Set_Exit_Status (4);
 
    end Harness;
 

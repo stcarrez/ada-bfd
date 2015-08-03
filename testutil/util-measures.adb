@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  measure -- Benchmark tools
---  Copyright (C) 2008, 2009, 2010, 2011 Stephane Carrez
+--  Copyright (C) 2008, 2009, 2010, 2011, 2012, 2013 Stephane Carrez
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,11 @@ package body Util.Measures is
    package Task_Context is new Ada.Task_Attributes
      (Measure_Set_Access, null);
 
-   function Format (D : Duration) return String;
+   function Format (D : in Duration) return String;
+
+   --  Format the duration in a time in 'ns', 'us', 'ms' or seconds.
+   function Format (D    : in Duration;
+                    Unit : in Unit_Type) return String;
 
    --  ------------------------------
    --  Disable collecting measures on the measure set.
@@ -85,12 +89,17 @@ package body Util.Measures is
       procedure Dump_XML (Item : in Measure_Access);
 
       procedure Dump_XML (Item : in Measure_Access) is
-         Time  : constant String := Format (Item.Time);
+         Total : constant String := Format (Item.Time);
+         Time  : constant String := Format (Item.Time / Item.Count);
       begin
          Stream.Write ("<time count=""");
          Stream.Write (Item.Count);
          Stream.Write (""" time=""");
          Stream.Write (Time (Time'First + 1 .. Time'Last));
+         if Item.Count > 1 then
+            Stream.Write (""" total=""");
+            Stream.Write (Total (Total'First + 1 .. Total'Last));
+         end if;
          Stream.Write (""" title=""");
          Util.Streams.Texts.TR.Escape_Java_Script (Into => Buffered_Stream (Stream),
                                                    Content => Item.Name.all);
@@ -181,11 +190,12 @@ package body Util.Measures is
    --  title.
    --  ------------------------------
    procedure Report (S     : in out Stamp;
-                     Title : in String) is
+                     Title : in String;
+                     Count : in Positive := 1) is
       Measures : constant Measure_Set_Access := Task_Context.Value;
    begin
       if Measures /= null and then Measures.Enabled then
-         Report (Measures.all, S, Title);
+         Report (Measures.all, S, Title, Count);
       end if;
    end Report;
 
@@ -195,17 +205,36 @@ package body Util.Measures is
    --  ------------------------------
    procedure Report (Measures : in out Measure_Set;
                      S        : in out Stamp;
-                     Title    : in String) is
+                     Title    : in String;
+                     Count    : in Positive := 1) is
       use Ada.Calendar;
    begin
       if Measures.Enabled then
          declare
             D : constant Duration := Ada.Calendar.Clock - S.Start;
          begin
-            Measures.Data.Add (Title, D);
+            Measures.Data.Add (Title, D, Count);
          end;
          S.Start := Ada.Calendar.Clock;
       end if;
+   end Report;
+
+   --  ------------------------------
+   --  Report the time spent between the stamp creation and this method call.
+   --  The report is written in the file with the given title.  The duration is
+   --  expressed in the unit defined in <tt>Unit</tt>.
+   --  ------------------------------
+   procedure Report (S     : in out Stamp;
+                     File  : in out Ada.Text_IO.File_Type;
+                     Title : in String;
+                     Unit  : in Unit_Type := Microseconds) is
+      use Ada.Calendar;
+
+      D : constant Duration := Ada.Calendar.Clock - S.Start;
+   begin
+      Ada.Text_IO.Put (File, Title);
+      Ada.Text_IO.Put (File, Format (D, Unit));
+      S.Start := Ada.Calendar.Clock;
    end Report;
 
    protected body Measure_Data is
@@ -228,7 +257,9 @@ package body Util.Measures is
       --  ------------------------------
       --  Add the measure
       --  ------------------------------
-      procedure Add (Title : String; D : Duration) is
+      procedure Add (Title : in String;
+                     D     : in Duration;
+                     Count : in Positive := 1) is
 
          use Ada.Containers;
          use Ada.Calendar;
@@ -244,7 +275,7 @@ package body Util.Measures is
          while Node /= null loop
             if Node.Name'Length = Title'Length
               and then Node.Name.all = Title then
-               Node.Count := Node.Count + 1;
+               Node.Count := Node.Count + Count;
                Node.Time := Node.Time + D;
                return;
             end if;
@@ -252,7 +283,7 @@ package body Util.Measures is
          end loop;
          Buckets (Pos) := new Measure '(Name => new String '(Title),
                                         Time  => D,
-                                        Count => 1,
+                                        Count => Count,
                                         Next  => Buckets (Pos));
       end Add;
 
@@ -261,17 +292,39 @@ package body Util.Measures is
    --  ------------------------------
    --  Format the duration in a time in 'ns', 'us', 'ms' or seconds.
    --  ------------------------------
-   function Format (D : Duration) return String is
+   function Format (D : in Duration) return String is
    begin
       if D < 0.000_001 then
-         return Duration'Image (D * 1_000_000_000) & "ns";
+         return Duration'Image (D * 1_000_000_000) (1 .. 6) & " ns";
       elsif D < 0.001 then
-         return Duration'Image (D * 1_000_000) & "us";
+         return Duration'Image (D * 1_000_000) (1 .. 6) & " us";
       elsif D < 1.0 then
-         return Duration'Image (D * 1_000) & "ms";
+         return Duration'Image (D * 1_000) (1 .. 6) & " ms";
       else
-         return Duration'Image (D) & "s";
+         return Duration'Image (D) (1 .. 6) & " s";
       end if;
+   end Format;
+
+   --  ------------------------------
+   --  Format the duration in a time in 'ns', 'us', 'ms' or seconds.
+   --  ------------------------------
+   function Format (D    : in Duration;
+                    Unit : in Unit_Type) return String is
+   begin
+      case Unit is
+         when Seconds =>
+            return Duration'Image (D);
+
+         when Milliseconds =>
+            return Duration'Image (D * 1_000);
+
+         when Microseconds =>
+            return Duration'Image (D * 1_000_000);
+
+         when Nanoseconds =>
+            return Duration'Image (D * 1_000_000_000);
+
+      end case;
    end Format;
 
    --  ------------------------------
