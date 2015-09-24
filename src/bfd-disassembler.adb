@@ -25,6 +25,7 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
+with System.Address_To_Access_Conversions;
 with Interfaces.C;
 use  Interfaces;
 with Interfaces.C.Strings;
@@ -35,13 +36,23 @@ package body Bfd.Disassembler is
 
    type Disassembler_Ref is access all Disassembler_Info_Type'Class;
 
-   function Get_Disassembler_Data (Data : in Ptr) return Disassembler_Ref;
-   pragma Import (C, Get_Disassembler_Data, "bfd_ada_disassembler_get_data");
+   package Conv_Disassembler_Ref is new
+     System.Address_To_Access_Conversions (Disassembler_Info_Type'Class);
+
+   function Get_Disassembler_Data (Data : in Ptr) return Disassembler_Ref
+   is
+      function C_Get_Dis_Data (Data : in Ptr) return System.Address;
+      pragma Import (C, C_Get_Dis_Data, "bfd_ada_disassembler_get_data");
+   begin
+      return Disassembler_Ref
+        (Conv_Disassembler_Ref.To_Pointer
+           (Value => C_Get_Dis_Data (Data => Data)));
+   end Get_Disassembler_Data;
 
    ----------------------
    --  Handlers called by C callbacks
    ----------------------
-   procedure Disassembler_Output (Info   : Disassembler_Ref;
+   procedure Disassembler_Output (Info   : System.Address;
                                   Buffer : Interfaces.C.Strings.chars_ptr);
    pragma Export (C, Disassembler_Output, "ada_disassembler_output");
 
@@ -68,10 +79,13 @@ package body Bfd.Disassembler is
                                  Data        : in Ptr) return Integer;
    pragma Export (C, Read_Memory_Handler, "ada_dis_read_memory_handler");
 
-   procedure Disassembler_Output (Info   : Disassembler_Ref;
-                                  Buffer : Interfaces.C.Strings.chars_ptr) is
+   procedure Disassembler_Output (Info   : System.Address;
+                                  Buffer : Interfaces.C.Strings.chars_ptr)
+   is
+      Info_Ref : Disassembler_Ref := Disassembler_Ref
+        (Conv_Disassembler_Ref.To_Pointer (Value => Info));
    begin
-      Output (Info.all, Interfaces.C.Strings.Value (Buffer));
+      Output (Info_Ref.all, Interfaces.C.Strings.Value (Buffer));
    end Disassembler_Output;
 
    procedure Disassembler_Output_Address (Addr : in Vma_Type;
