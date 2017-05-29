@@ -54,6 +54,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 # define BSF_SYNTHETIC 0
 #endif
 
+#ifndef BSF_KEEP_G
+# define BSF_KEEP_G 0
+#endif
+
 #ifndef BSF_GNU_INDIRECT_FUNCTION
 # define BSF_GNU_INDIRECT_FUNCTION 0
 #endif
