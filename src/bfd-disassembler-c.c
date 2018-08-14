@@ -152,7 +152,13 @@ int
 bfd_ada_disassembler_disassemble (bfd* abfd, struct disassemble_info* info,
                                   unsigned long long vma)
 {
+#if defined(FOR_EACH_DISASSEMBLER_OPTION)
+  disassembler_ftype handler = disassembler (bfd_get_arch (abfd),
+                                             bfd_big_endian (abfd),
+                                             bfd_get_mach (abfd), abfd);
+#else
   disassembler_ftype handler = disassembler (abfd);
+#endif
 
   return (* handler) ((bfd_vma) vma, info);
 }
