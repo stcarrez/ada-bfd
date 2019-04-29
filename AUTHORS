@@ -1,6 +1,10 @@
 Stephane Carrez	<Stephane.Carrez@gmail.com>
 	 Wrote BfdAda library, BfdAda tests
 
+Adrian-Ken Rueegsegger <ken@codelabs.ch>
+	 Fixed BfdAda to work with recent Binutils,
+         fixed various compilation issues
+
 Tero Koskinen <tero.koskinen@iki.fi>
 	 Ahven
 	 (used only for BfdAda testsuite)
