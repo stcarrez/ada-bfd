@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2014 Free Software Foundation, Inc.
+--  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2014, 2019 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -29,8 +29,9 @@ with Interfaces.C;
 with Bfd.Thin;
 package body Bfd.Files is
 
-   pragma Linker_Options ("-lbfd" & ASCII.NUL & "-liberty" & Bfd.Constants.LINKER_OPTIONS);
+   --   pragma Linker_Options ("-lbfd" & ASCII.NUL & "-liberty" & Bfd.Constants.LINKER_OPTIONS);
    pragma Linker_Options ("-lz");
+   pragma Linker_Options ("-lbfd" & Bfd.Constants.LINKER_OPTIONS);
 
    use type System.Address;
 
