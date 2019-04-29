@@ -1,3 +1,6 @@
+Version 1.1.1 - Apr 2019
+  - Fix build with binutils > 2.28
+
 Version 1.1.0 - May 2015
   - Add support to use the demangler
 
