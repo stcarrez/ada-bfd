@@ -73,3 +73,9 @@ To build them, use:
   make samples
 ```
 
+# Projects using Ada BFD
+
+* [Muen Separation Kernel](https://muen.codelabs.ch/), An x86/64 Separation Kernel for High Assurance
+
+
+
