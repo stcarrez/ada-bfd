@@ -1,7 +1,7 @@
 with "config";
 with "bfdada";
 with "testutil";
-project Tests is
+project BfdAda_Tests is
 
    for Languages use ("Ada");
    Mains := ("bfdada_harness.adb");
@@ -16,4 +16,4 @@ project Tests is
    package Compiler renames Config.Compiler;
    package Linker renames Config.Linker;
 
-end Tests;
+end BfdAda_Tests;
