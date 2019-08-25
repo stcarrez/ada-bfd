@@ -13,8 +13,8 @@ acc.xml
 *.log
 ChangeLog
 .settings
+Makefile.conf
 configure.lineno
-Makefile
 bfdada.gpr
 bfdada-tests.xml
 autom4te.cache
@@ -24,3 +24,4 @@ obj/
 distrib/bfdada.gpr
 src/bfd-constants.ads
 src/config.h
+regtests/result
