@@ -1,10 +1,10 @@
 
 # Ada BFD Library
 
-[![Build Status](https://img.shields.io/jenkins/s/http/jenkins.vacs.fr/Ada-BFD.svg)](http://jenkins.vacs.fr/job/Ada-BFD/)
-[![Test Status](https://img.shields.io/jenkins/t/http/jenkins.vacs.fr/Ada-BFD.svg)](http://jenkins.vacs.fr/job/Ada-BFD/)
+[![Build Status](https://img.shields.io/jenkins/s/http/jenkins.vacs.fr/Ada-BFD.svg)](https://jenkins.vacs.fr/job/Ada-BFD/)
+[![Test Status](https://img.shields.io/jenkins/t/http/jenkins.vacs.fr/Ada-BFD.svg)](https://jenkins.vacs.fr/job/Ada-BFD/)
 [![Download](https://img.shields.io/badge/download-1.1.1-brightgreen.svg)](http://download.vacs.fr/ada-bfd/ada-bfd-1.1.1.tar.gz)
-[![License](http://img.shields.io/badge/license-GPL-blue.svg)](GPL)
+[![License](https://img.shields.io/badge/license-GPL-blue.svg)](GPL)
 ![Commits](https://img.shields.io/github/commits-since/stcarrez/ada-bfd/1.1.0.svg)
 
 The Ada-BFD is a library which provides Ada API for GNU Binutils BFD
