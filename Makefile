@@ -31,6 +31,8 @@ samples:	force
 
 force:
 
+setup:: src/bfd-constants.ads
+
 src/bfd-constants.ads:	bin/bfdgen
 	bin/bfdgen > $@
 
@@ -40,3 +42,5 @@ bin/bfdgen:    support/bfdgen.c
 	mkdir -p bin
 	$(CC) -o $@ $(CFLAGS) -g support/bfdgen.c
 
+clean::
+	rm -f src/bfd-constants.ads
