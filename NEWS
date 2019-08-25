@@ -1,3 +1,6 @@
+Version 1.1.2 -
+  - Cleanup build process and use gprinstall for installation
+
 Version 1.1.1 - Apr 2019
   - Fix build with binutils > 2.28
 
