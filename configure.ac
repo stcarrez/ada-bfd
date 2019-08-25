@@ -1,5 +1,5 @@
 dnl Autoconf configure script for BfdAda
-dnl Copyright 2001, 2002, 2003, 2005, 2015 Free Software Foundation, Inc.
+dnl Copyright 2001, 2002, 2003, 2005, 2015, 2019 Free Software Foundation, Inc.
 dnl
 dnl This file is part of BfdAda.
 dnl 
@@ -28,7 +28,7 @@ AC_EXEEXT
 # Current release settings
 BFDADA_MAJOR_VERSION=1
 BFDADA_MINOR_VERSION=1
-BFDADA_MICRO_VERSION=0
+BFDADA_MICRO_VERSION=2
 BFDADA_VERSION=$BFDADA_MAJOR_VERSION.$BFDADA_MINOR_VERSION.$BFDADA_MICRO_VERSION
 
 # checking for local tools
@@ -46,6 +46,8 @@ AC_SUBST(BFDADA_MICRO_VERSION)
 EXEC_PREFIX="$prefix"
 AC_SUBST(EXEC_PREFIX)
 
+AM_GNAT_LIBRARY_PROJECT(bfdada)
+
 AC_CONFIG_HEADERS([src/config.h])
 
 AC_CHECK_HEADERS(bfd.h dis-asm.h demangle.h libiberty/demangle.h)
@@ -60,7 +62,6 @@ AC_SUBST(AUNITDIR)
 AC_SUBST(CFLAGS)
 
 AC_OUTPUT(
-Makefile
+Makefile.conf
 bfdada.gpr
-distrib/bfdada.gpr
 )
