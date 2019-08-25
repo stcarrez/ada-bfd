@@ -43,8 +43,8 @@ To compile Ada BFD you'll need:
 On NetBSD 6.1, you need to install by using:
 
 ```
-     sudo pkgin install binutils-2.24nb3
-     sudo pkgin install gettext-lib-0.19.2
+     sudo pkgin install binutils-2.26.1nb1
+     sudo pkgin install gettext-lib-0.19.8.1
 ```
 
 
