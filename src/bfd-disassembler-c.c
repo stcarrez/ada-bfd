@@ -125,7 +125,7 @@ bfd_ada_disassembler_init (void* data, bfd* abfd, char* disassembler_options)
   info->arch = bfd_get_arch (abfd);
   info->mach = bfd_get_mach (abfd);
   info->disassembler_options = disassembler_options;
-  info->octets_per_byte = bfd_octets_per_byte (abfd);
+  info->octets_per_byte = bfd_octets_per_byte (abfd, NULL);
 
   if (bfd_big_endian (abfd))
     info->display_endian = info->endian = BFD_ENDIAN_BIG;
