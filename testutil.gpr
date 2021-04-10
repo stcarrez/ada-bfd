@@ -1,6 +1,6 @@
 with "config";
 
-project Testutil is
+library project Testutil is
    Version      := "1.6.0";
    Library_Type : Config.Library_Type_Type := external ("LIBRARY_TYPE", "static");
 
