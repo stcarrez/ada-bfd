@@ -186,7 +186,7 @@ package body Bfd.Symbols.Tests is
    end Test_Global_Symbol;
 
    --  --------------------
-   --  Test a global symbol
+   --  Test a local symbol
    --  --------------------
    procedure Test_Local_Symbol (T : in out Test_Case) is
    begin
@@ -200,6 +200,22 @@ package body Bfd.Symbols.Tests is
    begin
       Test_Symbol (T, "bfd__files__close", Bfd.Symbols.BSF_NO_FLAGS, True);
    end Test_External_Symbol;
+
+   --  --------------------
+   --  Test an unknown symbol
+   --  --------------------
+   procedure Test_Unknown_Symbol (T : in out Test_Case) is
+      Symbols : Bfd.Symbols.Symbol_Table;
+      Sym     : Bfd.Symbols.Symbol;
+   begin
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
+                "Bfd.Check_Format returned false");
+
+      --  We must load the symbol table first.
+      Bfd.Symbols.Read_Symbols (T.File.all, Symbols);
+      Sym := Bfd.Symbols.Get_Symbol (Symbols, "bfd__some_missing_symbol");
+      T.Assert (Sym = Null_Symbol, "Get_Symbol return invalid value");
+   end Test_Unknown_Symbol;
 
    --  --------------------
    --  Test an external/undefined symbol
@@ -265,6 +281,8 @@ package body Bfd.Symbols.Tests is
                 "obj/bfd-tests.o", Test_Section_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (local)",
                 "obj/bfd-tests.o", Test_Local_Symbol'Access);
+      Add_Test ("Test Bfd.Symbols.Get_Symbol (unkown)",
+                "obj/bfd-tests.o", Test_Unknown_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Demangle (symbol)",
                 "obj/bfd-tests.o", Test_Demangle_Symbol'Access);
    end Add_Tests;
