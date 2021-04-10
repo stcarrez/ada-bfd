@@ -33,7 +33,6 @@ with Interfaces.C;
 with Interfaces.C.Strings;
 package body Bfd.Symbols is
 
-   use Bfd.Internal;
    use Bfd.Sections;
    use type Interfaces.C.int;
 
