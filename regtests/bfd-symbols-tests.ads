@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Symbols Tests -- Tests for BFD symbols Ada API
---  Copyright (C) 2012, 2015 Free Software Foundation, Inc.
+--  Copyright (C) 2012, 2015, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -38,6 +38,9 @@ package Bfd.Symbols.Tests is
 
    --  Test a global symbol
    procedure Test_Global_Symbol (T : in out Test_Case);
+
+   --  Test a local symbol
+   procedure Test_Local_Symbol (T : in out Test_Case);
 
    --  Test an external/undefined symbol
    procedure Test_External_Symbol (T : in out Test_Case);
