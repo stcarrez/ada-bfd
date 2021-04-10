@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  bfdinfo -- Example for Bfd Ada library
---  Copyright (C) 2002, 2003, 2005, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2005, 2012, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -37,7 +37,6 @@ procedure BfdInfo is
    Release   : constant String := "bfdinfo v1.0";
    Copyright : constant String := "Copyright 2002, 2003, 2005, 2012 Stephane Carrez";
 
-   Opt_H : Boolean := False;
    Opt_V : Boolean := False;
 
    RC : Ada.Command_Line.Exit_Status := 0;
@@ -161,7 +160,6 @@ procedure BfdInfo is
    --  Parse_Arguments
    --------------------------------------------------
    procedure Parse_Arguments is
-      use Ada.Command_Line;
       use GNAT.Command_Line;
 
       Optch :  Character;
@@ -173,13 +171,11 @@ procedure BfdInfo is
 
       begin
          loop
-            Optch := Getopt ("h v ");
+            Optch := Getopt ("v ");
 
             case Optch is
                when Standard.Ascii.NUL =>
                   exit;
-               when 'h' =>
-                  Opt_H := True;
                when 'v' =>
                   Opt_V := True;
                when others =>
