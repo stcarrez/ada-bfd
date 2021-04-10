@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  disassemble -- Simple Disassembler
---  Copyright (C) 2006, 2012, 2014 Free Software Foundation, Inc.
+--  Copyright (C) 2006, 2012, 2014, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -69,7 +69,8 @@ procedure Disassemble is
                Ada.Text_IO.Put ("In '");
                Ada.Text_IO.Put (To_String (Path));
                Ada.Text_IO.Put_Line ("':");
-               Current_Name := To_Unbounded_String (Ada.Directories.Simple_Name (To_String (Path)));
+               Current_Name := To_Unbounded_String
+                 (Ada.Directories.Simple_Name (To_String (Path)));
             else
                Current_Name := To_Unbounded_String ("");
             end if;
