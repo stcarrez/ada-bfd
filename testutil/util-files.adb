@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
---  Util.Files -- Various File Utility Packages
---  Copyright (C) 2001, 2002, 2003, 2009, 2010, 2011, 2012, 2021 Stephane Carrez
+--  util-files -- Various File Utility Packages
+--  Copyright (C) 2001, 2002, 2003, 2009, 2010, 2011, 2012, 2015, 2017, 2018 Stephane Carrez
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,9 @@
 --  See the License for the specific language governing permissions and
 --  limitations under the License.
 -----------------------------------------------------------------------
+with Interfaces.C.Strings;
 with Ada.Directories;
+with Ada.IO_Exceptions;
 with Ada.Strings.Fixed;
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
@@ -81,6 +83,21 @@ package body Util.Files is
          Process (Ada.Text_IO.Get_Line (File));
       end loop;
       Ada.Text_IO.Close (File);
+   end Read_File;
+
+   --  ------------------------------
+   --  Read the file with the given path, one line at a time and append each line to
+   --  the <b>Into</b> vector.
+   --  ------------------------------
+   procedure Read_File (Path  : in String;
+                        Into  : in out Util.Strings.Vectors.Vector) is
+      procedure Append (Line : in String);
+      procedure Append (Line : in String) is
+      begin
+         Into.Append (Line);
+      end Append;
+   begin
+      Read_File (Path, Append'Access);
    end Read_File;
 
    --  ------------------------------
@@ -151,7 +168,6 @@ package body Util.Files is
    --  ------------------------------
    function Find_File_Path (Name  : String;
                             Paths : String) return String is
-      use Ada.Directories;
       use Ada.Strings.Fixed;
 
       Sep_Pos : Natural;
@@ -167,6 +183,8 @@ package body Util.Files is
             Sep_Pos := Sep_Pos - 1;
          end if;
          declare
+            use Ada.Directories;
+
             Path : constant String := Util.Files.Compose (Paths (Pos .. Sep_Pos), Name);
          begin
             if Exists (Path) and then Kind (Path) = Ordinary_File then
@@ -314,11 +332,17 @@ package body Util.Files is
    begin
       if Name'Length = 0 then
          return Directory;
-      elsif Directory'Length = 0 or Directory = "." or Directory = "./" then
+      elsif Directory'Length = 0 then
          return Name;
-      elsif Directory (Directory'Last) = '/' and Name (Name'First) = '/' then
+      elsif Directory = "." or else Directory = "./" then
+         if Name (Name'First) = '/' then
+            return Compose (Directory, Name (Name'First + 1 .. Name'Last));
+         else
+            return Name;
+         end if;
+      elsif Directory (Directory'Last) = '/' and then Name (Name'First) = '/' then
          return Directory & Name (Name'First + 1 .. Name'Last);
-      elsif Directory (Directory'Last) = '/' or Name (Name'First) = '/' then
+      elsif Directory (Directory'Last) = '/' or else Name (Name'First) = '/' then
          return Directory & Name;
       else
          return Directory & "/" & Name;
@@ -360,7 +384,7 @@ package body Util.Files is
          end if;
       end loop;
       if To'Last = From'Last or (To'Last = From'Last + 1
-                                   and (To (To'Last) = '/' or To (To'Last) = '\'))
+                                 and (To (To'Last) = '/' or To (To'Last) = '\'))
       then
          return ".";
       elsif Last = 0 then
@@ -371,5 +395,31 @@ package body Util.Files is
          return To (Last .. To'Last);
       end if;
    end Get_Relative_Path;
+
+   --  ------------------------------
+   --  Rename the old name into a new name.
+   --  ------------------------------
+   procedure Rename (Old_Name, New_Name : in String) is
+      --  Rename a file (the Ada.Directories.Rename does not allow to use the
+      --  Unix atomic file rename!)
+      function Sys_Rename (Oldpath  : in Interfaces.C.Strings.chars_ptr;
+                           Newpath  : in Interfaces.C.Strings.chars_ptr) return Integer;
+      pragma Import (C, Sys_Rename, "rename");
+
+      Old_Path : Interfaces.C.Strings.chars_ptr;
+      New_Path : Interfaces.C.Strings.chars_ptr;
+      Result   : Integer;
+   begin
+      --  Do a system atomic rename of old file in the new file.
+      --  Ada.Directories.Rename does not allow this.
+      Old_Path := Interfaces.C.Strings.New_String (Old_Name);
+      New_Path := Interfaces.C.Strings.New_String (New_Name);
+      Result := Sys_Rename (Old_Path, New_Path);
+      Interfaces.C.Strings.Free (Old_Path);
+      Interfaces.C.Strings.Free (New_Path);
+      if Result /= 0 then
+         raise Ada.IO_Exceptions.Use_Error with "Cannot rename file";
+      end if;
+   end Rename;
 
 end Util.Files;

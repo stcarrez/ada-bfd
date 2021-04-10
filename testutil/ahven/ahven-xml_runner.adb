@@ -310,7 +310,7 @@ package body Ahven.XML_Runner is
             exit Skip_Loop when not Is_Valid (Position);
 
             Print_Test_Skipped (Output,
-                                To_String (Get_Test_Name (Result)), Data (Position));
+              To_String (Get_Test_Name (Result)), Data (Position));
             Position := Next (Position);
          end loop Skip_Loop;
 

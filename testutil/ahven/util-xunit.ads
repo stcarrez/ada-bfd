@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  util-xunit - Unit tests on top of AHven
---  Copyright (C) 2011, 2021 Stephane Carrez
+--  Copyright (C) 2011, 2018, 2019 Stephane Carrez
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,8 +20,6 @@ with Ahven;
 with Ahven.Framework;
 with Ahven.Results;
 
-with Ada.Strings.Unbounded;
-
 with GNAT.Source_Info;
 
 --  The <b>Util.XUnit</b> package exposes a common package definition used by the Ada testutil
@@ -30,6 +28,8 @@ with GNAT.Source_Info;
 --  Ahven is written by Tero Koskinen and licensed under permissive ISC license.
 --  See http://ahven.stronglytyped.org/
 package Util.XUnit is
+
+   Assertion_Error : exception renames Ahven.Assertion_Error;
 
    type Status is (Success, Failure);
 
@@ -96,6 +96,7 @@ package Util.XUnit is
 
    --  Report passes, skips, failures, and errors from the result collection.
    procedure Report_Results (Result  : in Ahven.Results.Result_Collection;
+                             Label   : in String;
                              Time    : in Duration);
 
    --  The main testsuite program.  This launches the tests, collects the
@@ -103,8 +104,9 @@ package Util.XUnit is
    --  according to the testsuite execution status.
    generic
       with function Suite return Access_Test_Suite;
-   procedure Harness (Output : in Ada.Strings.Unbounded.Unbounded_String;
+   procedure Harness (Output : in String;
                       XML    : in Boolean;
+                      Label  : in String;
                       Result : out Status);
 
 end Util.XUnit;

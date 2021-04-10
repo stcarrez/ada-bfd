@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  AUnit utils - Helper for writing unit tests
---  Copyright (C) 2009, 2010, 2011, 2012, 2013 Stephane Carrez
+--  Copyright (C) 2009, 2010, 2011, 2012, 2013, 2017, 2019, 2021 Stephane Carrez
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,10 +25,12 @@ with Ada.IO_Exceptions;
 with Ada.Text_IO;
 with Ada.Calendar.Formatting;
 with Ada.Exceptions;
+with Ada.Containers;
 
 with Util.Strings;
 with Util.Measures;
 with Util.Files;
+with Util.Strings.Vectors;
 with Util.Log.Loggers;
 package body Util.Tests is
 
@@ -71,7 +73,7 @@ package body Util.Tests is
    --  Get a path to create a test file.
    --  ------------------------------
    function Get_Test_Path (File : String) return String is
-      Dir : constant String := Get_Parameter ("test.result.dir", ".");
+      Dir : constant String := Get_Parameter ("test.result.dir", "regtests/results");
    begin
       return Dir & "/" & File;
    end Get_Test_Path;
@@ -277,9 +279,11 @@ package body Util.Tests is
                                  Source  : String := GNAT.Source_Info.File;
                                  Line    : Natural := GNAT.Source_Info.Line) is
       use Util.Files;
+      use type Ada.Containers.Count_Type;
+      use type Util.Strings.Vectors.Vector;
 
-      Expect_File : Unbounded_String;
-      Test_File   : Unbounded_String;
+      Expect_File : Util.Strings.Vectors.Vector;
+      Test_File   : Util.Strings.Vectors.Vector;
       Same        : Boolean;
    begin
       begin
@@ -303,18 +307,33 @@ package body Util.Tests is
             end if;
       end;
 
-      --  Check file sizes
-      Assert_Equals (T       => T,
-                     Expect  => Length (Expect_File),
-                     Value   => Length (Test_File),
-                     Message => Message & ": Invalid file sizes",
-                     Source  => Source,
-                     Line    => Line);
+      if Expect_File.Length /= Test_File.Length then
+         if Update_Test_Files then
+            Ada.Directories.Copy_File (Source_Name => Test,
+                                       Target_Name => Expect);
+         end if;
+
+         --  Check file sizes
+         Assert_Equals (T       => T,
+                        Expect  => Natural (Expect_File.Length),
+                        Value   => Natural (Test_File.Length),
+                        Message => Message & ": Invalid number of lines",
+                        Source  => Source,
+                        Line    => Line);
+      end if;
 
       Same := Expect_File = Test_File;
       if Same then
          return;
       end if;
+      if Update_Test_Files then
+         Ada.Directories.Copy_File (Source_Name => Test,
+                                    Target_Name => Expect);
+      end if;
+      T.Assert (Condition => False,
+                Message   => Message & ": Content is different on some lines",
+                Source    => Source,
+                Line      => Line);
    end Assert_Equal_Files;
 
    --  ------------------------------
@@ -328,9 +347,11 @@ package body Util.Tests is
                                  Source  : String := GNAT.Source_Info.File;
                                  Line    : Natural := GNAT.Source_Info.Line) is
       use Util.Files;
+      use type Ada.Containers.Count_Type;
+      use type Util.Strings.Vectors.Vector;
 
-      Expect_File : Unbounded_String;
-      Test_File   : Unbounded_String;
+      Expect_File : Util.Strings.Vectors.Vector;
+      Test_File   : Util.Strings.Vectors.Vector;
       Same        : Boolean;
    begin
       begin
@@ -354,18 +375,33 @@ package body Util.Tests is
             end if;
       end;
 
-      --  Check file sizes
-      Assert_Equals (T       => T,
-                     Expect  => Length (Expect_File),
-                     Value   => Length (Test_File),
-                     Message => Message & ": Invalid file sizes",
-                     Source  => Source,
-                     Line    => Line);
+      if Expect_File.Length /= Test_File.Length then
+         if Update_Test_Files then
+            Ada.Directories.Copy_File (Source_Name => Test,
+                                       Target_Name => Expect);
+         end if;
+
+         --  Check file sizes
+         Assert_Equals (T       => T,
+                        Expect  => Natural (Expect_File.Length),
+                        Value   => Natural (Test_File.Length),
+                        Message => Message & ": Invalid number of lines",
+                        Source  => Source,
+                        Line    => Line);
+      end if;
 
       Same := Expect_File = Test_File;
       if Same then
          return;
       end if;
+      if Update_Test_Files then
+         Ada.Directories.Copy_File (Source_Name => Test,
+                                    Target_Name => Expect);
+      end if;
+      Fail (T       => T,
+            Message => Message & ": Content is different on some lines",
+            Source  => Source,
+            Line    => Line);
    end Assert_Equal_Files;
 
    --  ------------------------------
@@ -407,9 +443,10 @@ package body Util.Tests is
       procedure Help is
       begin
          Put_Line ("Test harness: " & Name);
-         Put ("Usage: harness [-xml result.xml] [-t timeout] [-p prefix] [-v]"
+         Put ("Usage: harness [-l label] [-xml result.xml] [-t timeout] [-p prefix] [-v]"
               & "[-config file.properties] [-d dir] [-r testname]");
          Put_Line ("[-update]");
+         Put_Line ("-l label       Print the label in the test summary result");
          Put_Line ("-xml file      Produce an XML test report");
          Put_Line ("-config file   Specify a test configuration file");
          Put_Line ("-d dir         Change the current directory to <dir>");
@@ -428,9 +465,10 @@ package body Util.Tests is
       XML       : Boolean := False;
       Output    : Ada.Strings.Unbounded.Unbounded_String;
       Chdir     : Ada.Strings.Unbounded.Unbounded_String;
+      Label     : String (1 .. 16) := (others => ' ');
    begin
       loop
-         case Getopt ("h u v x: t: p: c: config: d: r: update help xml: timeout:") is
+         case Getopt ("h u v l: x: t: p: c: config: d: r: update help xml: timeout:") is
             when ASCII.NUL =>
                exit;
 
@@ -451,6 +489,14 @@ package body Util.Tests is
 
             when 'd' =>
                Chdir := To_Unbounded_String (Parameter);
+
+            when 'l' =>
+               if Parameter'Length > Label'Length then
+                  Label := Parameter (Parameter'First .. Parameter'First + Label'Length - 1);
+               else
+                  Label := (others => ' ');
+                  Label (Label'First .. Label'First + Parameter'Length - 1) := Parameter;
+               end if;
 
             when 'u' =>
                Update_Test_Files := True;
@@ -510,7 +556,8 @@ package body Util.Tests is
          S  : Util.Measures.Stamp;
       begin
          Util.Measures.Set_Current (Perf'Unchecked_Access);
-         Runner (Output, XML, Result);
+         Runner (To_String (Output), XML,
+                 (if (for all C of Label => C = ' ') then "" else Label), Result);
          Util.Measures.Report (Perf, S, "Testsuite execution");
          Util.Measures.Write (Perf, "Test measures", Name);
       end;

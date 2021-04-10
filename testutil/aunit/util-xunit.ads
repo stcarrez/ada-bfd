@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  util-xunit - Unit tests on top of AUnit
---  Copyright (C) 2009, 2010, 2011 Stephane Carrez
+--  Copyright (C) 2009, 2010, 2011, 2019 Stephane Carrez
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +17,7 @@
 -----------------------------------------------------------------------
 
 with AUnit;
+with AUnit.Assertions;
 with AUnit.Simple_Test_Cases;
 with AUnit.Test_Suites;
 with AUnit.Test_Fixtures;
@@ -40,6 +41,8 @@ package Util.XUnit is
    subtype Message_String is AUnit.Message_String;
    subtype Test_Suite is AUnit.Test_Suites.Test_Suite;
    subtype Access_Test_Suite is AUnit.Test_Suites.Access_Test_Suite;
+
+   Assertion_Error : exception renames AUnit.Assertions.Assertion_Error;
 
    function Format (S : in String) return Message_String renames AUnit.Format;
 
@@ -66,8 +69,9 @@ package Util.XUnit is
    --  according to the testsuite execution status.
    generic
       with function Suite return Access_Test_Suite;
-   procedure Harness (Output : in Ada.Strings.Unbounded.Unbounded_String;
+   procedure Harness (Output : in String;
                       XML    : in Boolean;
+                      Label  : in String;
                       Result : out Status);
 
 end Util.XUnit;
