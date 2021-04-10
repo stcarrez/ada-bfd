@@ -147,7 +147,7 @@ package body Bfd.Tests is
    --  --------------------
    procedure Test_Get_Binary_Flags (T    : in out Test_Case) is
    begin
-      Test_Get_Flags (T, "bin/bfdada_harness", Bfd.Files.EXEC_P);
+      Test_Get_Flags (T, "bin/bfdgen", Bfd.Files.EXEC_P);
    end Test_Get_Binary_Flags;
 
    --  --------------------
@@ -209,11 +209,11 @@ package body Bfd.Tests is
                 "obj/bfd-tests.o", Test_Get_Object_Flags'Access);
 
       Add_Test ("Test Bfd.Files.Get_File_Flags on exec with debug",
-                "bin/bfdgn", Test_Get_Debug_Flags'Access);
+                "bin/bfdgen", Test_Get_Debug_Flags'Access);
 
       --  Running the symbol count on the binary will fail if it is stripped.
-      --        Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
-      --                  "bin/bfdada_harness", Test_Basic'Access);
+      Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
+                "bin/bfdgen", Test_Basic'Access);
    end Add_Tests;
 
 end Bfd.Tests;
