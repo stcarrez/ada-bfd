@@ -1,5 +1,5 @@
 /* Functions for BfdAda
-   Copyright 2001, 2002, 2003, 2012, 2015 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2012, 2015, 2021 Free Software Foundation, Inc.
    Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
@@ -22,6 +22,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #include <bfd.h>
 #include <stdlib.h>
 #include <stdarg.h>
+
+// Old Binutils use a C macro with two arguments
+// but newer version are using C inline function with a single argument.
+#ifdef bfd_section_name
+# undef bfd_section_name
+# undef bfd_section_vma
+# define bfd_section_name(ptr) bfd_get_section_name(0, ptr)
+# define bfd_section_vma(ptr) bfd_get_section_vma(0, ptr)
+#endif
 
 void*
 _bfd_get_filename (struct bfd *abfd)

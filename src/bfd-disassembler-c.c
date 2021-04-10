@@ -1,5 +1,5 @@
 /* Functions for BfdAda
-   Copyright 2001, 2002, 2003, 2012, 2014 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2012, 2014, 2021 Free Software Foundation, Inc.
    Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
@@ -23,6 +23,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #include <stdlib.h>
 #include <stdarg.h>
 #include <dis-asm.h>
+
+// Old Binutils use a bfd_octets_per_byte with a single argument
+// but newer version are using two arguments.
+#ifdef bfd_section_name
+# define BFD_OCTETS_PER_BYTE(ABFD) bfd_octets_per_byte((ABFD)
+#else
+# define BFD_OCTETS_PER_BYTE(ABFD) bfd_octets_per_byte((ABFD), NULL)
+#endif
 
 extern void ada_dis_memory_handler(int status, unsigned long long addr,
                                    struct disassemble_info* info);
@@ -125,7 +133,7 @@ bfd_ada_disassembler_init (void* data, bfd* abfd, char* disassembler_options)
   info->arch = bfd_get_arch (abfd);
   info->mach = bfd_get_mach (abfd);
   info->disassembler_options = disassembler_options;
-  info->octets_per_byte = bfd_octets_per_byte (abfd, NULL);
+  info->octets_per_byte = BFD_OCTETS_PER_BYTE (abfd);
 
   if (bfd_big_endian (abfd))
     info->display_endian = info->endian = BFD_ENDIAN_BIG;
