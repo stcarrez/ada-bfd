@@ -19,7 +19,7 @@ if test $T -ne 1; then
 fi
 
 T=`bin/disassemble bin/bfdgen | grep support/bfdgen.c | wc -l`
-if test $T -ne 1; then
+if test $T -ge 1; then
     echo "Test samples/disassemble failed"
     exit 1
 fi
