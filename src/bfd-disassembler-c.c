@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 // Old Binutils use a bfd_octets_per_byte with a single argument
 // but newer version are using two arguments.
 #ifdef bfd_section_name
-# define BFD_OCTETS_PER_BYTE(ABFD) bfd_octets_per_byte((ABFD)
+# define BFD_OCTETS_PER_BYTE(ABFD) bfd_octets_per_byte((ABFD))
 #else
 # define BFD_OCTETS_PER_BYTE(ABFD) bfd_octets_per_byte((ABFD), NULL)
 #endif

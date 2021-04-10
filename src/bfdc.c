@@ -29,11 +29,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 # undef bfd_section_name
 # undef bfd_section_vma
 # undef bfd_section_lma
-# undef bfd_section_size
 # define bfd_section_name(ptr) bfd_get_section_name(0, ptr)
 # define bfd_section_vma(ptr) bfd_get_section_vma(0, ptr)
 # define bfd_section_lma(ptr) bfd_get_section_lma(0, ptr)
-# define bfd_section_size(ptr) bfd_get_section_size(0, ptr)
+# define BFD_SECTION_SIZE(ptr) bfd_section_size(0, ptr)
+#else
+# define BFD_SECTION_SIZE(ptr) bfd_section_size(ptr)
 #endif
 
 void*
@@ -75,7 +76,7 @@ _bfd_get_section_lma (struct bfd_section *sec)
 unsigned long long
 _bfd_get_section_size (struct bfd_section *sec)
 {
-  return (unsigned long long) bfd_section_size (sec);
+  return (unsigned long long) BFD_SECTION_SIZE (sec);
 }
 
 unsigned long
