@@ -94,8 +94,18 @@ package body Bfd.Sections.Tests is
 
          while Has_Element (It) loop
             S := Element (It);
-            Sec := Find_Section (T.File.all, Get_Name (S));
-            T.Assert (Sec = S, "Bfd.Find_Section returned a different section");
+            declare
+               Name : constant String := Get_Name (S);
+            begin
+               Sec := Find_Section (T.File.all, Get_Name (S));
+               T.Assert (Sec.Vma = S.Vma, "Bfd.Find_Section returned a different section (vma)");
+               T.Assert (Sec.Lma = S.Lma, "Bfd.Find_Section returned a different section (lma)");
+               T.Assert (Name = Get_Name (Sec),
+                         "Bfd.Find_Section returned a different section (lma)");
+               if Name /= ".group" then
+                  T.Assert (Sec = S, "Bfd.Find_Section returned a different section");
+               end if;
+            end;
             Next (It);
          end loop;
       end;
