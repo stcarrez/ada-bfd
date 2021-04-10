@@ -13,8 +13,9 @@ build-test::	setup
 	$(GNATMAKE) $(GPRFLAGS) -p -P$(NAME)_tests $(MAKE_ARGS)
 
 # Build and run the unit tests
-test:	build build-test
+test:	build build-test samples
 	bin/bfdada_harness
+	@sh ./check-samples.sh
 
 install-samples:
 	$(MKDIR) -p $(samplesdir)/samples
