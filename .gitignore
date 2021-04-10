@@ -25,4 +25,4 @@ obj/
 distrib/bfdada.gpr
 src/bfd-constants.ads
 src/config.h
-regtests/result
+regtests/results
