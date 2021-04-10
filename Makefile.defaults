@@ -3,7 +3,7 @@ MAKEFILE_DEFAULTS=1
 
 # You may edit this makefile as long as you keep these original 
 # target names defined.
-MODE?=distrib
+BUILD?=distrib
 GNATMAKE?=gprbuild
 GNATCLEAN?=gnatclean
 GPRINSTALL?=gprinstall
@@ -15,7 +15,6 @@ CP?=cp
 LN?=ln -s
 
 BUILDS_SHARED?=no
-COVERAGE?=no
 
 ifeq (${OS},Windows_NT)
 LIBEXT?=dll
@@ -39,7 +38,7 @@ alidir?=${prefix}/${infix_ali}
 samplesdir?=${prefix}/share/doc/${docdir}
 dynamodir=${prefix}/share/dynamo
 
-MAKE_ARGS += -XMODE=$(MODE) -XCOVERAGE=$(COVERAGE) -XPROCESSORS=$(PROCESSORS)
+MAKE_ARGS += -XBUILD=$(BUILD) -XPROCESSORS=$(PROCESSORS)
 
 build:: all
 
@@ -53,6 +52,7 @@ endif
 
 static::
 shared::
+install-data::
 
 # Not intended for manual invocation.
 # Invoked if automatic builds are enabled.
@@ -75,11 +75,16 @@ clean_tree:
 
 # Clean the root project of all build products.
 clean::
-	-rm -rf lib obj bin $(CLEAN_FILES)
+	-rm -rf lib obj bin autom4te.cache $(CLEAN_FILES)
 	-rm -rf regtests/result
 
+dist-clean:: clean
+	-rm -f *.log *~ config.status Makefile.conf
+
 doc::
+ifeq (${HAVE_DYNAMO},yes)
 	$(DYNAMO) build-doc -markdown wiki
+endif
 
 dist::
 	rm -f $(DIST_FILE)
@@ -169,6 +174,29 @@ clean::
 
 endef
 
+define pandoc_build
+
+ifeq (${HAVE_PANDOC},yes)
+
+doc::  docs/$(1).pdf docs/$(1).html
+ifeq (${HAVE_DYNAMO},yes)
+	$(DYNAMO) build-doc -markdown wiki
+endif
+
+docs/$(1).pdf:  force
+ifeq (${HAVE_DYNAMO},yes)
+	$(DYNAMO) build-doc -pandoc docs
+	$(3)
+endif
+	cd docs && pandoc $(DOC_OPTIONS) -o $(1).pdf --template=./eisvogel.tex $(2)
+
+docs/$(1).html: docs/$(1).pdf force
+	cd docs && pandoc $(HTML_OPTIONS) -o $(1).html $(2)
+
+endif
+
+endef
+
 force:
 
 build-test::
@@ -176,5 +204,11 @@ build-test::
 uninstall::
 
 install-static::
+
+endif
+
+ifdef DESTDIR
+
+.NOTPARALLEL:
 
 endif
