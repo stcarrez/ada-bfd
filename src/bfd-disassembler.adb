@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  Disassembler -- Disassembler
---  Copyright (C) 2003, 2006, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2003, 2006, 2012, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -38,6 +38,8 @@ package body Bfd.Disassembler is
 
    package Conv_Disassembler_Ref is new
      System.Address_To_Access_Conversions (Disassembler_Info_Type'Class);
+
+   function Get_Disassembler_Data (Data : in Ptr) return Disassembler_Ref;
 
    function Get_Disassembler_Data (Data : in Ptr) return Disassembler_Ref
    is
@@ -82,7 +84,7 @@ package body Bfd.Disassembler is
    procedure Disassembler_Output (Info   : System.Address;
                                   Buffer : Interfaces.C.Strings.chars_ptr)
    is
-      Info_Ref : Disassembler_Ref := Disassembler_Ref
+      Info_Ref : constant Disassembler_Ref := Disassembler_Ref
         (Conv_Disassembler_Ref.To_Pointer (Value => Info));
    begin
       Output (Info_Ref.all, Interfaces.C.Strings.Value (Buffer));
