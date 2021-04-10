@@ -27,7 +27,7 @@ $(eval $(call ada_library,$(NAME)))
 check:	test
 
 samples:	force
-	$(GNATMAKE) -p -Psamples
+	$(GNATMAKE) $(GPRFLAGS) -p -Psamples $(MAKE_ARGS)
 
 force:
 
