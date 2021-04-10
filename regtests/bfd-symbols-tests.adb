@@ -190,7 +190,7 @@ package body Bfd.Symbols.Tests is
    --  --------------------
    procedure Test_Local_Symbol (T : in out Test_Case) is
    begin
-      Test_Symbol (T, ".LC29", Bfd.Symbols.BSF_LOCAL, False);
+      Test_Symbol (T, ".LFB2", Bfd.Symbols.BSF_LOCAL, False);
    end Test_Local_Symbol;
 
    --  --------------------
@@ -280,7 +280,7 @@ package body Bfd.Symbols.Tests is
       Add_Test ("Test Bfd.Symbols.Get_Symbol (section symbol)",
                 "obj/bfd-tests.o", Test_Section_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (local)",
-                "obj/bfd-tests.o", Test_Local_Symbol'Access);
+                "regtests/files/test.o", Test_Local_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (unkown)",
                 "obj/bfd-tests.o", Test_Unknown_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Demangle (symbol)",
