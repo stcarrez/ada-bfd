@@ -19,6 +19,7 @@ bfdada.gpr
 bfdada-tests.xml
 autom4te.cache
 *.txt
+bin/
 lib/
 obj/
 distrib/bfdada.gpr
