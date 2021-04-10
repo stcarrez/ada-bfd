@@ -30,6 +30,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 # undef bfd_section_vma
 # define bfd_section_name(ptr) bfd_get_section_name(0, ptr)
 # define bfd_section_vma(ptr) bfd_get_section_vma(0, ptr)
+# define bfd_section_lma(ptr) bfd_get_section_lma(0, ptr)
+# define bfd_section_size(ptr) bfd_get_section_size(0, ptr)
 #endif
 
 void*
