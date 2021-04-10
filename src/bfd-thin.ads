@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Thin Ada layer for Bfd (common Bfd functions)
---  <!-- Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2012, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -42,7 +42,7 @@ package Bfd.Thin is
    procedure Set_Error (Code : Error);
    pragma Import (C, Set_Error, "bfd_set_error");
 
-   procedure Set_Error_Program_Name (P : in Ptr);
+   procedure Set_Error_Program_Name (P : in Interfaces.C.Strings.chars_ptr);
    pragma Import (C, Set_Error_Program_Name, "bfd_set_error_program_name");
 
    function Openr (Name : in Interfaces.C.Strings.chars_ptr; Target : in Ptr) return Ptr;
