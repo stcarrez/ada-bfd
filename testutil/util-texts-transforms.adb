@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  Util-texts -- Various Text Transformation Utilities
---  Copyright (C) 2001, 2002, 2003, 2009, 2010, 2011, 2012 Stephane Carrez
+--  Copyright (C) 2001, 2002, 2003, 2009, 2010, 2011, 2012, 2021 Stephane Carrez
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
@@ -97,7 +97,8 @@ package body Util.Texts.Transforms is
          else
             C := Char'Pos (To_Lower (Content (I)));
             if C = Character'Pos ('_') or C = Character'Pos ('.') or C = Character'Pos (':')
-              or C = Character'Pos (';') or C = Character'Pos (',') or C = Character'Pos (' ') then
+              or C = Character'Pos (';') or C = Character'Pos (',') or C = Character'Pos (' ')
+            then
                Upper := True;
             end if;
          end if;
@@ -305,18 +306,21 @@ package body Util.Texts.Transforms is
                                    Into   : in out Stream) is
    begin
       if Entity (Entity'First) = Char'Val (Character'Pos ('&'))
-        and then Entity (Entity'Last) = Char'Val (Character'Pos (';')) then
+        and then Entity (Entity'Last) = Char'Val (Character'Pos (';'))
+      then
          case Char'Pos (Entity (Entity'First + 1)) is
             when Character'Pos ('l') =>
                if Entity'Length = 4
-                 and then Entity (Entity'First + 2) = Char'Val (Character'Pos ('t')) then
+                 and then Entity (Entity'First + 2) = Char'Val (Character'Pos ('t'))
+               then
                   Put (Into, '<');
                   return;
                end if;
 
             when Character'Pos ('g') =>
                if Entity'Length = 4
-                 and then Entity (Entity'First + 2) = Char'Val (Character'Pos ('t')) then
+                 and then Entity (Entity'First + 2) = Char'Val (Character'Pos ('t'))
+               then
                   Put (Into, '>');
                   return;
                end if;
@@ -324,14 +328,16 @@ package body Util.Texts.Transforms is
             when Character'Pos ('a') =>
                if Entity'Length = 5
                  and then Entity (Entity'First + 2) = Char'Val (Character'Pos ('m'))
-                 and then Entity (Entity'First + 3) = Char'Val (Character'Pos ('p')) then
+                 and then Entity (Entity'First + 3) = Char'Val (Character'Pos ('p'))
+               then
                   Put (Into, '&');
                   return;
                end if;
                if Entity'Length = 6
                  and then Entity (Entity'First + 2) = Char'Val (Character'Pos ('p'))
                  and then Entity (Entity'First + 3) = Char'Val (Character'Pos ('o'))
-                 and then Entity (Entity'First + 4) = Char'Val (Character'Pos ('s')) then
+                 and then Entity (Entity'First + 4) = Char'Val (Character'Pos ('s'))
+               then
                   Put (Into, ''');
                   return;
                end if;
@@ -340,7 +346,8 @@ package body Util.Texts.Transforms is
                if Entity'Length = 6
                  and then Entity (Entity'First + 2) = Char'Val (Character'Pos ('u'))
                  and then Entity (Entity'First + 3) = Char'Val (Character'Pos ('o'))
-                 and then Entity (Entity'First + 4) = Char'Val (Character'Pos ('t')) then
+                 and then Entity (Entity'First + 4) = Char'Val (Character'Pos ('t'))
+               then
                   Put (Into, '"');
                   return;
                end if;
