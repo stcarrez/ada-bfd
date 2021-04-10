@@ -146,8 +146,17 @@ package body Bfd.Tests is
    --  Test the Get_File_Flags operation on a binary executable.
    --  --------------------
    procedure Test_Get_Binary_Flags (T    : in out Test_Case) is
+      File  : Bfd.Files.File_Type;
+      Flags : Bfd.File_Flags;
    begin
-      Test_Get_Flags (T, "bin/bfdgen", Bfd.Files.EXEC_P);
+      Bfd.Files.Open (File, "bin/bfdgen");
+
+      T.Assert (Bfd.Files.Check_Format (File, Bfd.Files.OBJECT),
+                "Bfd.Check_Format returned false");
+
+      Flags := Bfd.Files.Get_File_Flags (File);
+      T.Assert ((Flags and (Bfd.Files.DYNAMIC or Bfd.Files.EXEC_P)) /= 0,
+                "The flag DYNAMIC or EXEC_P is not set");
    end Test_Get_Binary_Flags;
 
    --  --------------------
@@ -165,7 +174,6 @@ package body Bfd.Tests is
    procedure Test_Get_Debug_Flags (T    : in out Test_Case) is
    begin
       Test_Get_Flags (T, "bin/bfdgen", Bfd.Files.HAS_SYMS);
-      Test_Get_Flags (T, "bin/bfdgen", Bfd.Files.EXEC_P);
    end Test_Get_Debug_Flags;
 
    --  --------------------
