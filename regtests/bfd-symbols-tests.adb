@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Tests -- Tests for BFD section Ada API
---  Copyright (C) 2002, 2003, 2012, 2015 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2015, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -197,7 +197,6 @@ package body Bfd.Symbols.Tests is
    --  Test the demangle of symbol.
    --  --------------------
    procedure Test_Demangle_Symbol (T : in out Test_Case) is
-      use Util.Tests;
 
       procedure Check (Name, Expect : in String);
 
