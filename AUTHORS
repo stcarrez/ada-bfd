@@ -1,6 +1,7 @@
 Stephane Carrez	<Stephane.Carrez@gmail.com>
 	 Wrote BfdAda library, BfdAda tests
 
+Stefan Kalkowski <stefan.kalkowski@genode-labs.com>
 Adrian-Ken Rueegsegger <ken@codelabs.ch>
 	 Fixed BfdAda to work with recent Binutils,
          fixed various compilation issues
