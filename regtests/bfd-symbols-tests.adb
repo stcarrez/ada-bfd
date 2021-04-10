@@ -128,6 +128,14 @@ package body Bfd.Symbols.Tests is
                    "Symbol flag " & Symbol_Flags'Image (Flag) & " not set on " & Name);
       end if;
 
+      if Flag = Bfd.Symbols.BSF_LOCAL then
+         T.Assert (Bfd.Symbols.Is_Local_Label (T.File.all, Sym));
+      end if;
+
+      if Flag = Bfd.Symbols.BSF_GLOBAL then
+         T.Assert (not Bfd.Symbols.Is_Local_Label (T.File.all, Sym));
+      end if;
+
       declare
          Sec   : constant Bfd.Sections.Section := Bfd.Symbols.Get_Section (Sym);
       begin
@@ -176,6 +184,14 @@ package body Bfd.Symbols.Tests is
    begin
       Test_Symbol (T, "bfd__tests__name", Bfd.Symbols.BSF_GLOBAL, False);
    end Test_Global_Symbol;
+
+   --  --------------------
+   --  Test a global symbol
+   --  --------------------
+   procedure Test_Local_Symbol (T : in out Test_Case) is
+   begin
+      Test_Symbol (T, ".LC29", Bfd.Symbols.BSF_LOCAL, False);
+   end Test_Local_Symbol;
 
    --  --------------------
    --  Test an external/undefined symbol
@@ -247,6 +263,8 @@ package body Bfd.Symbols.Tests is
                 "obj/bfd-tests.o", Test_External_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (section symbol)",
                 "obj/bfd-tests.o", Test_Section_Symbol'Access);
+      Add_Test ("Test Bfd.Symbols.Get_Symbol (local)",
+                "obj/bfd-tests.o", Test_Local_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Demangle (symbol)",
                 "obj/bfd-tests.o", Test_Demangle_Symbol'Access);
    end Add_Tests;
