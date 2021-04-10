@@ -30,7 +30,6 @@ with Bfd.Symbols;
 
 procedure Symbol is
 
-   use Ada.Text_IO;
    use type Bfd.Symbols.Symbol;
    use type Bfd.Symbol_Flags;
 
