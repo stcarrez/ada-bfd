@@ -25,14 +25,11 @@
 --  but still provide enough methods to read any object or binary,
 --  observe its sections, its symbol table.
 --
-with Bfd.Internal;
 with Bfd.Thin;
 with Interfaces.C.Strings;
 package body Bfd is
 
-   use type System.Address;
-
-   Current_Program_Name : Bfd.Internal.String_Ptr := null;
+   Current_Program_Name : Interfaces.C.Strings.chars_ptr;
 
    --  -----------------------
    --  Return the current error code.
@@ -54,12 +51,10 @@ package body Bfd is
    --  Tell the BFD library what is the program name.
    --  -----------------------
    procedure Set_Error_Program_Name (To : in String) is
-      S : constant Bfd.Internal.String_Ptr := new String (1 .. To'Length + 1);
    begin
-      S (1 .. To'Length)   := To (To'Range);
-      S (To'Length + 1)    := ASCII.NUL;
-      Current_Program_Name := S;
-      Bfd.Thin.Set_Error_Program_Name (S.all'Address);
+      Interfaces.C.Strings.Free (Current_Program_Name);
+      Current_Program_Name := Interfaces.C.Strings.New_String (To);
+      Bfd.Thin.Set_Error_Program_Name (Current_Program_Name);
    end Set_Error_Program_Name;
 
    --  -----------------------
