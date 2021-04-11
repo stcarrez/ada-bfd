@@ -43,8 +43,8 @@ package body Bfd.Disassembler is
 
    function Get_Disassembler_Data (Data : in Ptr) return Disassembler_Ref
    is
-      function C_Get_Dis_Data (Data : in Ptr) return System.Address;
-      pragma Import (C, C_Get_Dis_Data, "bfd_ada_disassembler_get_data");
+      function C_Get_Dis_Data (Data : in Ptr) return System.Address
+        with Import => True, Convention => C, Link_Name => "bfd_ada_disassembler_get_data";
    begin
       return Disassembler_Ref
         (Conv_Disassembler_Ref.To_Pointer
@@ -55,31 +55,31 @@ package body Bfd.Disassembler is
    --  Handlers called by C callbacks
    ----------------------
    procedure Disassembler_Output (Info   : System.Address;
-                                  Buffer : Interfaces.C.Strings.chars_ptr);
-   pragma Export (C, Disassembler_Output, "ada_disassembler_output");
+                                  Buffer : Interfaces.C.Strings.chars_ptr)
+     with Export => True, Convention => C, Link_Name => "ada_disassembler_output";
 
    ----------------------
    --  The prototype of these callbacks must match the functions
    --  defined in Binutils 'include/dis-asm.h'.
    ----------------------
    procedure Disassembler_Output_Address (Addr : Vma_Type;
-                                          Data : in Ptr);
-   pragma Export (C, Disassembler_Output_Address, "ada_disassembler_output_address");
+                                          Data : in Ptr)
+     with Export => True, Convention => C, Link_Name => "ada_disassembler_output_address";
 
    procedure Memory_Handler (Status : in Integer;
                              Addr   : in Vma_Type;
-                             Data   : in Ptr);
-   pragma Export (C, Memory_Handler, "ada_dis_memory_handler");
+                             Data   : in Ptr)
+     with Export => True, Convention => C, Link_Name => "ada_dis_memory_handler";
 
    function Symbol_At_Address (Addr : in Vma_Type;
-                               Data : in Ptr) return Interfaces.C.int;
-   pragma Export (C, Symbol_At_Address, "ada_dis_symbol_at_address");
+                               Data : in Ptr) return Interfaces.C.int
+     with Export => True, Convention => C, Link_Name => "ada_dis_symbol_at_address";
 
    function Read_Memory_Handler (Addr        : in Vma_Type;
                                  Buffer_Addr : in System.Address;
                                  Len         : in Integer;
-                                 Data        : in Ptr) return Integer;
-   pragma Export (C, Read_Memory_Handler, "ada_dis_read_memory_handler");
+                                 Data        : in Ptr) return Integer
+     with Export => True, Convention => C, Link_Name => "ada_dis_read_memory_handler";
 
    procedure Disassembler_Output (Info   : System.Address;
                                   Buffer : Interfaces.C.Strings.chars_ptr)
