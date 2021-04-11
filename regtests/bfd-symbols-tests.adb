@@ -146,6 +146,14 @@ package body Bfd.Symbols.Tests is
             T.Assert (not Bfd.Sections.Is_Undefined_Section (Sec),
                       "Symbol " & Name & " is in undefined section");
          end if;
+
+         if Flag = Bfd.Symbols.BSF_OBJECT then
+            T.Assert (Bfd.Sections.Is_Common_Section (Sec),
+                      "Symbol " & Name & " is not common section");
+         else
+            T.Assert (not Bfd.Sections.Is_Common_Section (Sec),
+                      "Symbol " & Name & " is not common section");
+         end if;
       end;
    end Test_Symbol;
 
@@ -218,6 +226,14 @@ package body Bfd.Symbols.Tests is
    end Test_Unknown_Symbol;
 
    --  --------------------
+   --  Test an common symbol
+   --  --------------------
+   procedure Test_Common_Symbol (T : in out Test_Case) is
+   begin
+      Test_Symbol (T, "common_sect", Bfd.Symbols.BSF_OBJECT, False);
+   end Test_Common_Symbol;
+
+   --  --------------------
    --  Test an external/undefined symbol
    --  --------------------
    procedure Test_Section_Symbol (T : in out Test_Case) is
@@ -281,6 +297,8 @@ package body Bfd.Symbols.Tests is
                 "obj/bfd-tests.o", Test_Section_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (local)",
                 "regtests/files/test.o", Test_Local_Symbol'Access);
+      Add_Test ("Test Bfd.Symbols.Get_Symbol (common)",
+                "regtests/files/test_common.o", Test_Common_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (unkown)",
                 "obj/bfd-tests.o", Test_Unknown_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Demangle (symbol)",
