@@ -93,15 +93,6 @@ package Bfd is
                   ON_INPUT,
                   INVALID_ERROR_CODE);
 
-   type Error_Handler is access procedure (Message : in String)
-     with Convention => C;
-   --  The error handler is a procedure called when BFD functions
-   --  want to report an error message.  In the C version, the handler
-   --  has a printf-like signature, thus giving freedom for the
-   --  formatting.  Here, the message is formatted and passed in Message.
-   --
-   --  @param Message the message to report
-
    --  Return the current error code.
    function Get_Error return Error;
 
@@ -117,10 +108,6 @@ package Bfd is
 
    --  Set the program name in the BFD library.
    procedure Set_Error_Program_Name (To : in String);
-
-   --  Set a new error handler in BFD library.
-   procedure Set_Error_Handler (To  : in Error_Handler;
-                                Old : out Error_Handler);
 
    subtype Ptr is System.Address;
 private
