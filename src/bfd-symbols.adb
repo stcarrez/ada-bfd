@@ -65,10 +65,8 @@ package body Bfd.Symbols is
    end Is_Local_Label;
 
    function Is_Undefined_Class (C : in Character) return Boolean is
-      function Bfd_Is_Undefined_Class (C : in Character) return Interfaces.C.int;
-      pragma Import (C, Bfd_Is_Undefined_Class, "bfd_is_undefined_symclass");
    begin
-      return Bfd_Is_Undefined_Class (C) /= 0;
+      return Bfd.Thin.Is_Undefined_Class (C) /= 0;
    end Is_Undefined_Class;
 
    ----------------------
