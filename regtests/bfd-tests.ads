@@ -77,6 +77,9 @@ package Bfd.Tests is
    --  Test trying to make some operation while the file is not opened.
    procedure Test_Use_Error (T : in out Test_Case);
 
+   --  Test disassembler API.
+   procedure Test_Disassembler (T : in out Test_Case);
+
    procedure Test_Get_Flags (T    : in out Test_Case;
                              Name : in String;
                              Flag : in Bfd.File_Flags);
