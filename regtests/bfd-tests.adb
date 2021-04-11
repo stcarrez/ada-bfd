@@ -110,6 +110,12 @@ package body Bfd.Tests is
 
       T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");
+      T.Assert (not Bfd.Files.Check_Format (T.File.all, Bfd.Files.ARCHIVE),
+                "Bfd.Check_Format returned true for ARCHIVE");
+      T.Assert (not Bfd.Files.Check_Format (T.File.all, Bfd.Files.CORE),
+                "Bfd.Check_Format returned true for CORE");
+      T.Assert (not Bfd.Files.Check_Format (T.File.all, Bfd.Files.UNKNOWN),
+                "Bfd.Check_Format returned true for UNKNOWN");
 
       --  We must load the symbol table first.
       Bfd.Symbols.Read_Symbols (T.File.all, Symbols);
