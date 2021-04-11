@@ -64,16 +64,6 @@ package body Bfd.Symbols is
       return Bfd.Thin.Symbols.Is_Local (Bfd.Files.Get_Bfd_Pointer (File), Sym) /= 0;
    end Is_Local_Label;
 
-   ----------------------
-   --  Returns true if the label is local.
-   ----------------------
-   function Is_Local_Label_Name (File : in Bfd.Files.File_Type;
-                                 Name : in String) return Boolean is
-   begin
-      --  return Is_Local (File.Abfd, Name & ASCII.NUL);
-      return False;
-   end Is_Local_Label_Name;
-
    function Is_Undefined_Class (C : in Character) return Boolean is
       function Bfd_Is_Undefined_Class (C : in Character) return Interfaces.C.int;
       pragma Import (C, Bfd_Is_Undefined_Class, "bfd_is_undefined_symclass");
