@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2015 Free Software Foundation, Inc.
+--  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2015, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -65,6 +65,7 @@ package Bfd is
    OPEN_ERROR : exception;
    USE_ERROR  : exception;
    NOT_FOUND  : exception;
+   BFD_ERROR  : exception;
 
    ----------------------
    -- General          --
@@ -73,6 +74,7 @@ package Bfd is
                   SYSTEM_CALL,
                   INVALID_TARGET,
                   WRONG_FORMAT,
+                  WRONG_OBJECT_FORMAT,
                   INVALID_OPERATION,
                   NO_MEMORY,
                   NO_SYMBOLS,
@@ -87,6 +89,8 @@ package Bfd is
                   BAD_VALUE,
                   FILE_TRUNCATED,
                   FILE_TOO_BIG,
+                  ERROR_SORRY,
+                  ON_INPUT,
                   INVALID_ERROR_CODE);
 
    type Error_Handler is access procedure (Message : in String);
