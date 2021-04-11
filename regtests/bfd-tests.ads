@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Tests -- Tests for Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2002, 2003, 2012, 2015 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2015, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -60,8 +60,6 @@ package Bfd.Tests is
    --  Test the Open, Close and Is_Open operations.
    procedure Test_Open (T : in out Test_Case);
 
-   --  Test the Get_Flags operations.
---     procedure Test_Get_Flags (T : in out Test_Case);
    --  Test the Get_File_Flags operation on a binary executable.
    procedure Test_Get_Binary_Flags (T    : in out Test_Case);
 
@@ -75,6 +73,9 @@ package Bfd.Tests is
 
    --  Test re-opening without closing.
    procedure Test_Reopen (T : in out Test_Case);
+
+   --  Test trying to make some operation while the file is not opened.
+   procedure Test_Use_Error (T : in out Test_Case);
 
    procedure Test_Get_Flags (T    : in out Test_Case;
                              Name : in String;
