@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2014 Free Software Foundation, Inc.
+--  Copyright (C) 2001, 2002, 2003, 2004, 2012, 2014, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -95,10 +95,6 @@ package Bfd.Files is
    --  struct.
    BFD_IN_MEMORY : constant File_Flags := Constants.BFD_IN_MEMORY;
 
-   --  The sections in this BFD specify a memory page.
-   HAS_LOAD_PAGE : constant File_Flags := Constants.HAS_LOAD_PAGE;
-   pragma Obsolescent (HAS_LOAD_PAGE, "HAS_LOAD_PAGE has been removed from bfd C library");
-
    --  This BFD has been created by the linker and doesn't correspond
    --  to any input file.
    BFD_LINKER_CREATED : constant File_Flags := Constants.BFD_LINKER_CREATED;
@@ -156,7 +152,7 @@ package Bfd.Files is
    function Get_Symbol_Count (File : in File_Type) return Natural;
 
    --  Get the pointer to the BFD structure allocated for the file.
-   function Get_Bfd_Pointer (File : in File_Type) return Ptr;
+   function Get_Bfd_Pointer (File : in File_Type) return Ptr with Inline;
 
 private
    subtype Pointer is System.Address;
@@ -170,7 +166,5 @@ private
 
    overriding
    procedure Finalize (File : in out File_Type);
-
-   pragma Inline (Get_Bfd_Pointer);
 
 end Bfd.Files;
