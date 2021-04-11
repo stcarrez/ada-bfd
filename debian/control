@@ -1,18 +1,32 @@
-Source: libada-bfd
-Priority: extra
-Maintainer: Stephane Carrez <Stephane.Carrez@gmail.com>
-Build-Depends: debhelper (>= 8.0.0), autotools-dev, gnat, gnat-4.6, binutils-dev (>= 2.22), libiberty-dev
-Standards-Version: 3.9.2
+Source: libbfdada
+Priority: optional
 Section: libdevel
-Homepage: http://code.google.com/p/ada-bfd/
+Maintainer: Stephane Carrez <Stephane.Carrez@gmail.com>
+Build-Depends: debhelper (>= 10), autotools-dev,
+ dh-ada-library,
+ gnat, gnat-7,
+ binutils-dev,
+# This line is parsed by debian/rules.
+ gprbuild (>= 2015-2)
+Standards-Version: 4.1.4
+Homepage: https://github.com/stcarrez/ada-bfd/
+Vcs-Git: https://github.com/stcarrez/ada-bfd.git -b debian-gnat-7
+Vcs-Browser: https://github.com/stcarrez/ada-bfd/tree/debian-gnat-7
 
-Package: libada-bfd1.0-dev
+Package: libbfdada1.2.0
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Ada BFD Library
+ The Ada-BFD is a library which provides Ada API for GNU Binutils BFD library.
+ This package contains the libraries.
+
+Package: libbfdada1-dev
 Section: libdevel
 Architecture: any
-Depends: ${misc:Depends}, gnat, gnat-4.6, binutils-dev (>= 2.22)
+Depends: ${misc:Depends}, ${ada:Depends}
 Description: Ada BFD Library
  The Ada-BFD is a library which provides Ada API for GNU Binutils BFD
  library.  This package contains the Ada development files and it allows
  to build Ada applications that use the Ada BFD Library.
- The recommended version for GNU Binutils is at least the 2.22.
-
+ The recommended version for GNU Binutils is at least the 2.30.

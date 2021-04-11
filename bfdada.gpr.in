@@ -3,7 +3,7 @@ with "config";
 library project Bfdada is
    Version := "@BFDADA_VERSION@";
    Library_Dir := "lib";
-   Library_Type : Config.Library_Type_Type := external ("LIBRARY_TYPE", "static");
+   Library_Type : Config.Library_Type_Type := external ("BFDADA_LIBRARY_TYPE", "@DEFAULT_LIBRARY_TYPE@");
 
    for Languages use ("Ada", "C");
 
@@ -15,6 +15,14 @@ library project Bfdada is
 
    for Library_Dir use "lib/bfdada" & Project'Library_Kind;
    for Object_Dir use "obj/bfdada/" & Project'Library_Kind;
+
+   case Library_Type is
+      when "relocatable" =>
+        for Library_Options use ("-lbfd", "-lopcodes");
+
+      when others =>
+        null;
+   end case;
 
    package Builder  renames Config.Builder;
    package Compiler renames Config.Compiler;

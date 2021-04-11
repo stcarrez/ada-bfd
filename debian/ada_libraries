@@ -1,0 +1,1 @@
+MODE=distrib BFDADA_LIBRARY_TYPE=relocatable bfdada.gpr
