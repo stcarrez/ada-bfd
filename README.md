@@ -4,9 +4,9 @@
 [![Build Status](https://img.shields.io/jenkins/s/http/jenkins.vacs.fr/Ada-BFD.svg)](https://jenkins.vacs.fr/job/Ada-BFD/)
 [![Test Status](https://img.shields.io/jenkins/t/http/jenkins.vacs.fr/Ada-BFD.svg)](https://jenkins.vacs.fr/job/Ada-BFD/)
 [![codecov](https://codecov.io/gh/stcarrez/ada-bfd/branch/master/graph/badge.svg)](https://codecov.io/gh/stcarrez/ada-bfd)
-[![Download](https://img.shields.io/badge/download-1.1.1-brightgreen.svg)](http://download.vacs.fr/ada-bfd/ada-bfd-1.1.1.tar.gz)
+[![Download](https://img.shields.io/badge/download-1.2.0-brightgreen.svg)](http://download.vacs.fr/ada-bfd/ada-bfd-1.2.0.tar.gz)
 [![License](https://img.shields.io/badge/license-GPL-blue.svg)](GPL)
-![Commits](https://img.shields.io/github/commits-since/stcarrez/ada-bfd/1.1.0.svg)
+![Commits](https://img.shields.io/github/commits-since/stcarrez/ada-bfd/1.2.0.svg)
 
 The Ada-BFD is a library which provides Ada API for GNU Binutils BFD
 library.  It works on any version of GNU Binutils (starting at 2.15).
@@ -47,30 +47,30 @@ To compile Ada BFD you'll need:
   by using:
 
 ```
-     sudo apt-get install binutils-dev
+sudo apt-get install binutils-dev
 ```
 
 On NetBSD 6.1, you need to install by using:
 
 ```
-     sudo pkgin install binutils-2.26.1nb1
-     sudo pkgin install gettext-lib-0.19.8.1
+sudo pkgin install binutils-2.26.1nb1
+sudo pkgin install gettext-lib-0.19.8.1
 ```
 
 
 Run the GNU configure command and build the library:
 
 ```
-  ./configure
-  make
-  make check
+./configure
+make
+make check
 ```
 
 
 You can install the library by using:
 
 ```
-  make install
+make install
 ```
 
 
@@ -80,7 +80,7 @@ Several samples are provided to show how to use the Ada BFD library.
 To build them, use:
 
 ```
-  make samples
+make samples
 ```
 
 |Example    | Usage example                 | Description                                         |
