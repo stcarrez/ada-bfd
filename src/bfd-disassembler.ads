@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  Disassembler -- Disassembler
---  <!-- Copyright (C) 2003, 2004, 2006, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2003, 2004, 2006, 2012, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -18,7 +18,7 @@
 --  You should have received a copy of the GNU General Public License
 --  along with this program; see the file COPYING.  If not, write to
 --  the Free Software Foundation, 51 Franklin Street - Fifth Floor,
---  Boston, MA 02110-1301, USA.  -->
+--  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 --  The <tt>Bfd.Disassembler</tt> package exports the dissassembler API
 --  of the GNU opcodes library found in Binutils.
@@ -120,6 +120,7 @@ package Bfd.Disassembler is
 
    --  Report an error while reading memory.
    --  This is called when the Read procedure returns an error.
+   overriding
    procedure Memory_Error (Info : in out Memory_Disassembler_Info_Type;
                            Addr : in Vma_Type);
 
@@ -132,6 +133,7 @@ package Bfd.Disassembler is
    --  Reads Item'Size bytes starting at the given address.
    --  This procedure uses the buffer passed to Disassembler to obtain
    --  the memory.
+   overriding
    procedure Read (Info : in out Memory_Disassembler_Info_Type;
                    Addr : in Vma_Type;
                    Item : out Ada.Streams.Stream_Element_Array;
