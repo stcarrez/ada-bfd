@@ -22,7 +22,6 @@
 -----------------------------------------------------------------------
 with Ada.Text_IO;
 with Ada.Command_Line;
-with GNAT.Command_Line;
 
 with Bfd;
 with Bfd.Files;
@@ -34,32 +33,10 @@ procedure BfdInfo is
 
    use Ada.Text_IO;
 
-   Release   : constant String := "bfdinfo v1.0";
-   Copyright : constant String := "Copyright 2002, 2003, 2005, 2012 Stephane Carrez";
-
-   Opt_V : Boolean := False;
-
    RC : Ada.Command_Line.Exit_Status := 0;
 
-   procedure Usage;
    procedure List_Section (File : Bfd.Files.File_Type);
    procedure List_Symbols (File : Bfd.Files.File_Type);
-   procedure Parse_Arguments;
-
-   --------------------------------------------------
-   --  Usage
-   --------------------------------------------------
-   procedure Usage is
-      use Ada.Command_Line;
-   begin
-      Put_Line (Release);
-      New_Line;
-      Put ("Usage: ");
-      Put (Command_Name);
-      Put_Line (" [-v] file ...");
-      New_Line;
-      RC := 2;
-   end Usage;
 
    --------------------------------------------------
    --  List the sections of the BFD file
@@ -156,80 +133,41 @@ procedure BfdInfo is
       end loop;
    end List_Symbols;
 
-   --------------------------------------------------
-   --  Parse_Arguments
-   --------------------------------------------------
-   procedure Parse_Arguments is
-      use GNAT.Command_Line;
-
-      Optch :  Character;
-   begin
-      ------------------------------
-      --  Process command line options.
-      ------------------------------
-      Initialize_Option_Scan (Stop_At_First_Non_Switch => True);
-
-      begin
-         loop
-            Optch := Getopt ("v ");
-
-            case Optch is
-               when Standard.Ascii.NUL =>
-                  exit;
-               when 'v' =>
-                  Opt_V := True;
-               when others =>
-                  raise Program_Error;
-            end case;
-         end loop;
-      exception
-         when Invalid_Switch =>
-            RC := 1;
-            Put_Line (Standard_Error, "Invalid option: -" & Full_Switch);
-            Usage;
-         when Invalid_Parameter =>
-            RC := 1;
-            Put_Line (Standard_Error, "Missing argument: -" & Full_Switch);
-            Usage;
-      end;
-
-      ------------------------------
-      --  If -v, then show program release
-      ------------------------------
-      if Opt_V then
-         Put_Line (Release);
-         Put_Line (Copyright);
-      end if;
-
-      --  Open each file passed as argument and try dumping its
-      --  sections and symbol table.
-      loop
-         declare
-            Arg  : constant String := Get_Argument;
-            File : Bfd.Files.File_Type;
-         begin
-            exit when Arg = "";
-
-            Bfd.Files.Open (File, Arg, "");
-            if Bfd.Files.Check_Format (File, Bfd.Files.OBJECT) then
-               List_Section (File);
-               List_Symbols (File);
-            end if;
-            Bfd.Files.Close (File);
-
-         exception
-            when Bfd.OPEN_ERROR =>
-               Put_Line (Standard_Error, "Cannot open file " & Arg);
-               Put_Line (Standard_Error, Bfd.Get_Error_Message (Bfd.Get_Error));
-         end;
-      end loop;
-   end Parse_Arguments;
-
    use type Ada.Command_Line.Exit_Status;
+
+   Count  : constant Natural := Ada.Command_Line.Argument_Count;
 begin
+   if Count < 2 then
+      Ada.Text_IO.Put_Line ("Usage: bfdinfo obj-file ...");
+      RC := 2;
+   end if;
+
    Bfd.Set_Error_Program_Name (To => "bfdinfo");
 
-   Parse_Arguments;
+   --  Open each file passed as argument and try dumping its
+   --  sections and symbol table.
+   for I in 1 .. Count loop
+      declare
+         Arg  : constant String := Ada.Command_Line.Argument (I);
+         File : Bfd.Files.File_Type;
+      begin
+         exit when Arg = "";
+
+         Bfd.Files.Open (File, Arg, "");
+         if Bfd.Files.Check_Format (File, Bfd.Files.OBJECT) then
+            List_Section (File);
+            List_Symbols (File);
+         end if;
+         Bfd.Files.Close (File);
+
+      exception
+         when Bfd.OPEN_ERROR =>
+            Put_Line (Standard_Error, "Cannot open file " & Arg);
+            Put_Line (Standard_Error, Bfd.Get_Error_Message (Bfd.Get_Error));
+            RC := 1;
+      end;
+   end loop;
+
    if RC /= 0 then
       Ada.Command_Line.Set_Exit_Status (RC);
       return;
