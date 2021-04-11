@@ -30,6 +30,7 @@ abstract project Config is
          when "debug" =>
             for Default_Switches ("Ada") use defaults & warnings
                & ("-g", "-O0", "-gnata", "-gnatVaMI", "-gnaty3abcefhiklmnprstxM99");
+            for Default_Switches ("C") use ("-g", "-O0");
 
          when "coverage" =>
             for Default_Switches ("Ada") use defaults & warnings
