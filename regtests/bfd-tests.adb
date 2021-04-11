@@ -23,11 +23,17 @@
 
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
+with Ada.Streams;
 
+with Bfd.Sections;
 with Bfd.Symbols;
+with Bfd.Disassembler;
 package body Bfd.Tests is
 
    use Ada.Strings.Unbounded;
+
+   procedure Disassemble_Section (File : in Bfd.Files.File_Type;
+                                  Check_Size : Ada.Streams.Stream_Element_Offset);
 
    function Get_Test_File (T : in Test_Case) return String is
    begin
@@ -213,6 +219,76 @@ package body Bfd.Tests is
       end;
    end Test_Use_Error;
 
+   --------------------------------------------------
+   --  List the sections of the BFD file
+   --------------------------------------------------
+   procedure Disassemble_Section (File : in Bfd.Files.File_Type;
+                                  Check_Size : Ada.Streams.Stream_Element_Offset) is
+      use Ada.Streams;
+
+      type Small_Disassembler is new Bfd.Disassembler.Memory_Disassembler_Info_Type
+         with record
+            Result : Unbounded_String;
+         end record;
+
+      overriding
+      procedure Output (Info : in out Small_Disassembler;
+                        Item : in String);
+
+      overriding
+      procedure Output (Info : in out Small_Disassembler;
+                        Item : in String) is
+      begin
+         Append (Info.Result, Item);
+      end Output;
+
+      Text_Section : constant Bfd.Sections.Section := Bfd.Sections.Find_Section (File, ".text");
+      Size         : constant Ada.Streams.Stream_Element_Offset
+        := Ada.Streams.Stream_Element_Offset (Text_Section.Size);
+      Addr         : Bfd.Vma_Type := Text_Section.Vma;
+      Section      : Ada.Streams.Stream_Element_Array (1 .. Size);
+      Last         : Ada.Streams.Stream_Element_Offset;
+      Info         : Small_Disassembler;
+      Symbols      : Bfd.Symbols.Symbol_Table;
+      Path         : Ada.Strings.Unbounded.Unbounded_String;
+      Func         : Ada.Strings.Unbounded.Unbounded_String;
+      Line         : Natural;
+   begin
+      Bfd.Symbols.Read_Symbols (File, Symbols);
+      Bfd.Sections.Get_Section_Contents (File, Text_Section, 0, Section, Last);
+      if Check_Size < Size then
+         Bfd.Disassembler.Initialize (Info, File, "", Text_Section.Vma,
+                                      Section (1 .. Check_Size));
+      else
+         Bfd.Disassembler.Initialize (Info, File, "", Text_Section.Vma,
+                                      Section (1 .. Size));
+      end if;
+      Info.Set_Symbol_Table (Symbols);
+      loop
+         Bfd.Symbols.Find_Nearest_Line (File, Text_Section, Symbols, Addr, Path, Func, Line);
+
+         Info.Disassemble (Addr, Addr);
+         exit when Addr >= Text_Section.Vma + Bfd.Vma_Type (Size);
+      end loop;
+   end Disassemble_Section;
+
+   --  --------------------
+   --  Test disassembler API.
+   --  --------------------
+   procedure Test_Disassembler (T : in out Test_Case) is
+   begin
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT), "Invalid format");
+      begin
+         Disassemble_Section (T.File.all, 10);
+
+      exception
+         when Bfd.BFD_ERROR =>
+            null;
+      end;
+
+      Disassemble_Section (T.File.all, 100000);
+   end Test_Disassembler;
+
    --  --------------------
    --  Identifier of test case:
    --  --------------------
@@ -260,6 +336,8 @@ package body Bfd.Tests is
                 "bin/bfdgen", Test_Reopen'Access);
       Add_Test ("Test Bfd.Files.USE_ERROR",
                 "bin/bfdgen", Test_Use_Error'Access);
+      Add_Test ("Test Bfd.Disassembler.Disassemble",
+                "bin/bfdgen", Test_Disassembler'Access);
 
       --  Running the symbol count on the binary will fail if it is stripped.
       Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
