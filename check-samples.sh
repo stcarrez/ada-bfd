@@ -25,7 +25,7 @@ if test $T -lt 1; then
 fi
 
 T=`bin/disassemble bin/bfdgen | grep bfdgen.c | wc -l`
-if test $T -lt 10; then
+if test $T -lt 1; then
     echo "Test samples/disassemble failed"
     exit 1
 fi
