@@ -183,9 +183,29 @@ package body Bfd.Tests is
    begin
       for I in 1 .. 5 loop
          Bfd.Files.Open (T.File.all, Get_Test_File (T));
-         T.Assert (Bfd.Files.Is_Open (T.File.all), "Bfd.Is_Open returns false for opened file");         
+         T.Assert (Bfd.Files.Is_Open (T.File.all), "Bfd.Is_Open returns false for opened file");
       end loop;
    end Test_Reopen;
+
+   --  --------------------
+   --  Test trying to make some operation while the file is not opened.
+   --  --------------------
+   procedure Test_Use_Error (T : in out Test_Case) is
+      File  : Bfd.Files.File_Type;
+   begin
+      --  Check USE_ERROR exception
+      begin
+         T.Assert (not Bfd.Files.Is_Open (File), "Is_Open failed");
+         T.Assert (not Bfd.Files.Check_Format (File, Bfd.Files.OBJECT),
+                   "Check_Format must return false");
+         T.Assert ("" /= Bfd.Files.Get_Filename (File),
+                   "No exception raised");
+
+      exception
+         when USE_ERROR =>
+            null;
+      end;
+   end Test_Use_Error;
 
    --  --------------------
    --  Identifier of test case:
@@ -232,6 +252,8 @@ package body Bfd.Tests is
 
       Add_Test ("Test Bfd.Files.Open multiple times",
                 "bin/bfdgen", Test_Reopen'Access);
+      Add_Test ("Test Bfd.Files.USE_ERROR",
+                "bin/bfdgen", Test_Use_Error'Access);
 
       --  Running the symbol count on the binary will fail if it is stripped.
       Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
