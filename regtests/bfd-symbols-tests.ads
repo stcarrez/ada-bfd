@@ -48,6 +48,9 @@ package Bfd.Symbols.Tests is
    --  Test an unknown symbol
    procedure Test_Unknown_Symbol (T : in out Test_Case);
 
+   --  Test a common symbol
+   procedure Test_Common_Symbol (T : in out Test_Case);
+
    --  Test an external/undefined symbol
    procedure Test_Section_Symbol (T : in out Test_Case);
 
