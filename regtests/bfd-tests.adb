@@ -177,6 +177,17 @@ package body Bfd.Tests is
    end Test_Get_Debug_Flags;
 
    --  --------------------
+   --  Test re-opening without closing.
+   --  --------------------
+   procedure Test_Reopen (T : in out Test_Case) is
+   begin
+      for I in 1 .. 5 loop
+         Bfd.Files.Open (T.File.all, Get_Test_File (T));
+         T.Assert (Bfd.Files.Is_Open (T.File.all), "Bfd.Is_Open returns false for opened file");         
+      end loop;
+   end Test_Reopen;
+
+   --  --------------------
    --  Identifier of test case:
    --  --------------------
    function Name (T : in Test_Case) return Util.Tests.Message_String is
@@ -218,6 +229,9 @@ package body Bfd.Tests is
 
       Add_Test ("Test Bfd.Files.Get_File_Flags on exec with debug",
                 "bin/bfdgen", Test_Get_Debug_Flags'Access);
+
+      Add_Test ("Test Bfd.Files.Open multiple times",
+                "bin/bfdgen", Test_Reopen'Access);
 
       --  Running the symbol count on the binary will fail if it is stripped.
       Add_Test ("Test Bfd.Get_Filename/Bfd.Get_Symbol_Count on exec",
