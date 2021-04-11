@@ -39,8 +39,7 @@ static void
 bfd_ada_dis_memory_handler (int status, bfd_vma memaddr,
                             struct disassemble_info* info)
 {
-  ada_dis_memory_handler (status, (unsigned long long) memaddr,
-                          info->application_data);
+  ada_dis_memory_handler (status, (unsigned long long) memaddr, info);
 }
 
 extern int ada_dis_symbol_at_address (unsigned long long addr,
