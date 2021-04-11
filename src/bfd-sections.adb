@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -86,8 +86,8 @@ package body Bfd.Sections is
    --  -----------------------
    function Is_Undefined_Section (S : in Section) return Boolean is
 
-      function Is_Undefined (S : Section_Iterator) return Interfaces.C.int;
-      pragma Import (C, Is_Undefined, "ada_bfd_is_und_section");
+      function Is_Undefined (S : Section_Iterator) return Interfaces.C.int
+        with Import => True, Convention => C, Link_Name => "ada_bfd_is_und_section";
 
    begin
       return Is_Undefined (S.Opaque) /= 0;
@@ -98,8 +98,8 @@ package body Bfd.Sections is
    --  -----------------------
    function Is_Common_Section (S : in Section) return Boolean is
 
-      function Is_Common (S : Section_Iterator) return Interfaces.C.int;
-      pragma Import (C, Is_Common, "ada_bfd_is_com_section");
+      function Is_Common (S : Section_Iterator) return Interfaces.C.int
+        with Import => True, Convention => C, Link_Name => "ada_bfd_is_com_section";
 
    begin
       return Is_Common (S.Opaque) /= 0;
@@ -110,8 +110,8 @@ package body Bfd.Sections is
    --  -----------------------
    function Is_Absolute_Section (S : in Section) return Boolean is
 
-      function Is_Absolute (S : Section_Iterator) return Interfaces.C.int;
-      pragma Import (C, Is_Absolute, "ada_bfd_is_abs_section");
+      function Is_Absolute (S : Section_Iterator) return Interfaces.C.int
+        with Import => True, Convention => C, Link_Name => "ada_bfd_is_abs_section";
 
    begin
       return Is_Absolute (S.Opaque) /= 0;
@@ -133,8 +133,8 @@ package body Bfd.Sections is
                                      S    : in Section_Iterator;
                                      Buf  : in System.Address;
                                      Pos  : in Unsigned_64;
-                                     Size : in Unsigned_64) return Interfaces.C.int;
-      pragma Import (C, Get_Section_Contents, "ada_bfd_get_section_contents");
+                                     Size : in Unsigned_64) return Interfaces.C.int
+        with Import => True, Convention => C, Link_Name => "ada_bfd_get_section_contents";
 
       Result : constant Boolean := Get_Section_Contents (Bfd.Files.Get_Bfd_Pointer (File),
                                                          S.Opaque,
