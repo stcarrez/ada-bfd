@@ -233,6 +233,10 @@ package body Bfd.Disassembler is
 
       Size : constant Integer := Disassemble (Info.Abfd, Info.Dis_Info, Addr);
    begin
+      if Size <= 0 then
+         Bfd.Set_Error (Bfd.INVALID_OPERATION);
+         raise BFD_ERROR;
+      end if;
       Next_Addr := Addr + Vma_Type (Size);
    end Disassemble;
 
