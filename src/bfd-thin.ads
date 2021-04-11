@@ -48,9 +48,6 @@ package Bfd.Thin is
    function Openr (Name : in Interfaces.C.Strings.chars_ptr; Target : in Ptr) return Ptr
      with Import => True, Convention => C, Link_Name => "bfd_openr";
 
-   function Set_Error_Handler (To : in Error_Handler) return Error_Handler
-     with Import => True, Convention => C, Link_Name => "bfd_set_error_handler";
-
    procedure Close (File : in Ptr)
      with Import => True, Convention => C, Link_Name => "bfd_close";
 
@@ -65,5 +62,8 @@ package Bfd.Thin is
 
    function Get_File_Flags (Bfd : Ptr) return File_Flags
      with Import => True, Convention => C, Link_Name => "ada_bfd_get_file_flags";
+
+   function Is_Undefined_Class (C : in Character) return Interfaces.C.int
+     with Import => True, Convention => C, Link_Name => "bfd_is_undefined_symclass";
 
 end Bfd.Thin;
