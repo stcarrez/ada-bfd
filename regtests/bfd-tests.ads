@@ -73,6 +73,9 @@ package Bfd.Tests is
 
    procedure Test_Basic (T : in out Test_Case);
 
+   --  Test re-opening without closing.
+   procedure Test_Reopen (T : in out Test_Case);
+
    procedure Test_Get_Flags (T    : in out Test_Case;
                              Name : in String;
                              Flag : in Bfd.File_Flags);
