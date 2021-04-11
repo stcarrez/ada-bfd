@@ -89,11 +89,15 @@ procedure Disassemble is
          end if;
 
          Utils.Print (Utils.HexImage (Addr) & ":", 17);
-         Bfd.Disassembler.Disassemble (Bfd.Disassembler.Memory_Disassembler_Info_Type'Class (Info),
-                                       Addr, Addr);
+         Info.Disassemble (Addr, Addr);
          Ada.Text_IO.New_Line;
          exit when Addr >= Text_Section.Vma + Bfd.Vma_Type (Size);
       end loop;
+
+   exception
+      when Bfd.BFD_ERROR =>
+         Ada.Text_IO.Put_Line (Bfd.Get_Error_Message (Bfd.Get_Error));
+
    end Disassemble_Section;
 
    Count  : constant Natural := Ada.Command_Line.Argument_Count;
