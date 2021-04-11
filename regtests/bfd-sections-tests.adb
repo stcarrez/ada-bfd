@@ -56,6 +56,9 @@ package body Bfd.Sections.Tests is
                T.Assert ((Sec.Flags and SEC_LOAD) /= 0,
                          "SEC_CODE is set but SEC_LOAD is not");
                Has_Code := True;
+
+               T.Assert (not Bfd.Sections.Is_Common_Section (Sec),
+                         "is_common_section failed");
             end if;
          end;
          Next (S);
