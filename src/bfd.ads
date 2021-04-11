@@ -93,14 +93,14 @@ package Bfd is
                   ON_INPUT,
                   INVALID_ERROR_CODE);
 
-   type Error_Handler is access procedure (Message : in String);
+   type Error_Handler is access procedure (Message : in String)
+     with Convention => C;
    --  The error handler is a procedure called when BFD functions
    --  want to report an error message.  In the C version, the handler
    --  has a printf-like signature, thus giving freedom for the
    --  formatting.  Here, the message is formatted and passed in Message.
    --
    --  @param Message the message to report
-   pragma Convention (C, Error_Handler);
 
    --  Return the current error code.
    function Get_Error return Error;
