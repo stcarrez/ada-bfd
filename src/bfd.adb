@@ -58,15 +58,6 @@ package body Bfd is
    end Set_Error_Program_Name;
 
    --  -----------------------
-   --  Set a new error handler in BFD library.
-   --  -----------------------
-   procedure Set_Error_Handler (To  : in Error_Handler;
-                                Old : out Error_Handler) is
-   begin
-      Old := Bfd.Thin.Set_Error_Handler (To);
-   end Set_Error_Handler;
-
-   --  -----------------------
    --  Return an error message corresponding to the last error
    --  This is equivalent to the C bfd_errmsg.
    --  -----------------------
