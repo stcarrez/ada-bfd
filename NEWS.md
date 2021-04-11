@@ -1,4 +1,10 @@
-Version 1.1.2 - Apr 2021
+Version 1.2.0 - Apr 2021
+  - Cleanup build process and use gprinstall for installation
+  - Fix build with binutils > 2.34
+  - Remove invalid API: `Bfd.Set_Error_Handler`
+  - Remove fake API: `Bfd.Symbols.Is_Local_Label_Name`
+
+Version 1.1.2 - Dec 2020
   - Fix build with binutils > 2.34
   - Cleanup build process and use gprinstall for installation
 

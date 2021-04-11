@@ -27,10 +27,12 @@ under the Apache License Version 2 (see testutil/LICENSE.txt).  They also use th
 Ahven Unit Test Library distributed under the ISC license (see testutil/LICENSE.Ahven).
 These unit test libraries are not installed.
 
-## Version 1.1.2 - Apr 2021
+## Version 1.2.0 - Apr 2021
 
 - Cleanup build process and use gprinstall for installation
 - Fix build with binutils > 2.34
+- Remove invalid API: `Bfd.Set_Error_Handler`
+- Remove fake API: `Bfd.Symbols.Is_Local_Label_Name`
 
 [List all versions](https://github.com/stcarrez/ada-bfd/blob/master/NEWS.md)
 
