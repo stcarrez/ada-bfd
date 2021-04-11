@@ -51,6 +51,9 @@ package Bfd.Symbols.Tests is
    --  Test a common symbol
    procedure Test_Common_Symbol (T : in out Test_Case);
 
+   --  Test an absolute symbol
+   procedure Test_Absolute_Symbol (T : in out Test_Case);
+
    --  Test an external/undefined symbol
    procedure Test_Section_Symbol (T : in out Test_Case);
 
