@@ -2,12 +2,16 @@ dnl Check if we are running under Windows with msys to use pwd -W which produces
 AC_DEFUN(AM_CHECK_HOST_PWD,
 [
   if test x${awa_host_pwd_check} != xyes; then
-    AC_CHECK_PROG(awa_has_msys, msysinfo, yes, no)
-    if test x${awa_has_msys} = xyes; then
-      awa_pwd_option="-W"
-    else
+    case "${target_os}" in
+       mingw32*|cygwin*|mingw64*|msys)
+       awa_pwd_option="-W"
+       ;;
+
+     *)
       awa_pwd_option=""
-    fi
+      ;;
+
+    esac
     awa_host_pwd_check=yes
   fi
 ])
@@ -21,6 +25,10 @@ AC_DEFUN(AM_GNAT_CHECK_GPRBUILD,
   else
     AC_CHECK_PROGS(GNATMAKE, gnatmake, "")
   fi
+
+  if test -z "$GNATMAKE"; then
+    AC_MSG_ERROR([gnatmake or gprbuild must be installed.])
+  fi;
 
   AC_CHECK_PROGS(GPRCLEAN, gprclean, "")
   if test -n "$GPRCLEAN"; then
@@ -38,7 +46,7 @@ AC_DEFUN(AM_GNAT_CHECK_PROJECT,
 [
   AC_CACHE_CHECK([whether $1 project exists],[ac_cv_gnat_project_$1],[
     echo "with \"$2\"; project conftest is for Source_Dirs use (); end conftest;" > conftest.gpr
-    if AC_TRY_COMMAND([gnat ls -Pconftest.gpr system.ads > /dev/null 2>conftest.out])
+    if AC_TRY_COMMAND([$GNATCHECK -Pconftest.gpr $GNATCHECK_ARG > /dev/null 2>conftest.out])
     then
       ac_cv_gnat_project_$1=yes
       ac_cv_gnat_project_with_$1="with \"$2\";";
@@ -55,10 +63,14 @@ AC_DEFUN(AM_GNAT_FIND_PROJECT,
   AC_ARG_WITH($1,
     AS_HELP_STRING([--with-$1=x], [Path for $2]),
     [
-      ac_cv_gnat_project_name_$3=${withval}/
-      if test -d "${withval}"; then
-	    ac_cv_gnat_project_name_$3=${withval}/$3
-	  fi
+      if test "${withval}/" = "yes/"; then
+        ac_cv_gnat_project_name_$3=${awa_build_root}$1
+      else
+        ac_cv_gnat_project_name_$3=${withval}/
+        if test -d "${withval}"; then
+	      ac_cv_gnat_project_name_$3=${withval}/$3
+	    fi
+      fi
     ],
     [
       ac_cv_gnat_project_name_$3=${awa_build_root}$3
@@ -68,7 +80,7 @@ AC_DEFUN(AM_GNAT_FIND_PROJECT,
     rm -f conftest.gpr
     # Search in the GNAT project path.
     echo "with \"${ac_cv_gnat_project_name_$3}\"; project conftest is for Source_Dirs use (); end conftest;" > conftest.gpr
-    if AC_TRY_COMMAND([gnat ls -Pconftest.gpr system.ads > /dev/null 2>conftest.out])
+    if AC_TRY_COMMAND([$GNATCHECK -Pconftest.gpr $GNATCHECK_ARG > /dev/null 2>conftest.out])
     then
       ac_cv_gnat_project_$3=yes
     else
@@ -81,7 +93,7 @@ AC_DEFUN(AM_GNAT_FIND_PROJECT,
         dir=`dirname $name`
         # AC_MSG_CHECKING([for $2 project in ${dir}])
         echo "with \"${name}\"; project conftest is for Source_Dirs use (); end conftest;" > conftest.gpr
-        if AC_TRY_COMMAND([gnat ls -Pconftest.gpr system.ads > /dev/null 2>conftest.out])
+        if AC_TRY_COMMAND([$GNATCHECK -Pconftest.gpr $GNATCHECK_ARG > /dev/null 2>conftest.out])
         then
            ac_cv_gnat_project_$3=yes
 		   ac_cv_gnat_project_name_$3=${name}
@@ -92,6 +104,16 @@ AC_DEFUN(AM_GNAT_FIND_PROJECT,
            # AC_MSG_RESULT(no)
         fi
       done
+      if test x${ac_cv_gnat_project_$3} != xyes; then
+        echo "with \"$3\"; project conftest is for Source_Dirs use (); end conftest;" > conftest.gpr
+        if AC_TRY_COMMAND([$GNATCHECK -Pconftest.gpr $GNATCHECK_ARG > /dev/null 2>conftest.out])
+        then
+           ac_cv_gnat_project_$3=yes
+           ac_cv_gnat_project_name_$3=$3
+        else
+           ac_cv_gnat_project_$3=no
+        fi
+      fi
     fi
     rm -f conftest.gpr
 
@@ -214,15 +236,27 @@ AC_DEFUN(AM_GNAT_FIND_ADA_WIKI,
 ])
 
 dnl Check for swaggerada GNAT project
-AC_DEFUN(AM_GNAT_FIND_ADA_SWAGGER,
+AC_DEFUN(AM_GNAT_FIND_ADA_OPENAPI,
 [
-  AM_GNAT_FIND_PROJECT([swagger-ada],[Swagger Ada Library],[swagger],
+  AM_GNAT_FIND_PROJECT([openapi-ada],[OpenAPI Ada Library],[swagger],
     [git@github.com:stcarrez/swagger-ada.git],
-    [Building $1 requires the Ada Swagger Library.],
+    [Building $1 requires the Ada OpenAPI Library.],
     [
       SWAGGER_DIR=${ac_cv_gnat_project_dir_swagger}
     ])
   AC_SUBST(SWAGGER_DIR)
+])
+
+dnl Check for swaggerada GNAT project
+AC_DEFUN(AM_GNAT_FIND_ADA_KEYSTORE,
+[
+  AM_GNAT_FIND_PROJECT([ada-keystore],[Ada Keystore Library],[keystoreada],
+    [git@github.com:stcarrez/ada-keystore.git],
+    [Building $1 requires the Ada Keystore Library.],
+    [
+      KEYSTOREADA_DIR=${ac_cv_gnat_project_dir_keystoreada}
+    ])
+  AC_SUBST(KEYSTOREADA_DIR)
 ])
 
 dnl Check for AWA GNAT project
@@ -270,6 +304,7 @@ AC_DEFUN(AM_GNAT_FIND_XML_ADA,
         gnat_xmlada_version=`$gnat_xml_ada --version 2>/dev/null | sed -e 's, ,-,g'`
       else
         gnat_xmlada_version=none
+        HAVE_XML_ADA='no'
       fi
 
       case $gnat_xmlada_version in
@@ -283,6 +318,7 @@ AC_DEFUN(AM_GNAT_FIND_XML_ADA,
 
       *)
         ac_cv_gnat_xmlada_version='none'
+        HAVE_XML_ADA='no'
         ;;
 
       esac
@@ -290,9 +326,11 @@ AC_DEFUN(AM_GNAT_FIND_XML_ADA,
       if test T$ac_cv_gnat_project_xmlada_sax = Tno; then
         if test T$ac_cv_gnat_project_xmlada != Tyes; then
           ac_cv_gnat_xmlada_version='none'
+          HAVE_XML_ADA='no'
         fi
       else
         ac_cv_gnat_xmlada_version='4'
+        HAVE_XML_ADA='yes'
       fi
 
     ])
@@ -309,11 +347,19 @@ AC_DEFUN(AM_GNAT_FIND_XML_ADA,
 
   VERSION_XML_ADA=$ac_cv_gnat_xmlada_version
 
-  if test T$HAVE_XML_ADA = Tno; then
-    WITH_XML_ADA='';
-    VERSION_XML_ADA='none';
-    HAVE_XML_ADA='no';
-  fi
+  case T$HAVE_XML_ADA in
+    Tyes)
+      $1
+      ;;
+
+    Tno)
+      WITH_XML_ADA='';
+      VERSION_XML_ADA='none';
+      HAVE_XML_ADA='no'
+      $2
+      ;;
+
+  esac
 
   AC_SUBST(WITH_XML_ADA)
   AC_SUBST(VERSION_XML_ADA)
@@ -331,10 +377,26 @@ AC_DEFUN(AM_SHARED_LIBRARY_SUPPORT,
       no|none)  ac_enable_shared=no ;;
       *)        ac_enable_shared=yes ;;
     esac])dnl
+  ac_enable_default_shared=no
+  AC_ARG_ENABLE(default-shared,
+    [  --enable-default-shared Use shared libraries by default (disabled)],
+    [case "${enableval}" in
+      no|none)  ac_enable_default_shared=no ;;
+      *)        ac_enable_default_shared=yes ;;
+    esac])dnl
 
   AC_MSG_RESULT(${ac_enable_shared})
   BUILDS_SHARED=$ac_enable_shared
   AC_SUBST(BUILDS_SHARED)
+
+  AC_MSG_CHECKING([default library type])
+  if test ${ac_enable_shared} = yes && test ${ac_enable_default_shared} = yes; then
+    DEFAULT_LIBRARY_TYPE='relocatable'
+  else
+    DEFAULT_LIBRARY_TYPE='static'
+  fi
+  AC_MSG_RESULT(${DEFAULT_LIBRARY_TYPE})
+  AC_SUBST(DEFAULT_LIBRARY_TYPE)
 ])
 
 dnl Check whether the coverage support is enabled.
@@ -352,6 +414,9 @@ AC_DEFUN(AM_COVERAGE_SUPPORT,
   AC_MSG_RESULT(${ac_enable_coverage})
   BUILDS_COVERAGE=$ac_enable_coverage
   AC_SUBST(BUILDS_COVERAGE)
+  if test T$ac_enable_coverage = Tyes; then
+     ac_build_mode='coverage'
+  fi
 ])
 
 dnl Check whether the distrib/debug build is enabled.
@@ -378,9 +443,6 @@ AC_DEFUN(AM_DISTRIB_SUPPORT,
   BUILDS_DISTRIB=$ac_enable_distrib
   AC_SUBST(BUILDS_DISTRIB)
 
-  MODE=$ac_build_mode
-  AC_SUBST(MODE)
-  
   BUILDS_QUIET=$ac_quiet_mode
   AC_SUBST(BUILDS_QUIET)
 ])
@@ -743,7 +805,7 @@ AC_DEFUN(AM_GNAT_LIBRARY_PROJECT,
 
   if test x${awa_build_root} != x; then
     AM_CHECK_HOST_PWD
-    awa_build_pwd=`cd ${awa_build_root} && pwd $pwd_option`
+    awa_build_pwd=`cd ${awa_build_root} && pwd $awa_pwd_option`
     if test x${awa_build_pwd} != x${awa_build_root}; then
       awa_build_root=${awa_build_pwd}/
     fi
@@ -752,6 +814,14 @@ AC_DEFUN(AM_GNAT_LIBRARY_PROJECT,
   # checking for local tools
   AC_CANONICAL_SYSTEM
   AM_GNAT_CHECK_GPRBUILD
+  AC_CHECK_PROGS(GNAT, gnat, "")
+  if test -n "$GNAT"; then
+    GNATCHECK="$GNAT ls"
+    GNATCHECK_ARG=" system.ads"
+  else
+    GNATCHECK="$GNATMAKE"
+    GNATCHECK_ARG=""
+  fi
 
   AC_PROG_MAKE_SET
   AC_PROG_INSTALL
@@ -760,6 +830,9 @@ AC_DEFUN(AM_GNAT_LIBRARY_PROJECT,
   AM_DISTRIB_SUPPORT
   AM_COVERAGE_SUPPORT
 
+  BUILD=$ac_build_mode
+  AC_SUBST(BUILD)
+  
   AC_CACHE_CHECK([number of processors],[ac_cv_proc_count],[
     ac_cv_proc_count=`getconf _NPROCESSORS_CONF 2>/dev/null || getconf NPROCESSORS_CONF 2>/dev/null || echo 1`
   ])
