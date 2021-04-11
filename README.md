@@ -83,6 +83,13 @@ To build them, use:
   make samples
 ```
 
+|Example    | Usage example                 | Description                                         |
+|-----------|-------------------------------|-----------------------------------------------------|
+|bfdinfo    |./bin/bfdinfo ./bin/bfdgen     | Open BFD file, get flags, list sections and symbols |
+|sections   |./bin/sections ./bin/bfdgen    | Display the ELF sections with the `Bfd.Sections`    |
+|symbol     |./bin/symbol ./bin/bfdgen main | Read the symbol table with `Bfd.Symbols`            |
+|disassemble|./bin/disassemble ./bin/bfdgen | Disassemble the text section with `Bfd.Disassemble` |
+
 # Projects using Ada BFD
 
 * [Muen Separation Kernel](https://muen.codelabs.ch/), An x86/64 Separation Kernel for High Assurance
