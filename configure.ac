@@ -1,5 +1,5 @@
 dnl Autoconf configure script for BfdAda
-dnl Copyright 2001, 2002, 2003, 2005, 2015, 2019 Free Software Foundation, Inc.
+dnl Copyright 2001, 2002, 2003, 2005, 2015, 2019, 2021 Free Software Foundation, Inc.
 dnl
 dnl This file is part of BfdAda.
 dnl 
@@ -19,7 +19,7 @@ dnl Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([ada-bfd], [1.1])
+AC_INIT([ada-bfd], [1.2])
 AC_CONFIG_SRCDIR([src/bfd.ads])
 
 AC_CANONICAL_SYSTEM
@@ -27,8 +27,8 @@ AC_EXEEXT
 
 # Current release settings
 BFDADA_MAJOR_VERSION=1
-BFDADA_MINOR_VERSION=1
-BFDADA_MICRO_VERSION=2
+BFDADA_MINOR_VERSION=2
+BFDADA_MICRO_VERSION=0
 BFDADA_VERSION=$BFDADA_MAJOR_VERSION.$BFDADA_MINOR_VERSION.$BFDADA_MICRO_VERSION
 
 # checking for local tools
