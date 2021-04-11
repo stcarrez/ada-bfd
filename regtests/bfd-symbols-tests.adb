@@ -226,12 +226,38 @@ package body Bfd.Symbols.Tests is
    end Test_Unknown_Symbol;
 
    --  --------------------
-   --  Test an common symbol
+   --  Test a common symbol
    --  --------------------
    procedure Test_Common_Symbol (T : in out Test_Case) is
    begin
       Test_Symbol (T, "common_sect", Bfd.Symbols.BSF_OBJECT, False);
    end Test_Common_Symbol;
+
+   --  --------------------
+   --  Test an absolute symbol
+   --  --------------------
+   procedure Test_Absolute_Symbol (T : in out Test_Case) is
+      Symbols : Bfd.Symbols.Symbol_Table;
+      Sym     : Bfd.Symbols.Symbol;
+   begin
+      Test_Symbol (T, "test_absolute", Bfd.Symbols.BSF_GLOBAL, False);
+
+      T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
+                "Bfd.Check_Format returned false");
+
+      --  We must load the symbol table first.
+      Bfd.Symbols.Read_Symbols (T.File.all, Symbols);
+      Sym := Bfd.Symbols.Get_Symbol (Symbols, "test_absolute");
+      T.Assert (Sym /= Null_Symbol, "Get_Symbol return invalid value");
+      T.Assert (Bfd.Symbols.Get_Value (Sym) = 16#123456#,
+                "Get_Symbol.Get_Value return invalid value");
+      declare
+         Sec   : constant Bfd.Sections.Section := Bfd.Symbols.Get_Section (Sym);
+      begin
+         T.Assert (Bfd.Sections.Is_Absolute_Section (Sec),
+                   "Is_Absolute_Section return invalid value");
+      end;
+   end Test_Absolute_Symbol;
 
    --  --------------------
    --  Test an external/undefined symbol
@@ -299,6 +325,8 @@ package body Bfd.Symbols.Tests is
                 "regtests/files/test.o", Test_Local_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (common)",
                 "regtests/files/test_common.o", Test_Common_Symbol'Access);
+      Add_Test ("Test Bfd.Symbols.Get_Symbol (absolute)",
+                "regtests/files/test_absolute.o", Test_Absolute_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Get_Symbol (unkown)",
                 "obj/bfd-tests.o", Test_Unknown_Symbol'Access);
       Add_Test ("Test Bfd.Symbols.Demangle (symbol)",
