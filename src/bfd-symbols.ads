@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  bfd-symbols -- BFD Symbol Table types and operations
---  Copyright (C) 2002, 2003, 2004, 2006, 2015 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2006, 2015, 2021 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -155,7 +155,8 @@ package Bfd.Symbols is
 
    Null_Symbol : constant Symbol;
 
-   function Get_Flags (Sym : in Symbol) return Symbol_Flags;
+   function Get_Flags (Sym : in Symbol) return Symbol_Flags
+     with Import => True, Convention => C, Link_Name => "ada_bfd_asymbol_flags";
    --  Get the flags associated with the symbol.
 
    function Get_Name (Sym : in Symbol) return String;
@@ -164,22 +165,21 @@ package Bfd.Symbols is
    function Get_Section (Sym : in Symbol) return Bfd.Sections.Section;
    --  Return the section where the symbol is defined.
 
-   function Get_Value (Sym : in Symbol) return Symbol_Value;
+   function Get_Value (Sym : in Symbol) return Symbol_Value
+     with Import => True, Convention => C, Link_Name => "ada_bfd_asymbol_value";
    --  Return the value
 
-   function Get_Symbol_Size (Sym : in Symbol) return Symbol_Value;
+   function Get_Symbol_Size (Sym : in Symbol) return Symbol_Value
+     with Import => True, Convention => C, Link_Name => "ada_bfd_asymbol_size";
    --  Return the symbol size for ELF targets.
 
-   function Get_Symclass (Sym : in Symbol) return Character;
+   function Get_Symclass (Sym : in Symbol) return Character
+     with Import => True, Convention => C, Link_Name => "bfd_decode_symclass";
    --  Return a character corresponding to the symbol class of Sym.
 
    function Is_Local_Label (File : in Bfd.Files.File_Type;
                             Sym  : in Symbol) return Boolean;
    --  Returns true if the symbol is local.
-
-   function Is_Local_Label_Name (File : in Bfd.Files.File_Type;
-                                 Name : in String) return Boolean;
-   --  Returns true if the label is local.
 
    function Is_Undefined_Class (C : Character) return Boolean;
 
@@ -264,13 +264,5 @@ private
    end record;
    --  The symbol iterator keeps track of the symbol table
    --  and uses an index within it to mark the current symbol.
-
-   pragma Import (C, Get_Symclass, "bfd_decode_symclass");
-   --  C Functions provided by BFD library.
-
-   pragma Import (C, Get_Value, "ada_bfd_asymbol_value");
-   pragma Import (C, Get_Symbol_Size, "ada_bfd_asymbol_size");
-   pragma Import (C, Get_Flags, "ada_bfd_asymbol_flags");
-   --  C Functions provided by specific wrapper.
 
 end Bfd.Symbols;
