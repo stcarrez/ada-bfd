@@ -1,9 +1,9 @@
-with "config";
+with "bfdada_config";
 
 library project Bfdada is
    Version := "@BFDADA_VERSION@";
    Library_Dir := "lib";
-   Library_Type : Config.Library_Type_Type := external ("BFDADA_LIBRARY_TYPE", "@DEFAULT_LIBRARY_TYPE@");
+   Library_Type : Bfdada_Config.Library_Type_Type := external ("BFDADA_LIBRARY_TYPE", "@DEFAULT_LIBRARY_TYPE@");
 
    for Languages use ("Ada", "C");
 
@@ -24,11 +24,11 @@ library project Bfdada is
         null;
    end case;
 
-   package Builder  renames Config.Builder;
-   package Compiler renames Config.Compiler;
-   package Ide      renames Config.Ide;
+   package Builder  renames Bfdada_Config.Builder;
+   package Compiler renames Bfdada_Config.Compiler;
+   package Ide      renames Bfdada_Config.Ide;
    package Binder is
-       for Default_Switches ("Ada") use Config.Binder'Default_Switches ("Ada") & ("-a");
+       for Default_Switches ("Ada") use Bfdada_Config.Binder'Default_Switches ("Ada") & ("-a");
    end Binder;
 
 end Bfdada;

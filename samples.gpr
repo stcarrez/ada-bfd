@@ -1,4 +1,4 @@
-with "config";
+with "bfdada_config";
 with "bfdada";
 
 project Samples is
@@ -9,12 +9,12 @@ project Samples is
 
    for Source_Dirs use ("samples");
 
-   for Object_Dir use "./" & Config'Object_Dir & "/obj";
-   for Exec_Dir use "./" & Config'Exec_Dir & "/bin";
+   for Object_Dir use "./" & Bfdada_Config'Object_Dir & "/obj";
+   for Exec_Dir use "./" & Bfdada_Config'Exec_Dir & "/bin";
 
-   package Binder renames Config.Binder;
-   package Builder renames Config.Builder;
-   package Compiler renames Config.Compiler;
-   package Linker renames Config.Linker;
+   package Binder renames Bfdada_Config.Binder;
+   package Builder renames Bfdada_Config.Builder;
+   package Compiler renames Bfdada_Config.Compiler;
+   package Linker renames Bfdada_Config.Linker;
 
 end Samples;

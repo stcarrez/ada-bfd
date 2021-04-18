@@ -1,4 +1,4 @@
-with "config";
+with "bfdada_config";
 with "bfdada";
 with "testutil";
 project BfdAda_Tests is
@@ -8,12 +8,12 @@ project BfdAda_Tests is
    for Source_Dirs use ("regtests/");
 
    for Main use Mains;
-   for Object_Dir use "./" & Config'Object_Dir & "/obj";
-   for Exec_Dir use "./" & Config'Exec_Dir & "/bin";
+   for Object_Dir use "./" & Bfdada_Config'Object_Dir & "/obj";
+   for Exec_Dir use "./" & Bfdada_Config'Exec_Dir & "/bin";
 
-   package Binder renames Config.Binder;
-   package Builder renames Config.Builder;
-   package Compiler renames Config.Compiler;
-   package Linker renames Config.Linker;
+   package Binder renames Bfdada_Config.Binder;
+   package Builder renames Bfdada_Config.Builder;
+   package Compiler renames Bfdada_Config.Compiler;
+   package Linker renames Bfdada_Config.Linker;
 
 end BfdAda_Tests;
