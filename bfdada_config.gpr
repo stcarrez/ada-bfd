@@ -11,13 +11,7 @@ abstract project Bfdada_Config is
    Processors := External ("PROCESSORS", "1");
 
    package Builder is
-       case Mode is
-          when "debug" => 
-             for Default_Switches ("Ada") use ("-g", "-j" & Processors);
-
-          when others =>
-             for Default_Switches ("Ada") use ("-g", "-O2", "-j" & Processors);
-       end case;
+       for Default_Switches ("Ada") use ("-j" & Processors);
    end Builder;
 
    package compiler is
@@ -25,16 +19,15 @@ abstract project Bfdada_Config is
       defaults := ("-gnat2012");
       case Mode is
          when "distrib" =>
-            for Default_Switches ("Ada") use defaults & ("-gnatafno", "-gnatVa", "-gnatwa");
+            for Default_Switches ("Ada") use defaults & ("-O2", "-gnatafno", "-gnatVa", "-gnatwa");
 
          when "debug" =>
             for Default_Switches ("Ada") use defaults & warnings
-               & ("-g", "-O0", "-gnata", "-gnatVaMI", "-gnaty3abcefhiklmnprstxM99");
-            for Default_Switches ("C") use ("-g", "-O0");
+               & ("-g", "-gnata", "-gnatVaMI", "-gnaty3abcefhiklmnprstxM99");
 
          when "coverage" =>
             for Default_Switches ("Ada") use defaults & warnings
-               & ("-gnata", "-gnatVaMI", "-gnaty3abcefhiklmnprstxM99",
+               & ("-g", "-O2", "-gnata", "-gnatVaMI", "-gnaty3abcefhiklmnprstxM99",
                   "-fprofile-arcs", "-ftest-coverage");
 
          when "optimize" =>
