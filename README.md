@@ -50,11 +50,12 @@ To compile Ada BFD you'll need:
 sudo apt-get install binutils-dev
 ```
 
-On NetBSD 6.1, you need to install by using:
+On NetBSD 9.2, you need to install by using:
 
 ```
-sudo pkgin install binutils-2.26.1nb1
-sudo pkgin install gettext-lib-0.19.8.1
+sudo pkg_add binutils
+sudo pkg_add gettext-lib
+sudo pkg_add libiberty
 ```
 
 
