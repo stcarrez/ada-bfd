@@ -29,6 +29,7 @@ package body Util.Properties.Hash is
    --  -----------------------
    --  Returns TRUE if the property exists.
    --  -----------------------
+   overriding
    function Exists (Self : in Manager; Name : in Value) return Boolean is
       Pos : constant PropertyMap.Cursor
         := PropertyMap.Find (Self.Content, Name);
@@ -39,6 +40,7 @@ package body Util.Properties.Hash is
    --  -----------------------
    --  Returns the property value.  Raises an exception if not found.
    --  -----------------------
+   overriding
    function Get (Self : in Manager; Name : in Value) return Value is
       Pos : constant PropertyMap.Cursor := PropertyMap.Find (Self.Content, Name);
    begin
@@ -49,6 +51,7 @@ package body Util.Properties.Hash is
       end if;
    end Get;
 
+   overriding
    procedure Insert (Self : in out Manager; Name : in Value;
                                             Item : in Value) is
       Pos : PropertyMap.Cursor;
@@ -61,6 +64,7 @@ package body Util.Properties.Hash is
    --  Set the value of the property.  The property is created if it
    --  does not exists.
    --  -----------------------
+   overriding
    procedure Set (Self : in out Manager; Name : in Value;
                                          Item : in Value) is
       Pos : PropertyMap.Cursor;
@@ -75,6 +79,7 @@ package body Util.Properties.Hash is
    --  -----------------------
    --  Remove the property given its name.
    --  -----------------------
+   overriding
    procedure Remove (Self : in out Manager; Name : in Value) is
       Pos : PropertyMap.Cursor := PropertyMap.Find (Self.Content, Name);
    begin
@@ -89,6 +94,7 @@ package body Util.Properties.Hash is
    --  Iterate over the properties and execute the given procedure passing the
    --  property name and its value.
    --  -----------------------
+   overriding
    procedure Iterate (Self    : in Manager;
                       Process : access procedure (Name, Item : Value)) is
       procedure Do_Process (Name, Item : in Value);
@@ -109,6 +115,7 @@ package body Util.Properties.Hash is
    --  -----------------------
    --  Deep copy of properties stored in 'From' to 'To'.
    --  -----------------------
+   overriding
    function Create_Copy (Self : in Manager) return Interface_P.Manager_Access is
       Copy     : constant Manager_Access := new Manager;
       Iter     : PropertyMap.Cursor   := PropertyMap.First (Self.Content);
@@ -123,6 +130,7 @@ package body Util.Properties.Hash is
       return Copy.all'Access;
    end Create_Copy;
 
+   overriding
    procedure Delete (Self : in Manager;
                      Obj  : in out Interface_P.Manager_Access) is
       pragma Unreferenced (Self);
@@ -137,6 +145,7 @@ package body Util.Properties.Hash is
       return Left = Right;
    end Equivalent_Keys;
 
+   overriding
    function Get_Names (Self   : in Manager;
                        Prefix : in String) return Name_Array is
       It     : PropertyMap.Cursor := Self.Content.First;

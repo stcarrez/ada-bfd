@@ -69,7 +69,7 @@ package body Util.Log.Appenders is
                Self.Layout := MESSAGE;
             elsif Value = "level-message" then
                Self.Layout := LEVEL_MESSAGE;
-            elsif Value = "date-level-message" or Value = "level-date-message" then
+            elsif Value = "date-level-message" or else Value = "level-date-message" then
                Self.Layout := DATE_LEVEL_MESSAGE;
             else
                Self.Layout := FULL;
@@ -107,6 +107,7 @@ package body Util.Log.Appenders is
       end case;
    end Format;
 
+   overriding
    procedure Append (Self  : in out File_Appender;
                      Event : in Log_Event) is
    begin
@@ -165,6 +166,7 @@ package body Util.Log.Appenders is
                     Mode => Text_IO.Out_File);
    end Set_File;
 
+   overriding
    procedure Append (Self  : in out Console_Appender;
                      Event : in Log_Event) is
    begin

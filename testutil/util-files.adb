@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  util-files -- Various File Utility Packages
---  Copyright (C) 2001, 2002, 2003, 2009, 2010, 2011, 2012, 2015, 2017, 2018 Stephane Carrez
+--  Copyright (C) 2001 - 2022 Stephane Carrez
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  Licensed under the Apache License, Version 2.0 (the "License");
@@ -368,28 +368,29 @@ package body Util.Files is
             end if;
 
             for J in Last .. From'Last - 1 loop
-               if From (J) = '/' or From (J) = '\' then
+               if From (J) = '/' or else From (J) = '\' then
                   Append (Result, "../");
                end if;
             end loop;
-            if Last <= To'Last and From (I) /= '/' and From (I) /= '\' then
+            if Last <= To'Last and then From (I) /= '/' and then From (I) /= '\' then
                Append (Result, "../");
                Append (Result, To (Last .. To'Last));
             end if;
             return To_String (Result);
 
-         elsif I < From'Last and then (From (I) = '/' or From (I) = '\') then
+         elsif I < From'Last and then (From (I) = '/' or else From (I) = '\') then
             Last := I + 1;
 
          end if;
       end loop;
-      if To'Last = From'Last or (To'Last = From'Last + 1
-                                 and (To (To'Last) = '/' or To (To'Last) = '\'))
+      if To'Last = From'Last
+        or else (To'Last = From'Last + 1
+                   and then (To (To'Last) = '/' or else To (To'Last) = '\'))
       then
          return ".";
       elsif Last = 0 then
          return To;
-      elsif To (From'Last + 1) = '/' or To (From'Last + 1) = '\' then
+      elsif To (From'Last + 1) = '/' or else To (From'Last + 1) = '\' then
          return To (From'Last + 2 .. To'Last);
       else
          return To (Last .. To'Last);

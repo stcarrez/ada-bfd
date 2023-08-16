@@ -230,7 +230,7 @@ package body Util.Streams.Buffered is
    overriding
    procedure Flush (Stream : in out Buffered_Stream) is
    begin
-      if Stream.Write_Pos > 1 and not Stream.No_Flush then
+      if Stream.Write_Pos > 1 and then not Stream.No_Flush then
          if Stream.Output = null then
             raise Ada.IO_Exceptions.Data_Error with "Output buffer is full";
          else

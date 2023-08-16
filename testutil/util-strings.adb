@@ -34,7 +34,7 @@ package body Util.Strings is
    --  ------------------------------
    function Equivalent_Keys (Left, Right : Name_Access) return Boolean is
    begin
-      if Left = null or Right = null then
+      if Left = null or else Right = null then
          return False;
       end if;
       return Left.all = Right.all;
@@ -137,7 +137,7 @@ package body Util.Strings is
    begin
       if Left.Str = Right.Str then
          return True;
-      elsif Left.Str = null or Right.Str = null then
+      elsif Left.Str = null or else Right.Str = null then
          return False;
       else
          return Left.Str.Str = Right.Str.Str;

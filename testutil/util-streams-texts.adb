@@ -55,6 +55,7 @@ package body Util.Streams.Texts is
    --  ------------------------------
    --  Write a string on the stream.
    --  ------------------------------
+   overriding
    procedure Write (Stream : in out Print_Stream;
                     Item   : in Ada.Strings.Unbounded.Unbounded_String) is
    begin
@@ -113,7 +114,7 @@ package body Util.Streams.Texts is
                Ada.Strings.Unbounded.Append (Into, C);
             end if;
             return;
-         elsif C /= ASCII.CR or not Strip then
+         elsif C /= ASCII.CR or else not Strip then
             Ada.Strings.Unbounded.Append (Into, C);
          end if;
       end loop;

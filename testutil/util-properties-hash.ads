@@ -26,34 +26,43 @@ private package Util.Properties.Hash is
    type Manager_Access is access all Manager'Class;
 
    --  Returns TRUE if the property exists.
+   overriding
    function Exists (Self : in Manager; Name : in Value)
                     return Boolean;
 
    --  Returns the property value.  Raises an exception if not found.
+   overriding
    function Get (Self : in Manager; Name : in Value)
                  return Value;
 
+   overriding
    procedure Insert (Self : in out Manager; Name : in Value;
                      Item : in Value);
 
    --  Set the value of the property.  The property is created if it
    --  does not exists.
+   overriding
    procedure Set (Self : in out Manager; Name : in Value;
                   Item : in Value);
 
    --  Remove the property given its name.
+   overriding
    procedure Remove (Self : in out Manager; Name : in Value);
 
    --  Iterate over the properties and execute the given procedure passing the
    --  property name and its value.
+   overriding
    procedure Iterate (Self    : in Manager;
                       Process : access procedure (Name, Item : Value));
 
    --  Deep copy of properties stored in 'From' to 'To'.
+   overriding
    function Create_Copy (Self : in Manager) return Interface_P.Manager_Access;
 
+   overriding
    procedure Delete (Self : in Manager; Obj : in out Interface_P.Manager_Access);
 
+   overriding
    function Get_Names (Self   : in Manager;
                        Prefix : in String) return Name_Array;
 

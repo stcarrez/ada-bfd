@@ -43,6 +43,7 @@ package Util.Streams.Texts is
                     Item   : in Long_Long_Integer);
 
    --  Write a string on the stream.
+   overriding
    procedure Write (Stream : in out Print_Stream;
                     Item   : in Ada.Strings.Unbounded.Unbounded_String);
 
@@ -54,7 +55,6 @@ package Util.Streams.Texts is
 
    --  Get the output stream content as a string.
    function To_String (Stream : in Buffered.Buffered_Stream) return String;
-
 
    package TR is
      new Util.Texts.Transforms (Stream => Buffered.Buffered_Stream,
@@ -82,7 +82,6 @@ package Util.Streams.Texts is
    procedure Read_Line (Stream : in out Reader_Stream;
                         Into   : out Ada.Strings.Unbounded.Unbounded_String;
                         Strip  : in Boolean := False);
-
 
 private
 

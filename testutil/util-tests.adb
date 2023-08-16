@@ -159,7 +159,7 @@ package body Util.Tests is
    --  ------------------------------
    function Is_Test_Enabled (Name : in String) return Boolean is
    begin
-      return Length (Enabled_Test) = 0 or Enabled_Test = Name;
+      return Length (Enabled_Test) = 0 or else Enabled_Test = Name;
    end Is_Test_Enabled;
 
    --  ------------------------------

@@ -68,7 +68,7 @@ package body Util.Texts.Tokenizers is
                   Done : Boolean;
                begin
                   Process (Token => Content (Sep_Pos .. Pos), Done => Done);
-                  exit when Done or Sep_Pos = Content'First;
+                  exit when Done or else Sep_Pos = Content'First;
                end;
                Pos := Sep_Pos - 1 - Pattern'Length;
             end loop;

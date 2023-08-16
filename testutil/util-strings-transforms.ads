@@ -33,7 +33,6 @@ package Util.Strings.Transforms is
                                 To_Lower => Ada.Characters.Handling.To_Lower,
                                 To_Input => Ada.Strings.Unbounded.To_String);
 
-
    --  Capitalize the string into the result stream.
    procedure Capitalize (Content : in String;
                          Into    : in out Unbounded_String)

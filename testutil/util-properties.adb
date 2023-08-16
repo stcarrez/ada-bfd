@@ -224,6 +224,7 @@ package body Util.Properties is
       end if;
    end Get_Names;
 
+   overriding
    procedure Adjust (Object : in out Manager) is
    begin
       if Object.Impl /= null then
@@ -231,6 +232,7 @@ package body Util.Properties is
       end if;
    end Adjust;
 
+   overriding
    procedure Finalize (Object : in out Manager) is
       Is_Zero : Boolean;
    begin
@@ -272,7 +274,7 @@ package body Util.Properties is
                Value := Tail (Line, Len - Pos);
                return;
 
-            elsif Pos > 0 and Prefix'Length = 0 then
+            elsif Pos > 0 and then Prefix'Length = 0 then
                Name  := Head (Line, Pos - 1);
                Value := Tail (Line, Len - Pos);
                return;
@@ -328,7 +330,7 @@ package body Util.Properties is
             Name : Unbounded_String renames Names (I);
          begin
             if Prefix'Length = 0 or else Index (Name, Prefix) = 1 then
-               if Strip and Prefix'Length > 0 then
+               if Strip and then Prefix'Length > 0 then
                   declare
                      S : constant String := Slice (Name, Prefix'Length + 1, Length (Name));
                   begin
