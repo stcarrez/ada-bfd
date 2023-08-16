@@ -22,7 +22,6 @@ autom4te.cache
 bin/
 lib/
 obj/
-distrib/bfdada.gpr
 src/bfd-constants.ads
 src/config.h
 regtests/results
