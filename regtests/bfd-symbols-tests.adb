@@ -38,7 +38,7 @@ package body Bfd.Symbols.Tests is
    --  --------------------
    procedure Test_Open_Symbols (T : in out Test_Case) is
       Symbols : Bfd.Symbols.Symbol_Table;
-      pragma Unreferenced (Symbols);
+      --  pragma Unreferenced (Symbols);
    begin
       T.Assert (Bfd.Files.Check_Format (T.File.all, Bfd.Files.OBJECT),
                 "Bfd.Check_Format returned false");

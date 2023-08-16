@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Symbols Tests -- Tests for BFD symbols Ada API
---  Copyright (C) 2012, 2015, 2021 Free Software Foundation, Inc.
+--  Copyright (C) 2012, 2015, 2021, 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -21,7 +21,6 @@
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with Util.Tests;
-with Bfd;
 with Bfd.Tests;
 package Bfd.Symbols.Tests is
 

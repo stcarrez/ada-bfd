@@ -104,7 +104,7 @@ package body Bfd.Tests is
 
    procedure Test_Basic (T : in out Test_Case) is
       Symbols : Bfd.Symbols.Symbol_Table;
-      pragma Unreferenced (Symbols);
+      --  pragma Unreferenced (Symbols);
    begin
       --  Check that Get_Filename returns our test file.
       declare

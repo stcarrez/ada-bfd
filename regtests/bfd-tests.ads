@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Tests -- Tests for Binary File Descriptor Library (Ada Interface)
---  Copyright (C) 2002, 2003, 2012, 2015, 2021 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2015, 2021, 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -23,7 +23,6 @@
 with Ada.Strings.Unbounded;
 with Util.Tests;
 
-with Bfd;
 with Bfd.Files;
 package Bfd.Tests is
 

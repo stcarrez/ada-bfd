@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Tests -- Tests for BFD section Ada API
---  Copyright (C) 2002, 2003, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -21,7 +21,6 @@
 --  Boston, MA 02110-1301, USA.
 -----------------------------------------------------------------------
 with Util.Tests;
-with Bfd;
 with Bfd.Tests;
 package Bfd.Sections.Tests is
 
