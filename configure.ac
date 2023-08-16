@@ -57,6 +57,17 @@ AC_CHECK_LIB(bfd,bfd_openr,[LIBS="$LIBS -lbfd"])
 AC_CHECK_LIB(dl,dlopen,[CFLAGS="$CFLAGS -DHAVE_LIB_DL=1"])
 AC_CHECK_LIB(intl,dcgettext,[CFLAGS="$CFLAGS -DHAVE_LIB_INTL=1"])
 
+AC_MSG_CHECKING([for bfd fprintf_styled_ftype])
+      AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <bfd.h>
+#include <dis-asm.h>
+]], [[
+fprintf_styled_ftype fprintf_styled_test;
+]])],
+        [AC_MSG_RESULT([yes])
+         AC_DEFINE(HAVE_FPRINTF_STYLED)],
+        [AC_MSG_RESULT([no])])
+
 AUNITDIR=aunit-1.01
 AC_SUBST(AUNITDIR)
 AC_SUBST(CFLAGS)

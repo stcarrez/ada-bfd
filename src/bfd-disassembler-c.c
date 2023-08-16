@@ -45,7 +45,11 @@ bfd_ada_dis_memory_handler (int status, bfd_vma memaddr,
 extern int ada_dis_symbol_at_address (unsigned long long addr,
                                       struct disassemble_info* info);
 
+#ifdef HAVE_FPRINTF_STYLED
 static asymbol*
+#else
+int
+#endif
 bfd_ada_dis_symbol_at_address (bfd_vma addr,
                                struct disassemble_info* info)
 {
@@ -103,6 +107,7 @@ dis_printf (SFILE *f, const char *format, ...)
   return n;
 }
 
+#ifdef HAVE_FPRINTF_STYLED
 static int
 dis_printf_styled (SFILE *f, enum disassembler_style style, const char* format, ...)
 {
@@ -126,6 +131,7 @@ dis_printf_styled (SFILE *f, enum disassembler_style style, const char* format, 
   ada_disassembler_output (f->data, f->buffer);
   return n;
 }
+#endif
 
 static void bfd_ada_disassembler_output_address (bfd_vma addr,
                                                  struct disassemble_info *info)
@@ -145,7 +151,11 @@ bfd_ada_disassembler_init (void* data, bfd* abfd, char* disassembler_options)
   file->alloc = 1024;
   file->data = data;
 
+#ifdef HAVE_FPRINTF_STYLED
   init_disassemble_info (info, (FILE*) file, (fprintf_ftype) dis_printf, (fprintf_styled_ftype) dis_printf_styled);
+#else
+  init_disassemble_info (info, (FILE*) file, (fprintf_ftype) dis_printf);
+#endif
   info->application_data = data;
   info->memory_error_func = bfd_ada_dis_memory_handler;
   info->symbol_at_address_func = bfd_ada_dis_symbol_at_address;
