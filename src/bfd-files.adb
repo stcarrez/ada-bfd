@@ -132,8 +132,9 @@ package body Bfd.Files is
          when ARCHIVE =>
             N := 2;
 
-         when others =>
-            N := 0;
+         when CORE =>
+            N := 3;
+
       end case;
 
       return Bfd.Thin.Check_Format (File.Abfd, N) /= 0;

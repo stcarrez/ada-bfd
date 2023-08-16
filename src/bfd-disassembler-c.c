@@ -1,5 +1,5 @@
 /* Functions for BfdAda
-   Copyright 2001, 2002, 2003, 2012, 2014, 2021 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2012, 2014, 2021, 2023 Free Software Foundation, Inc.
    Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
@@ -45,11 +45,11 @@ bfd_ada_dis_memory_handler (int status, bfd_vma memaddr,
 extern int ada_dis_symbol_at_address (unsigned long long addr,
                                       struct disassemble_info* info);
 
-static int
+static asymbol*
 bfd_ada_dis_symbol_at_address (bfd_vma addr,
                                struct disassemble_info* info)
 {
-    return ada_dis_symbol_at_address ((unsigned long long) addr, info);
+  return 0;
 }
 
 extern int ada_dis_read_memory_handler (unsigned long long addr, bfd_byte* myaddr,
@@ -103,6 +103,30 @@ dis_printf (SFILE *f, const char *format, ...)
   return n;
 }
 
+static int
+dis_printf_styled (SFILE *f, enum disassembler_style style, const char* format, ...)
+{
+  size_t n;
+  va_list args;
+
+  while (1)
+    {
+      size_t space = f->alloc;
+
+      va_start (args, format);
+      n = vsnprintf (f->buffer, space, format, args);
+      va_end (args);
+
+      if (space > n)
+	break;
+      
+      f->alloc = (f->alloc + n) * 2;
+      f->buffer = realloc (f->buffer, f->alloc);
+    }
+  ada_disassembler_output (f->data, f->buffer);
+  return n;
+}
+
 static void bfd_ada_disassembler_output_address (bfd_vma addr,
                                                  struct disassemble_info *info)
 {
@@ -121,7 +145,7 @@ bfd_ada_disassembler_init (void* data, bfd* abfd, char* disassembler_options)
   file->alloc = 1024;
   file->data = data;
 
-  init_disassemble_info (info, (FILE*) file, (fprintf_ftype) dis_printf);
+  init_disassemble_info (info, (FILE*) file, (fprintf_ftype) dis_printf, (fprintf_styled_ftype) dis_printf_styled);
   info->application_data = data;
   info->memory_error_func = bfd_ada_dis_memory_handler;
   info->symbol_at_address_func = bfd_ada_dis_symbol_at_address;

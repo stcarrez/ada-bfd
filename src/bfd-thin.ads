@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD -- Thin Ada layer for Bfd (common Bfd functions)
---  Copyright (C) 2002, 2003, 2004, 2012, 2021 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2012, 2021, 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -24,7 +24,6 @@
 --
 with Interfaces.C;
 with Interfaces.C.Strings;
-with Bfd;
 package Bfd.Thin is
 
    function Get_Error_Type return Integer
