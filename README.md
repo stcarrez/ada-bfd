@@ -10,7 +10,7 @@
 
 The Ada-BFD is a library which provides Ada API for GNU Binutils BFD
 library.  It works on any version of GNU Binutils (starting at 2.15).
-The recommended version for GNU Binutils is at least the 2.34.
+The recommended version for GNU Binutils is at least the 2.39.
 
 The Ada-BFD library allows to:
 
@@ -27,12 +27,8 @@ under the Apache License Version 2 (see testutil/LICENSE.txt).  They also use th
 Ahven Unit Test Library distributed under the ISC license (see testutil/LICENSE.Ahven).
 These unit test libraries are not installed.
 
-## Version 1.2.0 - Apr 2021
-
-- Cleanup build process and use gprinstall for installation
-- Fix build with binutils > 2.34
-- Remove invalid API: `Bfd.Set_Error_Handler`
-- Remove fake API: `Bfd.Symbols.Is_Local_Label_Name`
+## Version 1.3.0 - Aug 2023
+  - Fix #7: Binutils 2.39 changed init_disassemble_info signature
 
 [List all versions](https://github.com/stcarrez/ada-bfd/blob/master/NEWS.md)
 
@@ -40,8 +36,8 @@ These unit test libraries are not installed.
 
 To compile Ada BFD you'll need:
 
-* an Ada compiler (GNAT 2020 or gcc 7.3).
-* the binutils 2.34 or higher installed for development.
+* an Ada compiler (gcc 12.1).
+* the binutils 2.39 or higher installed for development.
   You need the bfd.h include as well as libbfd and libiberty.
   On Debian systems (including Ubuntu) install the development packages
   by using:

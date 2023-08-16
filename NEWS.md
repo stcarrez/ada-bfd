@@ -1,3 +1,6 @@
+Version 1.3.0 - Aug 2023
+  - Fix #7: Binutils 2.39 changed init_disassemble_info signature
+
 Version 1.2.0 - Apr 2021
   - Cleanup build process and use gprinstall for installation
   - Fix build with binutils > 2.34
