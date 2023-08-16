@@ -264,6 +264,7 @@ package body Bfd.Disassembler is
    --  This procedure uses the buffer passed to Disassembler to obtain
    --  the memory.
    ----------------------
+   overriding
    procedure Read (Info  : in out Memory_Disassembler_Info_Type;
                    Addr : in Vma_Type;
                    Item : out Ada.Streams.Stream_Element_Array;
@@ -276,6 +277,7 @@ package body Bfd.Disassembler is
    --  Report an error while reading memory.
    --  This is called when the Read procedure returns an error.
    ----------------------
+   overriding
    procedure Memory_Error (Info : in out Memory_Disassembler_Info_Type;
                            Addr : in Vma_Type) is
    begin

@@ -65,7 +65,6 @@ package body Bfd.Sections.Tests is
       T.Assert (Has_Code, "No SEC_CODE section found");
    end Test_Sections;
 
-
    --  --------------------
    --  Test find sections operations
    --  --------------------
@@ -113,7 +112,6 @@ package body Bfd.Sections.Tests is
       end;
    end Test_Find_Section;
 
-
    --  --------------------
    --  Test get section content operations
    --  --------------------
@@ -132,7 +130,7 @@ package body Bfd.Sections.Tests is
       --  Scan each section and load its content in memory.
       while Has_Element (It) loop
          Sec := Element (It);
-         if Sec.Size /= 0 and (Sec.Flags and SEC_HAS_CONTENTS) /= 0 then
+         if Sec.Size /= 0 and then (Sec.Flags and SEC_HAS_CONTENTS) /= 0 then
             declare
                use Ada.Streams;
 

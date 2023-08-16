@@ -127,6 +127,7 @@ package Bfd.Disassembler is
    --  Print the result of disassembling the current instruction.
    --  This procedure is called to print the instruction and its
    --  operands.
+   overriding
    procedure Output (Info : in out Memory_Disassembler_Info_Type;
                      Item : in String) is abstract;
 

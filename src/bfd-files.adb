@@ -45,7 +45,7 @@ package body Bfd.Files is
    --  -----------------------
    procedure Check_Bfd (File : in File_Type) is
    begin
-      if Safe_Mode and File.Abfd = System.Null_Address then
+      if Safe_Mode and then File.Abfd = System.Null_Address then
          raise USE_ERROR;
       end if;
    end Check_Bfd;

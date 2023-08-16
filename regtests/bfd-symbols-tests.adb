@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  BFD Tests -- Tests for BFD section Ada API
---  Copyright (C) 2002, 2003, 2012, 2015, 2021 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2012, 2015, 2021, 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -48,11 +48,10 @@ package body Bfd.Symbols.Tests is
 
       --  Can't check in a portable way, assume some reasonable value.
       T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) > 0
-                and Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
+                and then Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
                 "Bfd.Get_Symbol_Count returned 0");
 
    end Test_Open_Symbols;
-
 
    --  --------------------
    --  Test the symbol iterator
@@ -74,7 +73,7 @@ package body Bfd.Symbols.Tests is
 
       --  Can't check in a portable way, assume some reasonable value.
       T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) > 0
-                and Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
+                and then Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
                 "Bfd.Get_Symbol_Count returned 0");
 
       Count := 0;

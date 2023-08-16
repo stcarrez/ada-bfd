@@ -129,7 +129,7 @@ package body Bfd.Tests is
 
       --  Can't check in a portable way, assume some reasonable value.
       T.Assert (Bfd.Files.Get_Symbol_Count (T.File.all) > 0
-                and Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
+                and then Bfd.Files.Get_Symbol_Count (T.File.all) < 10000,
                 "Bfd.Get_Symbol_Count returned 0");
 
    end Test_Basic;
@@ -292,6 +292,7 @@ package body Bfd.Tests is
    --  --------------------
    --  Identifier of test case:
    --  --------------------
+   overriding
    function Name (T : in Test_Case) return Util.Tests.Message_String is
    begin
       return To_String (T.Test_Name);
