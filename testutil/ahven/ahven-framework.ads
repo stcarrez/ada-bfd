@@ -16,7 +16,6 @@
 
 with Ada.Finalization;
 
-with Ahven;
 with Ahven.Listeners;
 with Ahven.SList;
 with Ahven.AStrings;
