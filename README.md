@@ -1,9 +1,9 @@
 
 # Ada BFD Library
 
-[![Build Status](https://img.shields.io/jenkins/s/http/jenkins.vacs.fr/Ada-BFD.svg)](https://jenkins.vacs.fr/job/Ada-BFD/)
-[![Test Status](https://img.shields.io/jenkins/t/http/jenkins.vacs.fr/Ada-BFD.svg)](https://jenkins.vacs.fr/job/Ada-BFD/)
-[![codecov](https://codecov.io/gh/stcarrez/ada-bfd/branch/master/graph/badge.svg)](https://codecov.io/gh/stcarrez/ada-bfd)
+[![Build Status](https://img.shields.io/endpoint?url=https://porion.vacs.fr/porion/api/v1/projects/ada-bfd/badges/build.json)](https://porion.vacs.fr/porion/projects/view/ada-bfd/summary)
+[![Test Status](https://img.shields.io/endpoint?url=https://porion.vacs.fr/porion/api/v1/projects/ada-bfd/badges/tests.json)](https://porion.vacs.fr/porion/projects/view/ada-bfd/xunits)
+[![Coverage](https://img.shields.io/endpoint?url=https://porion.vacs.fr/porion/api/v1/projects/ada-bfd/badges/coverage.json)](https://porion.vacs.fr/porion/projects/view/ada-bfd/summary)
 [![Download](https://img.shields.io/badge/download-1.2.0-brightgreen.svg)](http://download.vacs.fr/ada-bfd/ada-bfd-1.2.0.tar.gz)
 [![License](https://img.shields.io/badge/license-GPL-blue.svg)](GPL)
 ![Commits](https://img.shields.io/github/commits-since/stcarrez/ada-bfd/1.2.0.svg)
