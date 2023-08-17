@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  print -- Print Utilities for examples
---  Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2012, 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -74,6 +74,7 @@ package body Utils is
       return S (Pos .. S'Last);
    end HexImage;
 
+   overriding
    procedure Output (Info : in out Small_Disassembler;
                      Item : in String) is
       pragma Unreferenced (Info);

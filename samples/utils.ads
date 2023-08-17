@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  print -- Print Utilities for examples
---  Copyright (C) 2002, 2003, 2004, 2012 Free Software Foundation, Inc.
+--  Copyright (C) 2002, 2003, 2004, 2012, 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -32,6 +32,7 @@ package Utils is
    type Small_Disassembler is new Bfd.Disassembler.Memory_Disassembler_Info_Type
      with null record;
 
+   overriding
    procedure Output (Info : in out Small_Disassembler;
                      Item : in String);
 
