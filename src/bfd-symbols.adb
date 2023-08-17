@@ -120,7 +120,7 @@ package body Bfd.Symbols is
                            Symbols : out Symbol_Table) is
 
       Cnt : aliased Integer
-        := Bfd.Thin.Symbols.Get_Symtab_Upper_Bound (Bfd.Files.Get_Bfd_Pointer (File));
+        := Bfd.Thin.Symbols.Get_Symtab_Count (Bfd.Files.Get_Bfd_Pointer (File));
 
       subtype Symbol_Array_Type is Symbol_Array (1 .. Positive (Cnt));
 

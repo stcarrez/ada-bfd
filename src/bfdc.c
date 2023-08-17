@@ -1,5 +1,5 @@
 /* Functions for BfdAda
-   Copyright 2001, 2002, 2003, 2012, 2015, 2021 Free Software Foundation, Inc.
+   Copyright 2001, 2002, 2003, 2012, 2015, 2021, 2023 Free Software Foundation, Inc.
    Contributed by Stephane Carrez (Stephane.Carrez@gmail.com)
 
 This file is part of BfdAda.
@@ -85,23 +85,62 @@ _bfd_get_section_flags (struct bfd_section *sec)
   return (unsigned long) sec->flags;
 }
 
+int
+ada_bfd_get_symtab_count (bfd *abfd)
+{
+  int count = 0;
+  int symcount;
+
+  if ((bfd_get_file_flags (abfd) & DYNAMIC))
+    {
+      symcount = bfd_get_dynamic_symtab_upper_bound (abfd);
+      if (symcount > 0)
+	{
+	  count += symcount;
+	}
+    }
+  symcount = bfd_get_symtab_upper_bound (abfd);
+  if (symcount > 0)
+    {
+      count += symcount;
+    }
+  return count;
+}
+
 void
 bfd_read_symbols (bfd *abfd, int *cnt, asymbol **sy)
 {
   long size;
+  int count = 0;
+  int symcount;
+
+  if ((bfd_get_file_flags (abfd) & DYNAMIC))
+    {
+      symcount = bfd_canonicalize_dynamic_symtab (abfd, sy);
+      if (symcount > 0)
+	{
+	  count = symcount;
+	  sy = &sy[count];
+	}
+    }
 
   if (!(bfd_get_file_flags (abfd) & HAS_SYMS))
     {
-      *cnt = 0;
+      *cnt = count;
       return;
     }
   size = bfd_get_symtab_upper_bound (abfd);
   if (size < 0)
     {
-      *cnt = -1;
+      *cnt = count;
       return;
     }
-  *cnt = bfd_canonicalize_symtab (abfd, sy);
+  symcount = bfd_canonicalize_symtab (abfd, sy);
+  if (symcount > 0)
+    {
+      count += symcount;
+    }
+  *cnt = count;
 }
 
 void

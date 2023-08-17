@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 --  bfd-symbols -- BFD Symbol Table types and operations
---  Copyright (C) 2002, 2003, 2004, 2006, 2015, 2021 Free Software Foundation, Inc.
+--  Copyright (C) 2002 - 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.

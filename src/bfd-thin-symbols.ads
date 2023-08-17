@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
---  BFD -- Thin Ada layer for Bfd (common Bfd functions)
---  Copyright (C) 2002, 2003, 2004, 2012, 2015, 2021 Free Software Foundation, Inc.
+--  bfd-thin-symbols -- Thin Ada layer for Bfd (common Bfd functions)
+--  Copyright (C) 2002 - 2023 Free Software Foundation, Inc.
 --  Written by Stephane Carrez (Stephane.Carrez@gmail.com)
 --
 --  This file is part of BfdAda.
@@ -58,6 +58,9 @@ package Bfd.Thin.Symbols is
 
    function Get_Symtab_Upper_Bound (File : in Ptr) return Integer
      with Import => True, Convention => C, Link_Name => "ada_bfd_get_symtab_upper_bound";
+
+   function Get_Symtab_Count (File : in Ptr) return Integer
+     with Import => True, Convention => C, Link_Name => "ada_bfd_get_symtab_count";
 
    function Demangle (File    : in Ptr;
                       Name    : in Interfaces.C.Strings.chars_ptr;

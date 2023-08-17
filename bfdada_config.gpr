@@ -4,7 +4,7 @@ abstract project Bfdada_Config is
    type Yes_No is ("yes", "no");
 
    type Library_Type_Type is ("relocatable", "static", "static-pic");
-
+   for Languages    use ("Ada", "C");
    type Build_Type is ("distrib", "debug", "optimize", "profile", "coverage");
    Mode : Build_Type := external ("BUILD", "debug");
 
@@ -24,6 +24,7 @@ abstract project Bfdada_Config is
          when "debug" =>
             for Default_Switches ("Ada") use defaults & warnings
                & ("-g", "-gnata", "-gnatVaMI", "-gnaty3abcefhiklmnprstxM99OABu");
+            for Default_Switches ("C") use ("-g");
 
          when "coverage" =>
             for Default_Switches ("Ada") use defaults & warnings
