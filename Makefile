@@ -1,4 +1,5 @@
 NAME=bfdada
+BUILD_VAR=BFDADA_BUILD
 
 -include Makefile.conf
 
