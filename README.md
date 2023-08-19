@@ -44,7 +44,7 @@ To compile Ada BFD you'll need:
   by using:
 
 ```
-sudo apt-get install binutils-dev
+sudo apt-get install binutils-dev libiberty-dev
 ```
 
 On NetBSD 9.2, you need to install by using:
