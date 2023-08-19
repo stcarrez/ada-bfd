@@ -4,9 +4,9 @@
 [![Build Status](https://img.shields.io/endpoint?url=https://porion.vacs.fr/porion/api/v1/projects/ada-bfd/badges/build.json)](https://porion.vacs.fr/porion/projects/view/ada-bfd/summary)
 [![Test Status](https://img.shields.io/endpoint?url=https://porion.vacs.fr/porion/api/v1/projects/ada-bfd/badges/tests.json)](https://porion.vacs.fr/porion/projects/view/ada-bfd/xunits)
 [![Coverage](https://img.shields.io/endpoint?url=https://porion.vacs.fr/porion/api/v1/projects/ada-bfd/badges/coverage.json)](https://porion.vacs.fr/porion/projects/view/ada-bfd/summary)
-[![Download](https://img.shields.io/badge/download-1.2.0-brightgreen.svg)](http://download.vacs.fr/ada-bfd/ada-bfd-1.2.0.tar.gz)
+[![Download](https://img.shields.io/badge/download-1.3.0-brightgreen.svg)](http://download.vacs.fr/ada-bfd/ada-bfd-1.3.0.tar.gz)
 [![License](https://img.shields.io/badge/license-GPL-blue.svg)](GPL)
-![Commits](https://img.shields.io/github/commits-since/stcarrez/ada-bfd/1.2.0.svg)
+![Commits](https://img.shields.io/github/commits-since/stcarrez/ada-bfd/1.3.0.svg)
 
 The Ada-BFD is a library which provides Ada API for GNU Binutils BFD
 library.  It works on any version of GNU Binutils (starting at 2.15).
