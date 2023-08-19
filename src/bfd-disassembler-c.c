@@ -45,7 +45,7 @@ bfd_ada_dis_memory_handler (int status, bfd_vma memaddr,
 extern int ada_dis_symbol_at_address (unsigned long long addr,
                                       struct disassemble_info* info);
 
-#ifdef HAVE_FPRINTF_STYLED
+#ifdef HAVE_SYMBOL_USE_ASYMBOL
 static asymbol*
 #else
 int

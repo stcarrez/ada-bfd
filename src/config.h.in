@@ -42,6 +42,9 @@
 /* Define to 1 if you have the fprintf_styled_type declared in <dis-asm.h> header file. */
 #undef HAVE_FPRINTF_STYLED
 
+/* Define to 1 if you have the symbol_at_address_func returns a asymbol * type instead of int. */
+#undef HAVE_SYMBOL_USE_ASYMBOL
+
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
 
