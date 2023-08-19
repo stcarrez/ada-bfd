@@ -81,8 +81,6 @@ long foo(struct disassemble_info* s) {
          AC_DEFINE(HAVE_SYMBOL_USE_ASYMBOL)],
         [AC_MSG_RESULT([int])])
 
-AUNITDIR=aunit-1.01
-AC_SUBST(AUNITDIR)
 AC_SUBST(CFLAGS)
 
 AC_CONFIG_FILES([Makefile.conf
