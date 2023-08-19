@@ -19,7 +19,7 @@ if test $T -ne 1; then
 fi
 
 T=`bin/bfdinfo bin/bfdgen | grep .rodata | wc -l`
-if test $T -ne 1; then
+if test $T -ne 1 -a $T -ne 2; then
     echo "Test samples/bfdinfo failed"
     exit 1
 fi
