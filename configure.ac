@@ -68,6 +68,19 @@ fprintf_styled_ftype fprintf_styled_test;
          AC_DEFINE(HAVE_FPRINTF_STYLED)],
         [AC_MSG_RESULT([no])])
 
+AC_MSG_CHECKING([for symbol_at_address_func return type])
+      AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <bfd.h>
+#include <dis-asm.h>
+]], [[
+long foo(struct disassemble_info* s) {
+  return s->dynrelcount; /* Note: we should check for symbol_at_address_func... */
+}
+]])],
+        [AC_MSG_RESULT([asymbol])
+         AC_DEFINE(HAVE_SYMBOL_USE_ASYMBOL)],
+        [AC_MSG_RESULT([int])])
+
 AUNITDIR=aunit-1.01
 AC_SUBST(AUNITDIR)
 AC_SUBST(CFLAGS)
