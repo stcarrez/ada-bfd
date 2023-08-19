@@ -27,6 +27,7 @@ src/config.h
 regtests/results
 bfdada.cov
 cover/
+alire/
 *.substvars
 debian/lib*
 debian/.debhelper/
