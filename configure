@@ -4454,6 +4454,38 @@ printf "%s\n" "no" >&6; }
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
 
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for symbol_at_address_func return type" >&5
+printf %s "checking for symbol_at_address_func return type... " >&6; }
+      cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <bfd.h>
+#include <dis-asm.h>
+
+int
+main (void)
+{
+
+long foo(struct disassemble_info* s) {
+  return s->dynrelcount; /* Note: we should check for symbol_at_address_func... */
+}
+
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: asymbol" >&5
+printf "%s\n" "asymbol" >&6; }
+         printf "%s\n" "#define HAVE_SYMBOL_USE_ASYMBOL 1" >>confdefs.h
+
+else $as_nop
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: int" >&5
+printf "%s\n" "int" >&6; }
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+
 AUNITDIR=aunit-1.01
 
 
