@@ -71,6 +71,14 @@ You can install the library by using:
 make install
 ```
 
+# Build with Alire
+
+You can also build the Ada BFD library with Alire by using (but the
+dependency to the `binutils-dev` is not handled by the crate):
+
+```
+alr build
+```
 
 # Compiling the Ada BFD samples
 
