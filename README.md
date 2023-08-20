@@ -106,3 +106,9 @@ make samples
 * [BFD Documentation](http://sourceware.org/binutils/docs/bfd/index.html)
 * [Reading a program symbol table with Ada BFD](https://blog.vacs.fr/vacs/blogs/post.html?post=2012/11/03/Reading-a-program-symbol-table-with-Ada-Bfd)
 
+# Articles
+
+* [Ada BFD 1.3.0: using Find_Nearest_Line](https://blog.vacs.fr/vacs/blogs/post.html?post=2023/08/19/Ada-BFD-1.3.0)
+* [Ada BFD 1.2.0: reading the ELF sections](https://blog.vacs.fr/vacs/blogs/post.html?post=2021/04/11/New-release-Ada-BFD-1.2.0)
+* [Ada BFD 1.1.0: using the demangler](https://blog.vacs.fr/vacs/blogs/post.html?post=2015/05/16/Ada-BFD-1.1.0-is-available)
+
