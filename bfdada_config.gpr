@@ -24,7 +24,7 @@ abstract project Bfdada_Config is
          when "debug" =>
             for Default_Switches ("Ada") use defaults & warnings
                & ("-g", "-gnata", "-gnatVaMI", "-gnaty3abcefhiklmnprstxM99OABu");
-            for Default_Switches ("C") use ("-g");
+            for Default_Switches ("C") use ("-g", "-fPIE");
 
          when "coverage" =>
             for Default_Switches ("Ada") use defaults & warnings
