@@ -51,7 +51,7 @@ command = ["sh", "configure"]
 
 [[actions]]
 type = "post-fetch"
-command = ["make"]
+command = ["make", "static"]
 
 [configuration]
 disabled = true
