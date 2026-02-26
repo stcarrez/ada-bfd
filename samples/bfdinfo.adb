@@ -155,6 +155,8 @@ begin
 
          Bfd.Files.Open (File, Arg, "");
          if Bfd.Files.Check_Format (File, Bfd.Files.OBJECT) then
+            Put_Line ("Architecture: " & Bfd.Files.Get_Architecture_Name
+               (File));
             List_Section (File);
             List_Symbols (File);
          end if;

@@ -152,6 +152,34 @@ package body Bfd.Files is
    end Get_File_Flags;
 
    --  -----------------------
+   --  Get the architecture and machine name for the open file.
+   --  -----------------------
+   function Get_Architecture_Name (File : in File_Type) return String is
+   begin
+      Check_Bfd (File);
+      return Interfaces.C.Strings.Value
+         (Bfd.Thin.Get_Printable_Name (File.Abfd));
+   end Get_Architecture_Name;
+
+   --  -----------------------
+   --  Get the architecture of the open file.
+   --  -----------------------
+   function Get_Architecture (File : in File_Type) return Natural is
+   begin
+      Check_Bfd (File);
+      return Natural (Bfd.Thin.Get_Architecture (File.Abfd));
+   end Get_Architecture;
+
+   --  -----------------------
+   --  Get the machine of the open file.
+   --  -----------------------
+   function Get_Machine (File : in File_Type) return Natural is
+   begin
+      Check_Bfd (File);
+      return Natural (Bfd.Thin.Get_Machine (File.Abfd));
+   end Get_Machine;
+
+   --  -----------------------
    --  Get the start address.
    --  -----------------------
    function Get_Start_Address (File : in File_Type) return Vma_Type is
