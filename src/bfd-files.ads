@@ -158,7 +158,7 @@ package Bfd.Files is
    function Get_Architecture_Name (File : in File_Type) return String;
 
    --  Get the architecture of the open file.
-   function Get_Architecture (File : in File_Type) return Natural;
+   function Get_Architecture (File : in File_Type) return Architecture_Type;
 
    --  Get the machine of the open file.
    function Get_Machine (File : in File_Type) return Natural;

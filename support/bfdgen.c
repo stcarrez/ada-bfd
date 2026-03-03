@@ -238,6 +238,218 @@ int main(void)
   printf("   DMGL_GNAT                   : constant Demangle_Flags := 16#%04x#;\n", DMGL_GNAT);
   printf("\n");
 
+  printf("   --  enum bfd_architecture.\n");
+  printf("   BFD_ARCH_UNKNOWN     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_unknown);
+  printf("   BFD_ARCH_OBSCURE     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_obscure);
+  printf("   BFD_ARCH_M68K        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m68k);
+  printf("   BFD_ARCH_VAX         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_vax);
+#ifdef HAVE_ARCH_I960
+  printf("   BFD_ARCH_I960        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_i960);
+#endif
+#if HAVE_ARCH_OR32
+  printf("   BFD_ARCH_OR32        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_or32);
+#else
+  printf("   BFD_ARCH_OR1K        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_or1k);
+#endif
+#if HAVE_ARCH_A29K
+  printf("   BFD_ARCH_A29K        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_a29k);
+#endif
+  printf("   BFD_ARCH_SPARC       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_sparc);
+#if HAVE_ARCH_SPU
+  printf("   BFD_ARCH_SPU         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_spu);
+#endif
+  printf("   BFD_ARCH_MIPS        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_mips);
+  printf("   BFD_ARCH_I386        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_i386);
+#if HAVE_ARCH_L1OM
+  printf("   BFD_ARCH_L1OM        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_l1om);
+#endif
+#if HAVE_ARCH_K1OM
+  printf("   BFD_ARCH_K1OM        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_k1om);
+#endif
+#if HAVE_ARCH_IAMCU
+  printf("   BFD_ARCH_IAMCU       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_iamcu);
+#endif
+#if HAVE_ARCH_WE32K
+  printf("   BFD_ARCH_WE32K       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_we32k);
+  printf("   BFD_ARCH_TAHOE       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_tahoe);
+  printf("   BFD_ARCH_I860        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_i860);
+  printf("   BFD_ARCH_I370        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_i370);
+#endif
+  printf("   BFD_ARCH_ROMP        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_romp);
+#if HAVE_ARCH_ALLIANT
+  printf("   BFD_ARCH_ALLIANT     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_alliant);
+#endif
+  printf("   BFD_ARCH_CONVEX      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_convex);
+#if HAVE_ARCH_M88K
+  printf("   BFD_ARCH_M88K        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m88k);
+#endif
+  printf("   BFD_ARCH_M98K        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m98k);
+  printf("   BFD_ARCH_PYRAMID     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_pyramid);
+  printf("   BFD_ARCH_H8300       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_h8300);
+  printf("   BFD_ARCH_PDP11       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_pdp11);
+#if HAVE_ARCH_PLUGIN
+  printf("   BFD_ARCH_PLUGIN      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_plugin);
+#endif
+  printf("   BFD_ARCH_POWERPC     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_powerpc);
+  printf("   BFD_ARCH_RS6000      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_rs6000);
+  printf("   BFD_ARCH_HPPA        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_hppa);
+  printf("   BFD_ARCH_D10V        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_d10v);
+  printf("   BFD_ARCH_D30V        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_d30v);
+  printf("   BFD_ARCH_DLX         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_dlx);
+  printf("   BFD_ARCH_M68HC11     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m68hc11);
+  printf("   BFD_ARCH_M68HC12     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m68hc12);
+#if HAVE_ARCH_M9S12X
+  printf("   BFD_ARCH_M9S12X      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m9s12x);
+  printf("   BFD_ARCH_M9S12XG     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m9s12xg);
+#endif
+#if HAVE_ARCH_S12Z
+  printf("   BFD_ARCH_S12Z        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_s12z);
+#endif
+  printf("   BFD_ARCH_Z8K         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_z8k);
+#if HAVE_ARCH_H8500
+  printf("   BFD_ARCH_H8500       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_h8500);
+#endif
+  printf("   BFD_ARCH_SH          : constant Architecture_Type := 16#%04x#;\n", bfd_arch_sh);
+  printf("   BFD_ARCH_ALPHA       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_alpha);
+  printf("   BFD_ARCH_ARM         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_arm);
+#if HAVE_ARCH_NDS32
+  printf("   BFD_ARCH_NDS32       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_nds32);
+#endif
+  printf("   BFD_ARCH_NS32K       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_ns32k);
+#if HAVE_ARCH_W65
+  printf("   BFD_ARCH_W65         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_w65);
+#endif
+  printf("   BFD_ARCH_TIC30       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_tic30);
+  printf("   BFD_ARCH_TIC4X       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_tic4x);
+  printf("   BFD_ARCH_TIC54X      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_tic54x);
+#if HAVE_ARCH_TIC6X
+  printf("   BFD_ARCH_TIC6X       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_tic6x);
+#endif
+#if HAVE_ARCH_TIC80
+  printf("   BFD_ARCH_TIC80       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_tic80);
+#endif
+  printf("   BFD_ARCH_V850        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_v850);
+#if HAVE_ARCH_V850_RH850
+  printf("   BFD_ARCH_V850_RH850  : constant Architecture_Type := 16#%04x#;\n", bfd_arch_v850_rh850);
+#endif
+  printf("   BFD_ARCH_ARC         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_arc);
+#if HAVE_ARCH_M32C
+  printf("   BFD_ARCH_M32C        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m32c);
+#endif
+  printf("   BFD_ARCH_M32R        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_m32r);
+  printf("   BFD_ARCH_MN10200     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_mn10200);
+  printf("   BFD_ARCH_MN10300     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_mn10300);
+  printf("   BFD_ARCH_FR30        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_fr30);
+  printf("   BFD_ARCH_FRV         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_frv);
+#if HAVE_ARCH_MOXIE
+  printf("   BFD_ARCH_MOXIE       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_moxie);
+#endif
+#if HAVE_ARCH_FT32
+  printf("   BFD_ARCH_FT32        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_ft32);
+#endif
+  printf("   BFD_ARCH_MCORE       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_mcore);
+#if HAVE_ARCH_MEP
+  printf("   BFD_ARCH_MEP         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_mep);
+#endif
+#if HAVE_ARCH_METAG
+  printf("   BFD_ARCH_METAG       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_metag);
+#endif
+  printf("   BFD_ARCH_IA64        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_ia64);
+  printf("   BFD_ARCH_IP2K        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_ip2k);
+  printf("   BFD_ARCH_IQ2000      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_iq2000);
+#if HAVE_ARCH_BPF
+  printf("   BFD_ARCH_BPF         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_bpf);
+#endif
+#if HAVE_ARCH_EPIPHANY
+  printf("   BFD_ARCH_EPIPHANY    : constant Architecture_Type := 16#%04x#;\n", bfd_arch_epiphany);
+#endif
+#if HAVE_ARCH_MT
+  printf("   BFD_ARCH_MT          : constant Architecture_Type := 16#%04x#;\n", bfd_arch_mt);
+#endif
+  printf("   BFD_ARCH_PJ          : constant Architecture_Type := 16#%04x#;\n", bfd_arch_pj);
+  printf("   BFD_ARCH_AVR         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_avr);
+#if HAVE_ARCH_BFIN
+  printf("   BFD_ARCH_BFIN        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_bfin);
+#endif
+#if HAVE_ARCH_CR16
+  printf("   BFD_ARCH_CR16        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_cr16);
+#endif
+#if HAVE_ARCH_CR16C
+  printf("   BFD_ARCH_CR16C       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_cr16c);
+#endif
+  printf("   BFD_ARCH_CRX         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_crx);
+  printf("   BFD_ARCH_CRIS        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_cris);
+#if HAVE_ARCH_RISCV
+  printf("   BFD_ARCH_RISCV       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_riscv);
+#endif
+#if HAVE_ARCH_RL78
+  printf("   BFD_ARCH_RL78        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_rl78);
+#endif
+#if HAVE_ARCH_RX
+  printf("   BFD_ARCH_RX          : constant Architecture_Type := 16#%04x#;\n", bfd_arch_rx);
+#endif
+  printf("   BFD_ARCH_S390        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_s390);
+#if HAVE_ARCH_SCORE
+  printf("   BFD_ARCH_SCORE       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_score);
+#endif
+#if HAVE_ARCH_OPENRISC
+  printf("   BFD_ARCH_OPENRISC    : constant Architecture_Type := 16#%04x#;\n", bfd_arch_openrisc);
+#endif
+  printf("   BFD_ARCH_MMIX        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_mmix);
+  printf("   BFD_ARCH_XSTORMY16   : constant Architecture_Type := 16#%04x#;\n", bfd_arch_xstormy16);
+  printf("   BFD_ARCH_MSP430      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_msp430);
+#if HAVE_ARCH_XC16X
+  printf("   BFD_ARCH_XC16X       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_xc16x);
+#endif
+#if HAVE_ARCH_XGATE
+  printf("   BFD_ARCH_XGATE       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_xgate);
+#endif
+  printf("   BFD_ARCH_XTENSA      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_xtensa);
+#if HAVE_ARCH_MAXQ
+  printf("   BFD_ARCH_MAXQ        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_maxq);
+#endif
+#if HAVE_ARCH_Z80
+  printf("   BFD_ARCH_Z80         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_z80);
+#endif
+#if HAVE_ARCH_LM32
+  printf("   BFD_ARCH_LM32        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_lm32);
+  printf("   BFD_ARCH_MICROBLAZE  : constant Architecture_Type := 16#%04x#;\n", bfd_arch_microblaze);
+#endif
+#if HAVE_ARCH_KVX
+  printf("   BFD_ARCH_KVX         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_kvx);
+#endif
+#if HAVE_ARCH_TILEPRO
+  printf("   BFD_ARCH_TILEPRO     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_tilepro);
+  printf("   BFD_ARCH_TILEGX      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_tilegx);
+#endif
+#if HAVE_ARCH_AARCH64
+  printf("   BFD_ARCH_AARCH64     : constant Architecture_Type := 16#%04x#;\n", bfd_arch_aarch64);
+#endif
+#if HAVE_ARCH_NIOS2
+  printf("   BFD_ARCH_NIOS2       : constant Architecture_Type := 16#%04x#;\n", bfd_arch_nios2);
+#endif
+#if HAVE_ARCH_VISIUM
+  printf("   BFD_ARCH_VISIUM      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_visium);
+#endif
+#if HAVE_ARCH_WASM32
+  printf("   BFD_ARCH_WASM32      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_wasm32);
+  printf("   BFD_ARCH_PRU         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_pru);
+#endif
+#if HAVE_ARCH_NFP
+  printf("   BFD_ARCH_NFP         : constant Architecture_Type := 16#%04x#;\n", bfd_arch_nfp);
+#endif
+#if HAVE_ARCH_CSKY
+  printf("   BFD_ARCH_CSKY        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_csky);
+#endif
+#if HAVE_ARCH_LOONGARCH
+  printf("   BFD_ARCH_LOONGARCH   : constant Architecture_Type := 16#%04x#;\n", bfd_arch_loongarch);
+#endif
+#if HAVE_ARCH_AMDGCN
+  printf("   BFD_ARCH_AMDGCN      : constant Architecture_Type := 16#%04x#;\n", bfd_arch_amdgcn);
+#endif
+  printf("   BFD_ARCH_LAST        : constant Architecture_Type := 16#%04x#;\n", bfd_arch_last);
+  printf("\n");
+
   printf("end Bfd.Constants;\n");
   return 0;
 }

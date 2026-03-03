@@ -164,10 +164,10 @@ package body Bfd.Files is
    --  -----------------------
    --  Get the architecture of the open file.
    --  -----------------------
-   function Get_Architecture (File : in File_Type) return Natural is
+   function Get_Architecture (File : in File_Type) return Architecture_Type is
    begin
       Check_Bfd (File);
-      return Natural (Bfd.Thin.Get_Architecture (File.Abfd));
+      return Architecture_Type (Bfd.Thin.Get_Architecture (File.Abfd));
    end Get_Architecture;
 
    --  -----------------------
