@@ -65,7 +65,7 @@ AC_MSG_CHECKING([for bfd fprintf_styled_ftype])
 fprintf_styled_ftype fprintf_styled_test;
 ]])],
         [AC_MSG_RESULT([yes])
-         AC_DEFINE(HAVE_FPRINTF_STYLED)],
+         AC_DEFINE(HAVE_FPRINTF_STYLED, [1], [Define to 1 if you have the fprintf_styled_type declared in <dis-asm.h> header file.])],
         [AC_MSG_RESULT([no])])
 
 AC_MSG_CHECKING([for symbol_at_address_func return type])
@@ -78,7 +78,7 @@ long foo(struct disassemble_info* s) {
 }
 ]])],
         [AC_MSG_RESULT([asymbol])
-         AC_DEFINE(HAVE_SYMBOL_USE_ASYMBOL)],
+         AC_DEFINE(HAVE_SYMBOL_USE_ASYMBOL, [1], [Define to 1 if you have the symbol_at_address_func returns a asymbol * type instead of int.])],
         [AC_MSG_RESULT([int])])
 
 AC_SUBST(CFLAGS)
