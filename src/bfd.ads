@@ -43,6 +43,8 @@ package Bfd is
 
    type Demangle_Flags is new Interfaces.Unsigned_32;
 
+   type Architecture_Type is new Interfaces.Unsigned_32;
+
    type Unsigned_64 is new Interfaces.Unsigned_64;
 
    type Integer_64 is new Interfaces.Integer_64;

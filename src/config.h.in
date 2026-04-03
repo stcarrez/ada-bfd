@@ -1,5 +1,155 @@
 /* src/config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* Set if enum bfd_architecture value bfd_arch_a29k exists. */
+#undef HAVE_ARCH_A29K
+
+/* Set if enum bfd_architecture value bfd_arch_aarch64 exists. */
+#undef HAVE_ARCH_AARCH64
+
+/* Set if enum bfd_architecture value bfd_arch_alliant exists. */
+#undef HAVE_ARCH_ALLIANT
+
+/* Set if enum bfd_architecture value bfd_arch_amdgcn exists. */
+#undef HAVE_ARCH_AMDGCN
+
+/* Set if enum bfd_architecture value bfd_arch_bfin exists. */
+#undef HAVE_ARCH_BFIN
+
+/* Set if enum bfd_architecture value bfd_arch_bpf exists. */
+#undef HAVE_ARCH_BPF
+
+/* Set if enum bfd_architecture value bfd_arch_cr16 exists. */
+#undef HAVE_ARCH_CR16
+
+/* Set if enum bfd_architecture value bfd_arch_cr16c exists. */
+#undef HAVE_ARCH_CR16C
+
+/* Set if enum bfd_architecture value bfd_arch_csky exists. */
+#undef HAVE_ARCH_CSKY
+
+/* Set if enum bfd_architecture value bfd_arch_epiphany exists. */
+#undef HAVE_ARCH_EPIPHANY
+
+/* Set if enum bfd_architecture value bfd_arch_ft32 exists. */
+#undef HAVE_ARCH_FT32
+
+/* Set if enum bfd_architecture value bfd_arch_h8500 exists. */
+#undef HAVE_ARCH_H8500
+
+/* Set if enum bfd_architecture value bfd_arch_i960 exists. */
+#undef HAVE_ARCH_I960
+
+/* Set if enum bfd_architecture value bfd_arch_iamcu exists. */
+#undef HAVE_ARCH_IAMCU
+
+/* Set if enum bfd_architecture value bfd_arch_k1om exists. */
+#undef HAVE_ARCH_K1OM
+
+/* Set if enum bfd_architecture value bfd_arch_kvx exists. */
+#undef HAVE_ARCH_KVX
+
+/* Set if enum bfd_architecture value bfd_arch_l1om exists. */
+#undef HAVE_ARCH_L1OM
+
+/* Set if enum bfd_architecture value bfd_arch_lm32 exists. */
+#undef HAVE_ARCH_LM32
+
+/* Set if enum bfd_architecture value bfd_arch_loongarch exists. */
+#undef HAVE_ARCH_LOONGARCH
+
+/* Set if enum bfd_architecture value bfd_arch_m32c exists. */
+#undef HAVE_ARCH_M32C
+
+/* Set if enum bfd_architecture value bfd_arch_m88k exists. */
+#undef HAVE_ARCH_M88K
+
+/* Set if enum bfd_architecture value bfd_arch_m9s12x exists. */
+#undef HAVE_ARCH_M9S12X
+
+/* Set if enum bfd_architecture value bfd_arch_maxq exists. */
+#undef HAVE_ARCH_MAXQ
+
+/* Set if enum bfd_architecture value bfd_arch_mep exists. */
+#undef HAVE_ARCH_MEP
+
+/* Set if enum bfd_architecture value bfd_arch_metag exists. */
+#undef HAVE_ARCH_METAG
+
+/* Set if enum bfd_architecture value bfd_arch_moxie exists. */
+#undef HAVE_ARCH_MOXIE
+
+/* Set if enum bfd_architecture value bfd_arch_mt exists. */
+#undef HAVE_ARCH_MT
+
+/* Set if enum bfd_architecture value bfd_arch_nds32 exists. */
+#undef HAVE_ARCH_NDS32
+
+/* Set if enum bfd_architecture value bfd_arch_nfp exists. */
+#undef HAVE_ARCH_NFP
+
+/* Set if enum bfd_architecture value bfd_arch_nios2 exists. */
+#undef HAVE_ARCH_NIOS2
+
+/* Set if enum bfd_architecture value bfd_arch_openrisc exists. */
+#undef HAVE_ARCH_OPENRISC
+
+/* Set if enum bfd_architecture value bfd_arch_or32 exists. */
+#undef HAVE_ARCH_OR32
+
+/* Set if enum bfd_architecture value bfd_arch_plugin exists. */
+#undef HAVE_ARCH_PLUGIN
+
+/* Set if enum bfd_architecture value bfd_arch_riscv exists. */
+#undef HAVE_ARCH_RISCV
+
+/* Set if enum bfd_architecture value bfd_arch_rl78 exists. */
+#undef HAVE_ARCH_RL78
+
+/* Set if enum bfd_architecture value bfd_arch_rx exists. */
+#undef HAVE_ARCH_RX
+
+/* Set if enum bfd_architecture value bfd_arch_s12z exists. */
+#undef HAVE_ARCH_S12Z
+
+/* Set if enum bfd_architecture value bfd_arch_score exists. */
+#undef HAVE_ARCH_SCORE
+
+/* Set if enum bfd_architecture value bfd_arch_spu exists. */
+#undef HAVE_ARCH_SPU
+
+/* Set if enum bfd_architecture value bfd_arch_tic6x exists. */
+#undef HAVE_ARCH_TIC6X
+
+/* Set if enum bfd_architecture value bfd_arch_tic80 exists. */
+#undef HAVE_ARCH_TIC80
+
+/* Set if enum bfd_architecture value bfd_arch_tilepro exists. */
+#undef HAVE_ARCH_TILEPRO
+
+/* Set if enum bfd_architecture value bfd_arch_v850_rh850 exists. */
+#undef HAVE_ARCH_V850_RH850
+
+/* Set if enum bfd_architecture value bfd_arch_visium exists. */
+#undef HAVE_ARCH_VISIUM
+
+/* Set if enum bfd_architecture value bfd_arch_w65 exists. */
+#undef HAVE_ARCH_W65
+
+/* Set if enum bfd_architecture value bfd_arch_wasm32 exists. */
+#undef HAVE_ARCH_WASM32
+
+/* Set if enum bfd_architecture value bfd_arch_we32k exists. */
+#undef HAVE_ARCH_WE32K
+
+/* Set if enum bfd_architecture value bfd_arch_xc16x exists. */
+#undef HAVE_ARCH_XC16X
+
+/* Set if enum bfd_architecture value bfd_arch_xgate exists. */
+#undef HAVE_ARCH_XGATE
+
+/* Set if enum bfd_architecture value bfd_arch_z80 exists. */
+#undef HAVE_ARCH_Z80
+
 /* Define to 1 if you have the <bfd.h> header file. */
 #undef HAVE_BFD_H
 
@@ -9,17 +159,21 @@
 /* Define to 1 if you have the <dis-asm.h> header file. */
 #undef HAVE_DIS_ASM_H
 
+/* Define to 1 if you have the fprintf_styled_type declared in <dis-asm.h>
+   header file. */
+#undef HAVE_FPRINTF_STYLED
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
 /* Define to 1 if you have the <libiberty/demangle.h> header file. */
 #undef HAVE_LIBIBERTY_DEMANGLE_H
 
-/* Define to 1 if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
-
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#undef HAVE_STDIO_H
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
@@ -30,6 +184,10 @@
 /* Define to 1 if you have the <string.h> header file. */
 #undef HAVE_STRING_H
 
+/* Define to 1 if you have the symbol_at_address_func returns a asymbol * type
+   instead of int. */
+#undef HAVE_SYMBOL_USE_ASYMBOL
+
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
 
@@ -38,12 +196,6 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
-
-/* Define to 1 if you have the fprintf_styled_type declared in <dis-asm.h> header file. */
-#undef HAVE_FPRINTF_STYLED
-
-/* Define to 1 if you have the symbol_at_address_func returns a asymbol * type instead of int. */
-#undef HAVE_SYMBOL_USE_ASYMBOL
 
 /* Define to the address where bug reports for this package should be sent. */
 #undef PACKAGE_BUGREPORT
@@ -63,5 +215,7 @@
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C90 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #undef STDC_HEADERS

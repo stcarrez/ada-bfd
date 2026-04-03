@@ -1107,3 +1107,17 @@ esac
 AC_SUBST(UTIL_AWS_VERSION)
 
 ])
+
+# Check existence of enum bfd_architecture value
+AC_DEFUN(AM_BFD_CHECK_ARCH,
+[
+  AC_MSG_CHECKING([for bfd $1])
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+#include <bfd.h>
+]], [[
+enum bfd_architecture a = $1;
+]])],
+    [AC_MSG_RESULT([yes])
+     AC_DEFINE(HAVE_ARCH_$2, [1], [Set if enum bfd_architecture value $1 exists.])],
+    [AC_MSG_RESULT([no])])
+])

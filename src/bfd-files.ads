@@ -154,6 +154,15 @@ package Bfd.Files is
    --  Get the pointer to the BFD structure allocated for the file.
    function Get_Bfd_Pointer (File : in File_Type) return Ptr with Inline;
 
+   --  Get the architecture and machine name for the open file.
+   function Get_Architecture_Name (File : in File_Type) return String;
+
+   --  Get the architecture of the open file.
+   function Get_Architecture (File : in File_Type) return Architecture_Type;
+
+   --  Get the machine of the open file.
+   function Get_Machine (File : in File_Type) return Natural;
+
 private
    subtype Pointer is System.Address;
 

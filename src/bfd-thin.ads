@@ -62,6 +62,15 @@ package Bfd.Thin is
    function Get_File_Flags (Bfd : Ptr) return File_Flags
      with Import => True, Convention => C, Link_Name => "ada_bfd_get_file_flags";
 
+   function Get_Architecture (Bfd : Ptr) return Interfaces.C.int
+     with Import => True, Convention => C, Link_Name => "bfd_get_arch";
+
+   function Get_Machine (Bfd : Ptr) return Interfaces.C.unsigned_long
+     with Import => True, Convention => C, Link_Name => "bfd_get_mach";
+
+   function Get_Printable_Name (File : in Ptr) return Interfaces.C.Strings.chars_ptr
+     with Import => True, Convention => C, Link_Name => "bfd_printable_name";
+
    function Is_Undefined_Class (C : in Character) return Interfaces.C.int
      with Import => True, Convention => C, Link_Name => "bfd_is_undefined_symclass";
 
